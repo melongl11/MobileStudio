@@ -43,7 +43,8 @@
             android:name=".LaundryInfo"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity android:name=".OrderActivity" />
-        <activity android:name=".HistoryActivity"></activity>
+        <activity android:name=".HistoryActivity" />
+        <activity android:name=".OrderFinishActivity" />
     </application>
 
 </manifest>
