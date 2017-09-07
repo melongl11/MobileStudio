@@ -7,6 +7,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.support.v4.app.FragmentActivity
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.TextView
@@ -23,48 +24,20 @@ import kotlinx.android.synthetic.main.activity_order.*
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private var mMap: GoogleMap? = null
-    var longitude:Double = 0.0
-    var latitude:Double = 0.0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order)
 
-        // Location 제공자에서 정보를 얻어오기(GPS)
-        // 1. Location을 사용하기 위한 권한을 얻어와야한다 AndroidManifest.xml
-        //     ACCESS_FINE_LOCATION : NETWORK_PROVIDER, GPS_PROVIDER
-        //     ACCESS_COARSE_LOCATION : NETWORK_PROVIDER
-        // 2. LocationManager 를 통해서 원하는 제공자의 리스너 등록
-        // 3. GPS 는 에뮬레이터에서는 기본적으로 동작하지 않는다
-        // 4. 실내에서는 GPS_PROVIDER 를 요청해도 응답이 없다.  특별한 처리를 안하면 아무리 시간이 지나도
-        //    응답이 없다.
-        //    해결방법은
-        //     ① 타이머를 설정하여 GPS_PROVIDER 에서 일정시간 응답이 없는 경우 NETWORK_PROVIDER로 전환
-        //     ② 혹은, 둘다 한꺼번헤 호출하여 들어오는 값을 사용하는 방식.
-
-
-        textView2.setText("위치정보 미수신중")
-
-
-        // LocationManager 객체를 얻어온다
         val lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        try {
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 0.001.toFloat(), mLocationListener)
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 0.001.toFloat(), mLocationListener)
+            val mapFragment = supportFragmentManager
+                    .findFragmentById(R.id.map) as SupportMapFragment
+            mapFragment.getMapAsync(this)
+        } catch (ex: SecurityException) {
 
-
-        toggle1.setOnClickListener{
-                try {
-                    if (toggle1.isChecked()) {
-                        textView2.setText("수신중..")
-                        // GPS 제공자의 정보가 바뀌면 콜백하도록 리스너 등록하기~!!!
-                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1.toFloat(), mLocationListener)
-                        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 1.toFloat(), mLocationListener)
-                        val mapFragment = supportFragmentManager
-                                .findFragmentById(R.id.map) as SupportMapFragment
-                        mapFragment.getMapAsync(this)
-                    } else {
-                        textView2.setText("위치정보 미수신중")
-                        lm.removeUpdates(mLocationListener)  //  미수신할때는 반드시 자원해체를 해주어야 한다.
-                    }
-                } catch (ex: SecurityException) {
-                }
         }
 
         bt_popup.setOnClickListener {
@@ -77,19 +50,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val mLocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
-            //여기서 위치값이 갱신되면 이벤트가 발생한다.
-            //값은 Location 형태로 리턴되며 좌표 출력 방법은 다음과 같다.
+            Handler().postDelayed({
+                val sydney = LatLng(location.getLongitude(), location.getLatitude())
+                mMap!!.clear()
+                mMap!!.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+                mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15.toFloat()))
+            },1000)
 
             Log.d("test", "onLocationChanged, location:" + location)
-            longitude = location.getLongitude() //경도
-            latitude = location.getLatitude()   //위도
-            val altitude = location.getAltitude()   //고도
-            val accuracy = location.getAccuracy()    //정확도
-            val provider = location.getProvider()   //위치제공자
-            //Gps 위치제공자에 의한 위치변화. 오차범위가 좁다.
-            //Network 위치제공자에 의한 위치변화
-            //Network 위치는 Gps에 비해 정확도가 많이 떨어진다.
-            textView2.setText("위치정보 : " + provider + "\n위도 : " + longitude + "\n경도 : " + latitude+ "\n고도 : " + altitude + "\n정확도 : " + accuracy)
         }
 
         override fun onProviderDisabled(provider: String) {
@@ -109,10 +77,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        val init = LatLng(37.59788, 126.86443)
+        mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(init, 10.toFloat()))
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(latitude, longitude)
-        mMap!!.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap!!.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 }
