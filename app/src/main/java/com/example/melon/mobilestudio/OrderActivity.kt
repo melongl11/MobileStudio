@@ -13,10 +13,9 @@ class OrderActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order2)
 
-        var timeList = arrayOf("09:00 ~ 10:00", "17:00 ~ 18:00")
-
         finalorder.setOnClickListener {
             val intent = Intent(this, OrderFinishActivity::class.java)
+            intent.putExtra("address",et_useraddress.text.toString())
             startActivity(intent)
         }
 
