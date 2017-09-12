@@ -31,11 +31,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         try {
+            Handler().postDelayed({
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 0.001.toFloat(), mLocationListener)
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 0.001.toFloat(), mLocationListener)
             val mapFragment = supportFragmentManager
                     .findFragmentById(R.id.map) as SupportMapFragment
-            mapFragment.getMapAsync(this)
+            mapFragment.getMapAsync(this) }, 3000)
         } catch (ex: SecurityException) {
 
         }
@@ -51,7 +52,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private val mLocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
             Handler().postDelayed({
-                val sydney = LatLng(location.getLongitude(), location.getLatitude())
+                val sydney = LatLng(location.getLatitude(), location.getLongitude())
                 mMap!!.clear()
                 mMap!!.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
                 mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15.toFloat()))

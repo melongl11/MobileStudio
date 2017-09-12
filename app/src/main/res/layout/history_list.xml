@@ -5,13 +5,13 @@
     <TextView
         android:layout_width="150dp"
         android:layout_height="40dp"
-        android:textSize="10pt"
+        android:textSize="15pt"
         android:id="@+id/tv_date"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="10pt"
-        android:id="@+id/tv_laundryname"/>
+        android:id="@+id/tv_laundry"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,8 +26,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right">
-        <Button
+        <ImageView
             android:layout_width="100dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:id="@+id/iv_state"/>
     </LinearLayout>
 </LinearLayout>

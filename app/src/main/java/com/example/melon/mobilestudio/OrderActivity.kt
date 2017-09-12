@@ -16,6 +16,7 @@ class OrderActivity : AppCompatActivity() {
         finalorder.setOnClickListener {
             val intent = Intent(this, OrderFinishActivity::class.java)
             intent.putExtra("address",et_useraddress.text.toString())
+            intent.putExtra("require",et_require.text.toString())
             startActivity(intent)
         }
 
