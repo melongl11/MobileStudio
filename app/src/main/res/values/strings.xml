@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MobileStudio</string>
+    <string name="app_name">세탁왕</string>
     <string name="title_activity_maps">Map</string>
     <string name="textview">TextView</string>
 </resources>
