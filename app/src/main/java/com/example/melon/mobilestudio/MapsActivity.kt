@@ -1,7 +1,9 @@
 package com.example.melon.mobilestudio
 
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -20,6 +22,11 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_order.*
+import android.Manifest.permission.WRITE_CALENDAR
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
+
+
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -29,10 +36,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order)
 
+
         val lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         try {
             Handler().postDelayed({
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 0.001.toFloat(), mLocationListener)
+            //lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 0.001.toFloat(), mLocationListener)
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 0.001.toFloat(), mLocationListener)
             val mapFragment = supportFragmentManager
                     .findFragmentById(R.id.map) as SupportMapFragment
@@ -83,3 +91,5 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 }
+
+
