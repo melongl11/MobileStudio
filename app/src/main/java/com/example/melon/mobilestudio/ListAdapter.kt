@@ -34,8 +34,10 @@ class ListAdapter(var datas:ArrayList<Order>, var context:Context) : BaseAdapter
         if (convertView == null) {
             var convert = inflater.inflate(R.layout.history_list,null)
             var mTextViewDate : View = convert.findViewById(R.id.tv_date)
-            var mTextViewLaundry = convert.findViewById(R.id.tv_laundry)
-            var mImageView = convert.findViewById(R.id.iv_state)
+
+            var mTextViewLaundry : View = convert.findViewById(R.id.tv_laundry)
+
+            var mImageView :View = convert.findViewById(R.id.iv_state)
 
             var order : Order = datas.get(position)
             mTextViewDate.tv_date.setText(order.date)

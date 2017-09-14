@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.ListAdapter
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_history.*
+import kotlin.collections.ArrayList
 
 class HistoryActivity : AppCompatActivity() {
     private var datas = ArrayList<Order>()
@@ -28,8 +29,8 @@ class HistoryActivity : AppCompatActivity() {
         override fun onDataChange(datasnapshot: DataSnapshot) {
             datas.clear()
             for(snapshot in datasnapshot.getChildren()) {
-                var order : Order = snapshot.getValue(Order::class.java)
-                datas.add(order)
+                var order = snapshot.getValue(Order::class.java)
+                datas.add(order!!)
             }
             adapter.notifyDataSetChanged()
         }

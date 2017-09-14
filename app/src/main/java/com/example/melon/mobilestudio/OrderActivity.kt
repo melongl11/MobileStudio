@@ -19,6 +19,8 @@ class OrderActivity : AppCompatActivity() {
             builder.setMessage("주문하시겠습니까?")
             builder.setPositiveButton("예"){dialog, whichButton ->
                 val intent = Intent(this,OrderFinishActivity::class.java)
+                intent.putExtra("address",et_useraddress.text.toString())
+                intent.putExtra("require",et_require.text.toString())
                 startActivity(intent)
             }
             builder.setNegativeButton("아니오"){dialog,whichButton ->
@@ -27,8 +29,6 @@ class OrderActivity : AppCompatActivity() {
             val dialog: AlertDialog = builder.create()
             dialog.show()
 
-            intent.putExtra("address",et_useraddress.text.toString())
-            intent.putExtra("require",et_require.text.toString())
         }
     }
 }
