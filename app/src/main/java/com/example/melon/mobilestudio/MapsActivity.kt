@@ -40,7 +40,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         try {
             Handler().postDelayed({
-            //lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 0.001.toFloat(), mLocationListener)
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 0.001.toFloat(), mLocationListener)
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 0.001.toFloat(), mLocationListener)
             val mapFragment = supportFragmentManager
                     .findFragmentById(R.id.map) as SupportMapFragment

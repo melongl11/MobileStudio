@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MobileStudio.iml" filepath="$PROJECT_DIR$/MobileStudio.iml" />
+      <module fileurl="file://C:\github\MobileStudio-real\MobileStudio.iml" filepath="C:\github\MobileStudio-real\MobileStudio.iml" />
       <module fileurl="file://C:\Users\melon\StudioProjects\MobileStudio\MobileStudio.iml" filepath="C:\Users\melon\StudioProjects\MobileStudio\MobileStudio.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MobileStudio-real.iml" filepath="$PROJECT_DIR$/MobileStudio-real.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
