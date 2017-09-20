@@ -15,24 +15,26 @@
         android:orientation="vertical"
         tools:layout_editor_absoluteY="8dp"
         tools:layout_editor_absoluteX="8dp">
+
         <ImageView
             android:id="@+id/iv_order"
-            android:layout_width="130dp"
+            android:layout_width="136dp"
             android:layout_height="130dp"
+            android:layout_gravity="center"
             android:layout_marginTop="50dp"
             android:src="@drawable/user_bt_order"
-            android:layout_gravity="center"
-            tools:layout_editor_absoluteY="0dp"
-            tools:layout_editor_absoluteX="0dp" />
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
+
         <ImageView
             android:id="@+id/iv_history"
             android:layout_width="130dp"
             android:layout_height="130dp"
-            android:layout_marginTop="100dp"
             android:layout_gravity="center"
+            android:layout_marginTop="100dp"
             android:src="@drawable/user_bt_history"
-            tools:layout_editor_absoluteY="0dp"
-            tools:layout_editor_absoluteX="0dp" />
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
 
     </LinearLayout>
 
