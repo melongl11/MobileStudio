@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MobileStudio.iml" filepath="$PROJECT_DIR$/MobileStudio.iml" />
-      <module fileurl="file://C:\Users\melon\StudioProjects\MobileStudio\MobileStudio.iml" filepath="C:\Users\melon\StudioProjects\MobileStudio\MobileStudio.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

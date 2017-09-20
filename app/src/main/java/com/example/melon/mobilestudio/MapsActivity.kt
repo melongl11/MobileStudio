@@ -36,26 +36,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order)
 
-
         val lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         try {
             Handler().postDelayed({
-            //lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 0.001.toFloat(), mLocationListener)
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 0.001.toFloat(), mLocationListener)
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 0.001.toFloat(), mLocationListener)
             val mapFragment = supportFragmentManager
                     .findFragmentById(R.id.map) as SupportMapFragment
             mapFragment.getMapAsync(this) }, 3000)
+
         } catch (ex: SecurityException) {
 
         }
 
         bt_popup.setOnClickListener {
             val intent = Intent(this, LaundryInfo::class.java)
-
             startActivity(intent)
         }
 
-    } // end of onCreate
+} // end of onCreate
 
     private val mLocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {

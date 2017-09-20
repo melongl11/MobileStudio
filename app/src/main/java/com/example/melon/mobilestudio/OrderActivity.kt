@@ -6,21 +6,35 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.widget.ArrayAdapter
 import android.widget.CursorAdapter
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_order2.*
+import kotlinx.android.synthetic.main.activity_order_finish.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class OrderActivity : AppCompatActivity() {
 
+    var address:String = " "
+    var require:String = " "
+    var saveFormat = SimpleDateFormat("yy-MM-dd-hh-mm-ss")
+    private var mDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order2)
+
+        var dateFormat = SimpleDateFormat("yy-MM-dd")
+        var today = dateFormat.format(Date())
 
         finalorder.setOnClickListener {
             val builder: AlertDialog.Builder = AlertDialog.Builder(this)
             builder.setMessage("주문하시겠습니까?")
             builder.setPositiveButton("예"){dialog, whichButton ->
                 val intent = Intent(this,OrderFinishActivity::class.java)
-                intent.putExtra("address",et_useraddress.text.toString())
-                intent.putExtra("require",et_require.text.toString())
+                address= et_useraddress.text.toString()
+                require = et_require.text.toString()
+                newOrder(today, require, 0)
+                intent.putExtra("date",today)
                 startActivity(intent)
             }
             builder.setNegativeButton("아니오"){dialog,whichButton ->
@@ -30,5 +44,25 @@ class OrderActivity : AppCompatActivity() {
             dialog.show()
 
         }
+    }
+    fun newOrder(date:String, laundry:String, state:Int) {
+        var saveTime = saveFormat.format(Date())
+        var order = Order(date, laundry, state)
+        var orderValue = order.toMap()
+
+        var childUpdate = HashMap<String, Any>()
+
+        childUpdate.put("/users/" + saveTime, orderValue)
+        mDatabase.updateChildren(childUpdate)
+
+        var result : HashMap<String, Any> = HashMap<String, Any>()
+        result.put("date",date)
+        result.put("name",laundry)
+        result.put("address",address)
+        result.put("require", require)
+        result.put("state", state)
+        childUpdate.put("/laundry/orders/" + saveTime, result)
+        mDatabase.updateChildren(childUpdate)
+
     }
 }
