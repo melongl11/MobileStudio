@@ -23,6 +23,7 @@ class OrderedActivity : AppCompatActivity() {
         adapter = OrderedListAdt(datas, this)
         lv_ordered.setAdapter(adapter)
     }
+
     private val postListener = object : ValueEventListener {
         override fun onDataChange(datasnapshot: DataSnapshot) {
             datas.clear()

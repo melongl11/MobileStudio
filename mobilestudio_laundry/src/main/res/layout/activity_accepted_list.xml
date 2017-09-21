@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.example.mobilestudio_laundry.AcceptedList">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="16dp"
+            android:id="@+id/tv_date_aa"
+            android:layout_width="21dp"
             android:layout_height="40dp"
             android:layout_weight="1"
             android:textSize="15pt" />
 
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/tv_name_aa"
             android:layout_width="81dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -27,7 +27,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tv_address"
+        android:id="@+id/tv_address_aa"
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:textSize="7pt" />
@@ -38,7 +38,7 @@
         android:gravity="right">
 
         <TextView
-            android:id="@+id/tv_visittime"
+            android:id="@+id/tv_visittime_aa"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -47,6 +47,6 @@
         <ImageView
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:id="@+id/iv_state"/>
+            android:id="@+id/iv_state_a"/>
     </LinearLayout>
 </LinearLayout>

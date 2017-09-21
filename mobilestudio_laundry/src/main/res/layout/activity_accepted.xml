@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.melon.mobilestudio.LoginActivity">
+    tools:context="com.example.mobilestudio_laundry.Accepted">
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/bt_google_signin"
-        android:layout_width="209dp"
-        android:layout_height="wrap_content"></com.google.android.gms.common.SignInButton>
-
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lv_accepted">
+    </ListView>
 </LinearLayout>

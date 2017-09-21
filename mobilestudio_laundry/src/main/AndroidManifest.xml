@@ -27,7 +27,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AcceptedList" />
         <activity android:name=".ModifyActivity" />
-        <activity android:name=".ManagementActivity"></activity>
+        <activity android:name=".ManagementActivity" />
+        <activity android:name=".Accepted"></activity>
     </application>
 
 </manifest>
