@@ -27,7 +27,8 @@ class AcceptedList : AppCompatActivity() {
             datas.clear()
             for(snapshot in datasnapshot.getChildren()) {
                 var ordered = snapshot.getValue(Accepted::class.java)
-                datas.add(ordered!!)
+                if (ordered!!.state!=0)
+                    datas.add(ordered!!)
             }
             adapter.notifyDataSetChanged()
         }
