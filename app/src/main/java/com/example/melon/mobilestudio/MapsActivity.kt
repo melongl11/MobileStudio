@@ -25,13 +25,17 @@ import kotlinx.android.synthetic.main.activity_order.*
 import android.Manifest.permission.WRITE_CALENDAR
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-
+import android.widget.Toast
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private var mMap: GoogleMap? = null
-
+    private var datas = ArrayList<LaundryLocation>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order)
@@ -63,6 +67,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 mMap!!.clear()
                 mMap!!.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
                 mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15.toFloat()))
+                var dbRef = FirebaseDatabase.getInstance().getReference("laundry_list")
+                dbRef.addListenerForSingleValueEvent(postListener)
             },1000)
 
             Log.d("test", "onLocationChanged, location:" + location)
@@ -88,6 +94,28 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val init = LatLng(37.59788, 126.86443)
         mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(init, 10.toFloat()))
 
+    }
+    private val postListener = object : ValueEventListener {
+        override fun onDataChange(datasnapshot: DataSnapshot) {
+            datas.clear()
+            for(snapshot in datasnapshot.getChildren()) {
+                var laundryLocation = snapshot.getValue(LaundryLocation::class.java)
+                datas.add(laundryLocation!!)
+            }
+            for (data in datas) {
+                var markerOption = MarkerOptions()
+                var location = LatLng(data!!.latitude, data!!.longitude)
+
+                Log.d("test",data!!.latitude.toString() + data!!.longitude.toString())
+                markerOption.position(location!!)
+                mMap!!.addMarker(markerOption)
+
+            }
+        }
+
+        override fun onCancelled(p0: DatabaseError?) {
+
+        }
     }
 }
 

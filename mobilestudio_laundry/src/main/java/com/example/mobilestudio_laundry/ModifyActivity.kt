@@ -7,12 +7,13 @@ import android.location.LocationManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.support.v4.view.LayoutInflaterFactory
 import android.util.Log
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import android.widget.Toast
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -20,8 +21,27 @@ import kotlinx.android.synthetic.main.activity_modify.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 
-class ModifyActivity : AppCompatActivity(), OnMapReadyCallback {
+
+
+class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCameraMoveListener {
+    var marker: Marker?= null
+    var center:LatLng? = null
+    override fun onCameraMove() {
+        if (mMap!=null) {
+            center = mMap!!.projection.visibleRegion.latLngBounds.center
+            var markerOption = MarkerOptions()
+            markerOption.position(center!!)
+            markerOption.title("Current Location")
+            mMap!!.clear()
+            marker = mMap!!.addMarker(markerOption)
+        }
+
+    }
+
+
+    private var init = 0
     private var mMap: GoogleMap? = null
     private var mDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference()
     var sydney :LatLng = LatLng(37.59788, 126.86443)
@@ -46,8 +66,8 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback {
             var saveTime = saveFormat.format(Date())
             var childUpdate = HashMap<String, Any>()
             var currentLocation = HashMap<String, Any>()
-            currentLocation.put("latitude",sydney.latitude)
-            currentLocation.put("longitude",sydney.longitude)
+            currentLocation.put("latitude",center!!.latitude)
+            currentLocation.put("longitude",center!!.longitude)
             childUpdate.put("/laundry_list/" + saveTime , currentLocation)
             mDatabase.updateChildren(childUpdate)
 
@@ -59,18 +79,22 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         val init = LatLng(37.59788, 126.86443)
         mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(init, 10.toFloat()))
+        mMap!!.setOnCameraMoveListener(this)
     }
 
     private val mLocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
-            Handler().postDelayed({
-                sydney = LatLng(location.getLatitude(), location.getLongitude())
-                mMap!!.clear()
-                mMap!!.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-                mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15.toFloat()))
-            },1000)
+            if (init == 0) {
+                Handler().postDelayed({
+                    sydney = LatLng(location.getLatitude(), location.getLongitude())
+                    mMap!!.clear()
+                    mMap!!.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+                    mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15.toFloat()))
+                    init = 1
+                }, 1000)
 
-            Log.d("test", "onLocationChanged, location:" + location)
+                Log.d("test", "onLocationChanged, location:" + location)
+            }
         }
 
         override fun onProviderDisabled(provider: String) {
