@@ -26,13 +26,20 @@ import android.Manifest.permission.WRITE_CALENDAR
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.widget.Toast
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.Marker
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+    override fun onMarkerClick(marker: Marker?): Boolean {
+        tv_laundryInfo.setText(marker!!.position.latitude.toString() + marker!!.position.longitude.toString())
+
+        return true
+    }
 
     private var mMap: GoogleMap? = null
     private var datas = ArrayList<LaundryLocation>()
@@ -93,6 +100,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         val init = LatLng(37.59788, 126.86443)
         mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(init, 10.toFloat()))
+        mMap!!.setOnMarkerClickListener(this)
 
     }
     private val postListener = object : ValueEventListener {
@@ -108,6 +116,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 Log.d("test",data!!.latitude.toString() + data!!.longitude.toString())
                 markerOption.position(location!!)
+                markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
                 mMap!!.addMarker(markerOption)
 
             }
