@@ -36,7 +36,8 @@ import com.google.firebase.database.ValueEventListener
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     override fun onMarkerClick(marker: Marker?): Boolean {
-        tv_laundryInfo.setText(marker!!.position.latitude.toString() + marker!!.position.longitude.toString())
+        tv_laundryInfo.setText(marker!!.snippet)
+        tv_laundryName.setText(marker!!.title)
 
         return true
     }
@@ -74,7 +75,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 mMap!!.clear()
                 mMap!!.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
                 mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15.toFloat()))
-                var dbRef = FirebaseDatabase.getInstance().getReference("laundry_list")
+                val dbRef = FirebaseDatabase.getInstance().getReference("laundry_list")
                 dbRef.addListenerForSingleValueEvent(postListener)
             },1000)
 
@@ -117,6 +118,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 Log.d("test",data!!.latitude.toString() + data!!.longitude.toString())
                 markerOption.position(location!!)
                 markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
+                markerOption.title(data.name)
+                markerOption.snippet(data.address)
                 mMap!!.addMarker(markerOption)
 
             }

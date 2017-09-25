@@ -23,8 +23,8 @@ class OrderActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order2)
 
-        var dateFormat = SimpleDateFormat("yy-MM-dd")
-        var today = dateFormat.format(Date())
+        val dateFormat = SimpleDateFormat("yy-MM-dd")
+        val today = dateFormat.format(Date())
 
         finalorder.setOnClickListener {
             val builder: AlertDialog.Builder = AlertDialog.Builder(this)
@@ -46,16 +46,16 @@ class OrderActivity : AppCompatActivity() {
         }
     }
     fun newOrder(date:String, laundry:String, state:Int) {
-        var saveTime = saveFormat.format(Date())
-        var order = Order(date, laundry, state)
-        var orderValue = order.toMap()
+        val saveTime = saveFormat.format(Date())
+        val order = Order(date, laundry, state)
+        val orderValue = order.toMap()
 
-        var childUpdate = HashMap<String, Any>()
+        val childUpdate = HashMap<String, Any>()
 
         childUpdate.put("/users/" + saveTime, orderValue)
         mDatabase.updateChildren(childUpdate)
 
-        var result : HashMap<String, Any> = HashMap<String, Any>()
+        val result : HashMap<String, Any> = HashMap<String, Any>()
         result.put("date",date)
         result.put("name",laundry)
         result.put("address",address)

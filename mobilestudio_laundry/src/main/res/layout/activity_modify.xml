@@ -15,6 +15,18 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         tools:context="com.example.melon.mobilestudio_laundry.ModifyActivity" />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_laundryName"
+        android:textSize="10pt"
+        android:hint="세탁소 이름을 적어주세요."/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_laundryAddress"
+        android:hint="상세 주소를 적어주세요."/>
     <Button
         android:id="@+id/bt_setLocation"
         android:layout_width="wrap_content"

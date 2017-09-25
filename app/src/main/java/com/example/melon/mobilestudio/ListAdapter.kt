@@ -32,14 +32,14 @@ class ListAdapter(var datas:ArrayList<Order>, var context:Context) : BaseAdapter
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         if (convertView == null) {
-            var convert = inflater.inflate(R.layout.history_list,null)
-            var mTextViewDate : View = convert.findViewById(R.id.tv_date)
+            val convert = inflater.inflate(R.layout.history_list,null)
+            val mTextViewDate : View = convert.findViewById(R.id.tv_date)
 
-            var mTextViewLaundry : View = convert.findViewById(R.id.tv_laundry)
+            val mTextViewLaundry : View = convert.findViewById(R.id.tv_laundry)
 
-            var mImageView :View = convert.findViewById(R.id.iv_state)
+            val mImageView :View = convert.findViewById(R.id.iv_state)
 
-            var order : Order = datas.get(position)
+            val order : Order = datas.get(position)
             mTextViewDate.tv_date.setText(order.date)
             mTextViewLaundry.tv_laundry.setText(order.laundry)
             when(order.state) {

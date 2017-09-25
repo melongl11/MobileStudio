@@ -1,6 +1,7 @@
 package com.example.mobilestudio_laundry
 
 import android.content.Context
+import android.content.DialogInterface
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -8,7 +9,10 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.view.LayoutInflaterFactory
+import android.support.v7.app.AlertDialog
 import android.util.Log
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
@@ -62,14 +66,21 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
 
         }
         bt_setLocation.setOnClickListener {
-            var saveFormat = SimpleDateFormat("yy-MM-dd-hh-mm-ss")
-            var saveTime = saveFormat.format(Date())
-            var childUpdate = HashMap<String, Any>()
-            var currentLocation = HashMap<String, Any>()
+            val saveFormat = SimpleDateFormat("yy-MM-dd-hh-mm-ss")
+            val saveTime = saveFormat.format(Date())
+            val childUpdate = HashMap<String, Any>()
+            val currentLocation = HashMap<String, Any>()
             currentLocation.put("latitude",center!!.latitude)
             currentLocation.put("longitude",center!!.longitude)
+            currentLocation.put("address", et_laundryAddress.text.toString())
+            currentLocation.put("name",et_laundryName.text.toString())
             childUpdate.put("/laundry_list/" + saveTime , currentLocation)
             mDatabase.updateChildren(childUpdate)
+
+            AlertDialog.Builder(this)
+                    .setMessage("세탁소 정보를 등록하였습니다.")
+                    .setNegativeButton("닫기", DialogInterface.OnClickListener{ dialog, whichButton ->})
+                    .show()
 
         }
 

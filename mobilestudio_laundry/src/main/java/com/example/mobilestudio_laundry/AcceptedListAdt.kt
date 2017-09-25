@@ -15,17 +15,17 @@ class AcceptedListAdt (var datas:ArrayList<Accepted>, var context: Context) : Ba
     var inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         if (convertView == null) {
-            var convert = inflater.inflate(R.layout.activity_accepted_list, null)
-            var mTextViewName: View = convert.findViewById(R.id.tv_name_aa)
+            val convert = inflater.inflate(R.layout.activity_accepted_list, null)
+            val mTextViewName: View = convert.findViewById(R.id.tv_name_aa)
 
-            var mTextViewAddress: View = convert.findViewById(R.id.tv_address_aa)
+            val mTextViewAddress: View = convert.findViewById(R.id.tv_address_aa)
 
-            var mTextViewVisittime: View = convert.findViewById(R.id.tv_visittime_aa)
+            val mTextViewVisittime: View = convert.findViewById(R.id.tv_visittime_aa)
 
-            var mImageViewAccept : View = convert.findViewById(R.id.iv_state_a)
+            val mImageViewAccept : View = convert.findViewById(R.id.iv_state_a)
 
 
-            var accepted: Accepted = datas.get(position)
+            val accepted: Accepted = datas.get(position)
             when(accepted.state) {
                 1 -> {
                     mTextViewName.tv_name_aa.setText(accepted.name)

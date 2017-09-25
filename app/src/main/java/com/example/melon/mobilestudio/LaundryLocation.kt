@@ -6,8 +6,12 @@ package com.example.melon.mobilestudio
 class LaundryLocation() {
     var latitude:Double = 0.0
     var longitude:Double= 0.0
-    constructor(latitude:Double, longitude:Double) : this() {
+    var name:String = ""
+    var address: String = ""
+    constructor(latitude:Double, longitude:Double, name:String, address:String) : this() {
         this.latitude = latitude
         this.longitude = longitude
+        this.name = name
+        this.address = address
     }
 }
