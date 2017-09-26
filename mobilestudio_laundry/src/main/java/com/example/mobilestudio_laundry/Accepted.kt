@@ -8,10 +8,12 @@ class Accepted(){
     var name:String = " "
     var address:String = " "
     var state : Int = 0
-    constructor(date:String, laundry:String, address:String, state:Int) : this() {
+    var key: String = " "
+    constructor(date:String, laundry:String, address:String, state:Int, key:String) : this() {
         this.date = date
         this.name = laundry
         this.address = address
         this.state = state
+        this.key = key
     }
 }

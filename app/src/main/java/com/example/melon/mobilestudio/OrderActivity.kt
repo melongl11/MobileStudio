@@ -17,7 +17,7 @@ class OrderActivity : AppCompatActivity() {
 
     var address:String = " "
     var require:String = " "
-    var saveFormat = SimpleDateFormat("yy-MM-dd-hh-mm-ss")
+    var saveFormat = SimpleDateFormat("yyMMddhhmmss")
     private var mDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +47,7 @@ class OrderActivity : AppCompatActivity() {
     }
     fun newOrder(date:String, laundry:String, state:Int) {
         val saveTime = saveFormat.format(Date())
-        val order = Order(date, laundry, state)
+        val order = Order(date, laundry, state, saveTime)
         val orderValue = order.toMap()
 
         val childUpdate = HashMap<String, Any>()
@@ -61,6 +61,7 @@ class OrderActivity : AppCompatActivity() {
         result.put("address",address)
         result.put("require", require)
         result.put("state", state)
+        result.put("key",saveTime)
         childUpdate.put("/laundry/orders/" + saveTime, result)
         mDatabase.updateChildren(childUpdate)
 

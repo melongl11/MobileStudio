@@ -1,4 +1,4 @@
-package com.example.melon.mobilestudio
+package com.example.mobilestudio_laundry
 
 /**
  * Created by melon on 2017-09-12.

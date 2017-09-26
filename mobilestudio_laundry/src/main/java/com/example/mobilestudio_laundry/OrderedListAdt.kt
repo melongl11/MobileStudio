@@ -17,22 +17,25 @@ import kotlinx.android.synthetic.main.ordered_list.view.*
  */
 class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseAdapter() {
     var inflater : LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    var key:String = " "
+    var ordered:Ordered? = null
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         if (convertView == null) {
-            var convert = inflater.inflate(R.layout.ordered_list,null)
-            var mTextViewName : View = convert.findViewById(R.id.tv_name)
-            var mTextViewAddress : View = convert.findViewById(R.id.tv_address)
-            var mTextViewVisittime : View = convert.findViewById(R.id.tv_visittime)
-            var mImageViewAccept : View = convert.findViewById(R.id.iv_accept)
+            val convert = inflater.inflate(R.layout.ordered_list,null)
+            val mTextViewName : View = convert.findViewById(R.id.tv_name)
+            val mTextViewAddress : View = convert.findViewById(R.id.tv_address)
+            val mTextViewVisittime : View = convert.findViewById(R.id.tv_visittime)
+            val mImageViewAccept : View = convert.findViewById(R.id.iv_accept)
 
+            ordered = datas.get(position)
+            mTextViewName.tv_name.setText(ordered!!.name)
+            mTextViewAddress.tv_address.setText(ordered!!.address)
+            mTextViewVisittime.tv_visittime.setText(ordered!!.date)
+            mImageViewAccept.iv_accept.setImageResource(R.drawable.bt_accept)
 
-            var ordered : Ordered = datas.get(position)
-            mTextViewName.tv_name.setText(ordered.name)
-            mTextViewAddress.tv_address.setText(ordered.address)
-            mTextViewVisittime.tv_visittime.setText(ordered.date)
-
+            key = ordered!!.key
             mImageViewAccept.iv_accept.setOnClickListener{
-                var dbRef = FirebaseDatabase.getInstance().getReference("users")
+                val dbRef = FirebaseDatabase.getInstance().getReference("users")
                 dbRef.addListenerForSingleValueEvent(postListener)
             }
 
@@ -61,8 +64,22 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
 
         }
 
-        override fun onDataChange(p0: DataSnapshot?) {
+        override fun onDataChange(datasnapshot: DataSnapshot) {
+            val mDatabase = FirebaseDatabase.getInstance().getReference()
+            for(snapshot in datasnapshot.getChildren()) {
+                val order = snapshot.getValue(Order::class.java)
+                if(order!!.key == key) {
+                    val newOrder = Order(order!!.date, order!!.laundry, 1, key)
+                    val childUpdate = HashMap<String, Any>()
 
+                    childUpdate.put("users/" + key, newOrder)
+                    mDatabase.updateChildren(childUpdate)
+                    val newOrdered = Ordered(ordered!!.date, ordered!!.name, ordered!!.address, 1,ordered!!.key)
+                    val acceptUpdate = HashMap<String, Any>()
+                    acceptUpdate.put("laundry/orders/" + key, newOrdered)
+                    mDatabase.updateChildren(acceptUpdate)
+                }
+            }
         }
 
     }

@@ -7,17 +7,23 @@ class Ordered() {
     var date:String = " "
     var name:String = " "
     var address:String = " "
-    constructor(date:String, laundry:String, address:String, state:Int) : this() {
+    var key:String= " "
+    var state:Int = 0;
+    constructor(date:String, laundry:String, address:String, state:Int, key:String) : this() {
         this.date = date
         this.name = laundry
         this.address = address
+        this.state = state
+        this.key = key
     }
 
     fun toMap(): Map<String, Any>  {
-        var result : HashMap<String, Any> = HashMap<String, Any>()
+        val result : HashMap<String, Any> = HashMap<String, Any>()
         result.put("date",date)
         result.put("name",name)
         result.put("address",address)
+        result.put("state",state)
+        result.put("key",key)
         return result
     }
 }
