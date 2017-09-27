@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
+import android.support.annotation.NonNull
 import android.support.v4.view.LayoutInflaterFactory
 import android.support.v7.app.AlertDialog
 import android.util.Log
@@ -32,14 +33,21 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.activity_modify.view.*
+import java.io.ByteArrayOutputStream
 import java.net.URI
 
 
 class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCameraMoveListener {
     var marker: Marker?= null
     var center:LatLng? = null
+    var bitmap : Bitmap? = null
 
+    private var mStorageRef : StorageReference = FirebaseStorage.getInstance().getReference()
     val REQ_CODE_SELECT_IMAGE = 1001
 
     override fun onCameraMove() {
@@ -51,17 +59,38 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
             mMap!!.clear()
             marker = mMap!!.addMarker(markerOption)
         }
-
     }
+
+    // 사진 업로드  /////////////////////////////////////////////////////////////////
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent){
         if (requestCode == REQ_CODE_SELECT_IMAGE) {
             if (resultCode == Activity.RESULT_OK) {
                 var uri: Uri = data.data
+                bitmap = MediaStore.Images.Media.getBitmap(contentResolver,uri)
+                uploadimg()
                 val mImageView : View = findViewById(R.id.iv_Picture)
-                mImageView.iv_Picture.setImageURI(uri)
+                mImageView.iv_Picture.setImageBitmap(bitmap)
+
             }
         }
     }
+
+        fun uploadimg(){
+            var riversRef : StorageReference = mStorageRef.child("laundry").child("image / " + bitmap)
+            var baos : ByteArrayOutputStream = ByteArrayOutputStream()
+            bitmap?.compress(Bitmap.CompressFormat.JPEG,100,baos)
+            var data = baos.toByteArray()
+
+            var uploadTask : UploadTask = riversRef.putBytes(data)
+            uploadTask.addOnSuccessListener {
+                Toast.makeText(applicationContext,"fail to upload", Toast.LENGTH_LONG).show()
+            }.addOnSuccessListener { taskSnapshot ->
+                var DownloadURL = taskSnapshot.downloadUrl!!.toString()
+            }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
 
 
     private var init = 0
@@ -72,13 +101,15 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_modify)
 
-        /* 사진 첨부 */
+        // 사진  ////////////////////////
 
         bt_setPicture.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.setType("image/*")
             startActivityForResult(intent, REQ_CODE_SELECT_IMAGE)
         }
+
+        ///////////////////////////////
 
 
 

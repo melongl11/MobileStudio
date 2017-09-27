@@ -119,6 +119,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1006792186370-4h0oiuc85mcuamdu9aqit3g2lcqlt7l4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mobilestudio_laundry",
+            "certificate_hash": "93135b1c23683e60d6225f5f4e743920b2b6c497"
+          }
+        },
+        {
           "client_id": "1006792186370-31r1kmovaoibg0477r6u60gcgrk89m5r.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -133,8 +141,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1006792186370-31r1kmovaoibg0477r6u60gcgrk89m5r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
