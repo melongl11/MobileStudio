@@ -18,7 +18,7 @@ class OrderedActivity : AppCompatActivity() {
         setContentView(R.layout.activity_ordered)
 
         var dbRef = FirebaseDatabase.getInstance().getReference("laundry/orders")
-        dbRef.addListenerForSingleValueEvent(postListener)
+        dbRef.addValueEventListener(postListener)
 
         adapter = OrderedListAdt(datas, this)
         lv_ordered.setAdapter(adapter)

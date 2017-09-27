@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
-    android:layout_height="300dp"
+    android:layout_height="330dp"
     android:orientation="vertical"
     tools:context="com.example.melon.mobilestudio.LaundryInfo">
     <ImageView
@@ -13,8 +13,12 @@
         android:id="@+id/iv_laundry"/>
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:text="주소 : 경기도 고양시 덕양구 화전동 00-0번지"/>
+        android:layout_height="30dp"
+        android:id="@+id/li_tv_laundryName"/>
+    <TextView
+        android:id="@+id/li_tv_laundryInfo"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"

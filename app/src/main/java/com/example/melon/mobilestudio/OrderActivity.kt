@@ -25,7 +25,7 @@ class OrderActivity : AppCompatActivity() {
 
         val dateFormat = SimpleDateFormat("yy-MM-dd")
         val today = dateFormat.format(Date())
-
+        val i = intent
         finalorder.setOnClickListener {
             val builder: AlertDialog.Builder = AlertDialog.Builder(this)
             builder.setMessage("주문하시겠습니까?")
@@ -34,6 +34,8 @@ class OrderActivity : AppCompatActivity() {
                 address= et_useraddress.text.toString()
                 require = et_require.text.toString()
                 newOrder(today, require, 0)
+                intent.putExtra("require", require)
+                intent.putExtra("laundryName", i.getStringExtra("laundryName"))
                 intent.putExtra("date",today)
                 startActivity(intent)
             }

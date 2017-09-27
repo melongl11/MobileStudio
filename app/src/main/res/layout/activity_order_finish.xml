@@ -15,7 +15,11 @@
         android:textSize="15pt"
         android:layout_marginTop="10dp"/>
     <TextView
-        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/of_tv_laundryName"/>
+    <TextView
+        android:id="@+id/of_tv_require"
         android:layout_width="369dp"
         android:layout_height="245dp"
         android:layout_marginLeft="8dp"

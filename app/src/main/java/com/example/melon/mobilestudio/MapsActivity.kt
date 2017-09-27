@@ -35,15 +35,18 @@ import com.google.firebase.database.ValueEventListener
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+    private var mMap: GoogleMap? = null
+    private var datas = ArrayList<LaundryLocation>()
+    private var name: String = "h";
+    private var info: String = "h";
     override fun onMarkerClick(marker: Marker?): Boolean {
         tv_laundryInfo.setText(marker!!.snippet)
-        tv_laundryName.setText(marker!!.title)
+        tv_laundryName.setText(marker.title)
+        name = marker.title
+        info = marker.snippet
 
         return true
     }
-
-    private var mMap: GoogleMap? = null
-    private var datas = ArrayList<LaundryLocation>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order)
@@ -63,6 +66,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
         bt_popup.setOnClickListener {
             val intent = Intent(this, LaundryInfo::class.java)
+            Toast.makeText(this,name + info,Toast.LENGTH_SHORT).show()
+            intent.putExtra("laundryInfo", info)
+            intent.putExtra("laundryName", name)
             startActivity(intent)
         }
 
@@ -108,15 +114,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         override fun onDataChange(datasnapshot: DataSnapshot) {
             datas.clear()
             for(snapshot in datasnapshot.getChildren()) {
-                var laundryLocation = snapshot.getValue(LaundryLocation::class.java)
+                val laundryLocation = snapshot.getValue(LaundryLocation::class.java)
                 datas.add(laundryLocation!!)
             }
             for (data in datas) {
-                var markerOption = MarkerOptions()
-                var location = LatLng(data!!.latitude, data!!.longitude)
+                val markerOption = MarkerOptions()
+                val location = LatLng(data.latitude, data.longitude)
 
-                Log.d("test",data!!.latitude.toString() + data!!.longitude.toString())
-                markerOption.position(location!!)
+                Log.d("test",data.latitude.toString() + data.longitude.toString())
+                markerOption.position(location)
                 markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
                 markerOption.title(data.name)
                 markerOption.snippet(data.address)
