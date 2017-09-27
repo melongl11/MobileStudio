@@ -1,16 +1,22 @@
 package com.example.mobilestudio_laundry
 
+import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.graphics.Bitmap
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.provider.MediaStore
 import android.support.v4.view.LayoutInflaterFactory
 import android.support.v7.app.AlertDialog
 import android.util.Log
+import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -26,12 +32,16 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
-
+import kotlinx.android.synthetic.main.activity_modify.view.*
+import java.net.URI
 
 
 class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCameraMoveListener {
     var marker: Marker?= null
     var center:LatLng? = null
+
+    val REQ_CODE_SELECT_IMAGE = 1001
+
     override fun onCameraMove() {
         if (mMap!=null) {
             center = mMap!!.projection.visibleRegion.latLngBounds.center
@@ -43,6 +53,15 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
         }
 
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent){
+        if (requestCode == REQ_CODE_SELECT_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                var uri: Uri = data.data
+                val mImageView : View = findViewById(R.id.iv_Picture)
+                mImageView.iv_Picture.setImageURI(uri)
+            }
+        }
+    }
 
 
     private var init = 0
@@ -52,6 +71,16 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_modify)
+
+        /* 사진 첨부 */
+
+        bt_setPicture.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            intent.setType("image/*")
+            startActivityForResult(intent, REQ_CODE_SELECT_IMAGE)
+        }
+
+
 
         val lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         try {

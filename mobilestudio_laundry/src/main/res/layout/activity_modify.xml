@@ -34,4 +34,15 @@
         android:text="현재위치로 설정"
         />
 
+    <Button
+        android:id="@+id/bt_setPicture"
+        android:layout_width="118dp"
+        android:layout_height="wrap_content"
+        android:text="사진" />
+
+    <ImageView
+        android:id="@+id/iv_Picture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>
