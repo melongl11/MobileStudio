@@ -19,7 +19,7 @@ class ManagementActivity : AppCompatActivity() {
     private var mStorageRef : StorageReference = FirebaseStorage.getInstance().getReference()
 
     fun downimg(){
-        var downRef : StorageReference = mStorageRef.child("laundry").child("image").child("food.jpg")
+        var downRef : StorageReference = mStorageRef.child("laundry").child("image").child("real.jpg")
         downRef.downloadUrl.addOnSuccessListener{
             Glide.with(this).using(FirebaseImageLoader()).load(downRef).into(imageView3)
             Toast.makeText(applicationContext,"다운성공.", Toast.LENGTH_LONG).show()

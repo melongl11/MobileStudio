@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://C:\github\MobileStudio-real\MobileStudio.iml" filepath="C:\github\MobileStudio-real\MobileStudio.iml" />
       <module fileurl="file://$PROJECT_DIR$/MobileStudio-real.iml" filepath="$PROJECT_DIR$/MobileStudio-real.iml" />
+      <module fileurl="file://C:\github\MobileStudio-real\MobileStudio-real.iml" filepath="C:\github\MobileStudio-real\MobileStudio-real.iml" />
       <module fileurl="file://C:\Users\melon\StudioProjects\MobileStudio\MobileStudio-real.iml" filepath="C:\Users\melon\StudioProjects\MobileStudio\MobileStudio-real.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/mobilestudio_laundry/mobilestudio_laundry.iml" filepath="$PROJECT_DIR$/mobilestudio_laundry/mobilestudio_laundry.iml" />

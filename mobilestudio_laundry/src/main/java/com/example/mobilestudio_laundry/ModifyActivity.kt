@@ -76,12 +76,12 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQ_CODE_SELECT_IMAGE) {
                 imageUri= data!!.data
-                cropImage()
+                cropImage(data!!.data)
             }
             else if (requestCode == REQ_CODE_IMAGE_CROP) {
                 val extras : Bundle = data!!.extras
                 if(extras != null){
-                    bitmap = MediaStore.Images.Media.getBitmap(contentResolver,imageUri)
+                    bitmap = extras.getParcelable("data")
                     uploadimg()
                     var f = File(imageUri!!.path)
                     if(f.exists()){
@@ -91,23 +91,23 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
             }
         }
     }
-        fun cropImage() {
+        fun cropImage(uri : Uri) {
             var intent: Intent = Intent("com.android.camera.action.CROP")
-            intent.setDataAndType(imageUri,"image/*")
+            intent.setDataAndType(uri,"image/*")
             intent.putExtra("crop","true")
-            intent.putExtra("aspectX",2)
+            intent.putExtra("aspectX",4)
             intent.putExtra("aspectY",1)
             intent.putExtra("outputX",256)
-            intent.putExtra("outputY",128)
+            intent.putExtra("outputY",64)
             intent.putExtra("scale",true)
             intent.putExtra("return-data",true)
             startActivityForResult(intent,REQ_CODE_IMAGE_CROP)
         }
 
         fun uploadimg(){
-            var riversRef : StorageReference = mStorageRef.child("laundry").child("image").child("food.jpg")
+            var riversRef : StorageReference = mStorageRef.child("laundry").child("image").child("real.jpg")
             var baos : ByteArrayOutputStream = ByteArrayOutputStream()
-            bitmap?.compress(Bitmap.CompressFormat.JPEG,10,baos)
+            bitmap?.compress(Bitmap.CompressFormat.JPEG,100,baos)
             var data = baos.toByteArray()
 
             var uploadTask : UploadTask = riversRef.putBytes(data)
@@ -119,9 +119,8 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
             }
     }
         fun downimg(){
-            var downRef : StorageReference = mStorageRef.child("laundry").child("image").child("food.jpg")
+            var downRef : StorageReference = mStorageRef.child("laundry").child("image").child("real.jpg")
             downRef.downloadUrl.addOnSuccessListener{
-                var imagev : View = findViewById(R.id.iv_Picture)
                 Glide.with(this).using(FirebaseImageLoader()).load(downRef).into(iv_Picture)
                 Toast.makeText(applicationContext,"다운성공.", Toast.LENGTH_LONG).show()
             }.addOnFailureListener{
