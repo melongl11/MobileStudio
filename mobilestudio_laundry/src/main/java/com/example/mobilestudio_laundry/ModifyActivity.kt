@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.media.Image
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -19,8 +20,11 @@ import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.firebase.ui.storage.images.FirebaseImageLoader
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
@@ -34,11 +38,14 @@ import java.util.*
 import kotlin.collections.HashMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
+import kotlinx.android.synthetic.main.activity_management.*
 import kotlinx.android.synthetic.main.activity_modify.view.*
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.net.URI
 
 
@@ -46,9 +53,11 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
     var marker: Marker?= null
     var center:LatLng? = null
     var bitmap : Bitmap? = null
+    var imageUri : Uri? = null
 
     private var mStorageRef : StorageReference = FirebaseStorage.getInstance().getReference()
-    val REQ_CODE_SELECT_IMAGE = 1001
+    val REQ_CODE_SELECT_IMAGE = 0
+    val REQ_CODE_IMAGE_CROP = 1
 
     override fun onCameraMove() {
         if (mMap!=null) {
@@ -63,32 +72,63 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
 
     // 사진 업로드  /////////////////////////////////////////////////////////////////
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent){
-        if (requestCode == REQ_CODE_SELECT_IMAGE) {
-            if (resultCode == Activity.RESULT_OK) {
-                var uri: Uri = data.data
-                bitmap = MediaStore.Images.Media.getBitmap(contentResolver,uri)
-                uploadimg()
-                val mImageView : View = findViewById(R.id.iv_Picture)
-                mImageView.iv_Picture.setImageBitmap(bitmap)
-
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQ_CODE_SELECT_IMAGE) {
+                imageUri= data!!.data
+                cropImage()
+            }
+            else if (requestCode == REQ_CODE_IMAGE_CROP) {
+                val extras : Bundle = data!!.extras
+                if(extras != null){
+                    bitmap = MediaStore.Images.Media.getBitmap(contentResolver,imageUri)
+                    uploadimg()
+                    var f = File(imageUri!!.path)
+                    if(f.exists()){
+                        f.delete()
+                    }
+                }
             }
         }
     }
+        fun cropImage() {
+            var intent: Intent = Intent("com.android.camera.action.CROP")
+            intent.setDataAndType(imageUri,"image/*")
+            intent.putExtra("crop","true")
+            intent.putExtra("aspectX",2)
+            intent.putExtra("aspectY",1)
+            intent.putExtra("outputX",256)
+            intent.putExtra("outputY",128)
+            intent.putExtra("scale",true)
+            intent.putExtra("return-data",true)
+            startActivityForResult(intent,REQ_CODE_IMAGE_CROP)
+        }
 
         fun uploadimg(){
-            var riversRef : StorageReference = mStorageRef.child("laundry").child("image / " + bitmap)
+            var riversRef : StorageReference = mStorageRef.child("laundry").child("image").child("food.jpg")
             var baos : ByteArrayOutputStream = ByteArrayOutputStream()
-            bitmap?.compress(Bitmap.CompressFormat.JPEG,100,baos)
+            bitmap?.compress(Bitmap.CompressFormat.JPEG,10,baos)
             var data = baos.toByteArray()
 
             var uploadTask : UploadTask = riversRef.putBytes(data)
             uploadTask.addOnSuccessListener {
-                Toast.makeText(applicationContext,"fail to upload", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext,"사진을 업로드했습니다.", Toast.LENGTH_LONG).show()
+                downimg()
             }.addOnSuccessListener { taskSnapshot ->
-                var DownloadURL = taskSnapshot.downloadUrl!!.toString()
+                var DownloadURL = taskSnapshot.downloadUrl!!
             }
     }
+        fun downimg(){
+            var downRef : StorageReference = mStorageRef.child("laundry").child("image").child("food.jpg")
+            downRef.downloadUrl.addOnSuccessListener{
+                var imagev : View = findViewById(R.id.iv_Picture)
+                Glide.with(this).using(FirebaseImageLoader()).load(downRef).into(iv_Picture)
+                Toast.makeText(applicationContext,"다운성공.", Toast.LENGTH_LONG).show()
+            }.addOnFailureListener{
+                Toast.makeText(applicationContext,"다운실패.", Toast.LENGTH_LONG).show()
+            }
+        }
+
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -102,6 +142,8 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
         setContentView(R.layout.activity_modify)
 
         // 사진  ////////////////////////
+
+        downimg()
 
         bt_setPicture.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -141,7 +183,6 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
                     .setMessage("세탁소 정보를 등록하였습니다.")
                     .setNegativeButton("닫기", DialogInterface.OnClickListener{ dialog, whichButton ->})
                     .show()
-
         }
 
     }
