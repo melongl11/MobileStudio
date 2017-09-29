@@ -65,11 +65,11 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
         }
 
         override fun onDataChange(datasnapshot: DataSnapshot) {
-            val mDatabase = FirebaseDatabase.getInstance().getReference()
-            for(snapshot in datasnapshot.getChildren()) {
+            val mDatabase = FirebaseDatabase.getInstance().reference
+            for(snapshot in datasnapshot.children) {
                 val order = snapshot.getValue(Order::class.java)
                 if(order!!.key == key) {
-                    val newOrder = Order(order!!.date, order!!.laundry, 1, key)
+                    val newOrder = Order(order.date, order.laundry, 1, key)
                     val childUpdate = HashMap<String, Any>()
 
                     childUpdate.put("users/" + key, newOrder)

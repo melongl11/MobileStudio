@@ -16,7 +16,7 @@ class AcceptedList : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_accepted)
 
-        var dbRef = FirebaseDatabase.getInstance().getReference("laundry/orders")
+        val dbRef = FirebaseDatabase.getInstance().getReference("laundry/orders")
         dbRef.addListenerForSingleValueEvent(postListener)
 
         adapter = AcceptedListAdt(datas, this)
@@ -26,9 +26,9 @@ class AcceptedList : AppCompatActivity() {
         override fun onDataChange(datasnapshot: DataSnapshot) {
             datas.clear()
             for(snapshot in datasnapshot.getChildren()) {
-                var ordered = snapshot.getValue(Accepted::class.java)
+                val ordered = snapshot.getValue(Accepted::class.java)
                 if (ordered!!.state!=0)
-                    datas.add(ordered!!)
+                    datas.add(ordered)
             }
             adapter.notifyDataSetChanged()
         }

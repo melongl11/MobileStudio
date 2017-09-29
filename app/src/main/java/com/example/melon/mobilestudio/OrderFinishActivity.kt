@@ -11,7 +11,7 @@ import java.util.*
 import kotlin.collections.HashMap
 
 class OrderFinishActivity : AppCompatActivity() {
-
+    val backpreessHandler = BackPressHandler(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_finish)
@@ -24,6 +24,7 @@ class OrderFinishActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
-
+    override fun onBackPressed() {
+        backpreessHandler.onBackPressedEnd()
+    }
 }

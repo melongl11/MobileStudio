@@ -14,7 +14,7 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
+    private var backPressedHandler = BackPressHandler(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -35,4 +35,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+    override fun onBackPressed() {
+        backPressedHandler.onBackPressedEnd() }
 }

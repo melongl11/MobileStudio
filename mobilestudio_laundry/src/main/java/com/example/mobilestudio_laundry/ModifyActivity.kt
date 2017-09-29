@@ -62,7 +62,7 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
     override fun onCameraMove() {
         if (mMap!=null) {
             center = mMap!!.projection.visibleRegion.latLngBounds.center
-            var markerOption = MarkerOptions()
+            val markerOption = MarkerOptions()
             markerOption.position(center!!)
             markerOption.title("Current Location")
             mMap!!.clear()

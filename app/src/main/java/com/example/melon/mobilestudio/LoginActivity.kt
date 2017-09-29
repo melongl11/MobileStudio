@@ -79,7 +79,7 @@ class LoginActivity : AppCompatActivity(),GoogleApiClient.OnConnectionFailedList
 
                         updateUI(user)
                     } else {
-                        Toast.makeText(this, "Authentication failed.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this,"Authentication faliled", Toast.LENGTH_SHORT)
                         updateUI(null)
                     }
                 })
@@ -92,7 +92,6 @@ class LoginActivity : AppCompatActivity(),GoogleApiClient.OnConnectionFailedList
 
     private fun updateUI(user: FirebaseUser?) {
         if(user != null) { //다음 Activity로 넘어가는 부분.
-            Toast.makeText(this, "Here.", Toast.LENGTH_LONG).show()
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
@@ -109,6 +108,6 @@ class LoginActivity : AppCompatActivity(),GoogleApiClient.OnConnectionFailedList
     }
 
     override fun onConnectionFailed(p0: ConnectionResult) {
-        Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT)
     }
 }
