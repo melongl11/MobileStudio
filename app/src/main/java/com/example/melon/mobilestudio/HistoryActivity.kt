@@ -18,7 +18,7 @@ class HistoryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_history)
 
 
-        var dbRef = FirebaseDatabase.getInstance().getReference("users")
+        val dbRef = FirebaseDatabase.getInstance().getReference("users")
         dbRef.addListenerForSingleValueEvent(postListener)
 
         adapter =  com.example.melon.mobilestudio.ListAdapter(datas, this)
@@ -29,7 +29,7 @@ class HistoryActivity : AppCompatActivity() {
         override fun onDataChange(datasnapshot: DataSnapshot) {
             datas.clear()
             for(snapshot in datasnapshot.getChildren()) {
-                var order = snapshot.getValue(Order::class.java)
+                val order = snapshot.getValue(Order::class.java)
                 datas.add(order!!)
             }
             adapter.notifyDataSetChanged()

@@ -27,6 +27,9 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
             val mTextViewVisittime : View = convert.findViewById(R.id.tv_visittime)
             val mImageViewAccept : View = convert.findViewById(R.id.iv_accept)
 
+            if(datas.isEmpty()){
+                mTextViewAddress.tv_address.setText("주문이 없습니다.")
+            }
             ordered = datas.get(position)
             mTextViewName.tv_name.setText(ordered!!.name)
             mTextViewAddress.tv_address.setText(ordered!!.address)

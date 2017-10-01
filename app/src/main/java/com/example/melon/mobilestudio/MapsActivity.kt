@@ -123,7 +123,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
                 Log.d("test",data.latitude.toString() + data.longitude.toString())
                 markerOption.position(location)
-                markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
+                 markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
                 markerOption.title(data.name)
                 markerOption.snippet(data.address)
                 mMap!!.addMarker(markerOption)
@@ -135,6 +135,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
         }
     }
+
+    override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
+
 }
 
 

@@ -25,6 +25,9 @@ class AcceptedListAdt (var datas:ArrayList<Accepted>, var context: Context) : Ba
             val mImageViewAccept : View = convert.findViewById(R.id.iv_state_a)
 
 
+            if(datas.isEmpty()) {
+                mTextViewAddress.tv_address_aa.setText("접수받은 주문이 없습니다.")
+            }
             val accepted: Accepted = datas.get(position)
             when(accepted.state) {
                 1 -> {

@@ -37,7 +37,7 @@ class LoginActivity : AppCompatActivity(),GoogleApiClient.OnConnectionFailedList
 
         bt_google_signin.setOnClickListener(this)
 
-        var gso: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        val gso: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build()
@@ -79,7 +79,7 @@ class LoginActivity : AppCompatActivity(),GoogleApiClient.OnConnectionFailedList
 
                         updateUI(user)
                     } else {
-                        Toast.makeText(this,"Authentication faliled", Toast.LENGTH_SHORT)
+                        Toast.makeText(this,"Authentication faliled", Toast.LENGTH_SHORT).show()
                         updateUI(null)
                     }
                 })
@@ -108,6 +108,6 @@ class LoginActivity : AppCompatActivity(),GoogleApiClient.OnConnectionFailedList
     }
 
     override fun onConnectionFailed(p0: ConnectionResult) {
-        Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT)
+        Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show()
     }
 }
