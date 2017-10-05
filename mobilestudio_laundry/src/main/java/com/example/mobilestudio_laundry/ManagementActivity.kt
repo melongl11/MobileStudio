@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_management.*
 import kotlinx.android.synthetic.main.activity_modify.*
 
 class ManagementActivity : AppCompatActivity() {
-
+/*
     private var mStorageRef : StorageReference = FirebaseStorage.getInstance().getReference()
 
     fun downimg(){
@@ -26,7 +26,7 @@ class ManagementActivity : AppCompatActivity() {
         }.addOnFailureListener{
             Toast.makeText(applicationContext,"다운실패.", Toast.LENGTH_LONG).show()
         }
-    }
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,12 +40,18 @@ class ManagementActivity : AppCompatActivity() {
         supportActionBar?.run {
             setTitle("가게관리")
         }
+
+        tv_visittime1.setOnClickListener{
+            var dh  = DialogHandler()
+            dh.show(supportFragmentManager,"time_picker")
+        }
+
         bt_modify.setOnClickListener {
             val intent = Intent(this, ModifyActivity::class.java)
             startActivity(intent)
         }
 
-        downimg()
+//        downimg()
     }
 
 }
