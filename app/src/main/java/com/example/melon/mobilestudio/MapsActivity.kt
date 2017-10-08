@@ -37,8 +37,9 @@ import com.google.firebase.database.ValueEventListener
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private var mMap: GoogleMap? = null
     private var datas = ArrayList<LaundryLocation>()
-    private var name: String = "h";
-    private var info: String = "h";
+    private var name: String = "h"
+    private var info: String = "h"
+
     override fun onMarkerClick(marker: Marker?): Boolean {
         tv_laundryInfo.setText(marker!!.snippet)
         tv_laundryName.setText(marker.title)
@@ -66,7 +67,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
         bt_popup.setOnClickListener {
             val intent = Intent(this, LaundryInfo::class.java)
-            Toast.makeText(this,name + info,Toast.LENGTH_SHORT).show()
             intent.putExtra("laundryInfo", info)
             intent.putExtra("laundryName", name)
             startActivity(intent)
@@ -79,7 +79,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             Handler().postDelayed({
                 val sydney = LatLng(location.getLatitude(), location.getLongitude())
                 mMap!!.clear()
-                mMap!!.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
                 mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15.toFloat()))
                 val dbRef = FirebaseDatabase.getInstance().getReference("laundry_list")
                 dbRef.addListenerForSingleValueEvent(postListener)

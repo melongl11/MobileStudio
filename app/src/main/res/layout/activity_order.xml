@@ -14,7 +14,16 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            tools:context="com.example.melon.mobilestudio.MapsActivity" />
+            tools:context="com.example.melon.mobilestudio.MapsActivity">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/currentlocation"
+                android:layout_gravity="center"
+                android:contentDescription="@string/app_name"
+                />
+        </fragment>
         <Button
             android:layout_width="200dp"
             android:layout_height="50dp"
