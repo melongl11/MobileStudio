@@ -1,6 +1,7 @@
 package com.example.mobilestudio_laundry
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -35,6 +36,8 @@ class ManagementActivity : AppCompatActivity() {
     private var mDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference()
     var laundry : String = ""
     var fare : Int = 0
+    var hour : String = ""
+    var minute : String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_management)
@@ -51,6 +54,11 @@ class ManagementActivity : AppCompatActivity() {
         tv_visittime1.setOnClickListener{
             var dh  = DialogHandler()
             dh.show(supportFragmentManager,"time_picker")
+            startActivityForResult(intent,1111)
+        }
+
+        bt_plusvisit.setOnClickListener{
+            newtime(hour,minute)
         }
 
         bt_modify.setOnClickListener {
@@ -64,7 +72,20 @@ class ManagementActivity : AppCompatActivity() {
             newlaundlist(laundry,fare)
         }
 
-//        downimg()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1111) {
+            if (resultCode == Activity.RESULT_OK) {
+                var intent = Intent(this, TimeSettings::class.java)
+                hour = intent.getStringExtra("hour")
+                minute = intent.getStringExtra("minute")
+                tv_visittime1.setText("1111")
+                tv_visittime2.setText("!!!!")
+                Toast.makeText(this,"이거 되는거냐",Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     fun newlaundlist(laundry: String, fare: Int) {
@@ -74,6 +95,17 @@ class ManagementActivity : AppCompatActivity() {
         val result: HashMap<String, Any> = HashMap<String, Any>()
         result.put("laundry", laundry)
         result.put("fare", fare)
+        childUpdate.put("/laundry/info/list", result)
+        mDatabase.updateChildren(childUpdate)
+    }
+
+    fun newtime(time: String,time2 : String) {
+
+        val childUpdate = HashMap<String, Any>()
+
+        val result: HashMap<String, Any> = HashMap<String, Any>()
+        result.put("hourOfDay", hour)
+        result.put("minute",minute)
         childUpdate.put("/laundry/info/time", result)
         mDatabase.updateChildren(childUpdate)
     }
