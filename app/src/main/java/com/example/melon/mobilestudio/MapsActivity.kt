@@ -4,9 +4,6 @@ import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.support.v4.app.FragmentActivity
 import android.os.Bundle
 import android.os.Handler
@@ -23,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_order.*
 import android.Manifest.permission.WRITE_CALENDAR
+import android.location.*
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.widget.Toast
@@ -70,6 +68,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             intent.putExtra("laundryInfo", info)
             intent.putExtra("laundryName", name)
             startActivity(intent)
+        }
+        bt_checkAddress.setOnClickListener {
+            val geocoder:Geocoder = Geocoder(this)
+            val center = mMap!!.projection.visibleRegion.latLngBounds.center
+            val addressList = geocoder.getFromLocation(center.latitude, center.longitude, 1)
+            tv_userAddress.setText(addressList.get(0).getAddressLine(0).toString())
+
         }
 
 } // end of onCreate

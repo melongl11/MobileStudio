@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.IBinder
+import android.widget.Toast
 import com.google.firebase.database.*
 
 class MyService : Service() {
@@ -30,9 +31,18 @@ class MyService : Service() {
             val intent = Intent(this@MyService, MainActivity::class.java)
             val pendingIntent = PendingIntent.getActivity(this@MyService, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-            var Notifi = Notification.Builder(applicationContext)
+            val order = datasnapshot!!.getValue(Order::class.java)
+
+            var notifiText:String=""
+            if (order!!.state == 1) {
+                notifiText = "접수되었습니다."
+            }
+            else if (order.state == 2) {
+                notifiText = "세탁완료되었습니다."
+            }
+            val Notifi = Notification.Builder(applicationContext)
                     .setContentTitle("Title!")
-                    .setContentText("Text")
+                    .setContentText(notifiText)
                     .setSmallIcon(R.drawable.main_icon)
                     .setTicker("알림")
                     .setContentIntent(pendingIntent)
@@ -44,7 +54,6 @@ class MyService : Service() {
             Notifi_M!!.notify(777, Notifi)
 
         }
-
         override fun onCancelled(p0: DatabaseError?) {
         }
         override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
