@@ -17,6 +17,7 @@ class LaundryInfo : AppCompatActivity() {
         bt_select.setOnClickListener {
             val intent = Intent(this, OrderActivity::class.java)
             intent.putExtra("laundryName", i.getStringExtra("laundryName"))
+            intent.putExtra("laundryID", i.getStringExtra("laundryID"))
             startActivity(intent);
         }
         bt_close.setOnClickListener {

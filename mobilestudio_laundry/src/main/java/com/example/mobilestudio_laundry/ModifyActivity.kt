@@ -39,6 +39,7 @@ import kotlin.collections.HashMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
@@ -131,9 +132,34 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
     private var mMap: GoogleMap? = null
     private var mDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference()
     var sydney :LatLng = LatLng(37.59788, 126.86443)
+
+    private var mAuth: FirebaseAuth? = null
+    private var mAuthListener: FirebaseAuth.AuthStateListener? = null
+    private var userID:String = ""
+
+    override fun onStart() {
+        super.onStart()
+        mAuth!!.addAuthStateListener(mAuthListener!!)
+    }
+    override fun onStop() {
+        super.onStop()
+        if(mAuthListener != null) {
+            mAuth!!.removeAuthStateListener(mAuthListener!!)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_modify)
+        ////UserID불러오기///
+        mAuth = FirebaseAuth.getInstance()
+        mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+            val user = firebaseAuth.currentUser
+            if (user != null) {
+                userID = user.uid
+            } else {
+            }
+        }
 
         // 사진  ////////////////////////
 
@@ -166,11 +192,15 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
             val saveTime = saveFormat.format(Date())
             val childUpdate = HashMap<String, Any>()
             val currentLocation = HashMap<String, Any>()
+
             currentLocation.put("latitude",center!!.latitude)
             currentLocation.put("longitude",center!!.longitude)
             currentLocation.put("address", et_laundryAddress.text.toString())
             currentLocation.put("name",et_laundryName.text.toString())
-            childUpdate.put("/laundry_list/" + saveTime , currentLocation)
+            currentLocation.put("laundryID", userID)
+
+
+            childUpdate.put("/laundry_list/"+userID , currentLocation)
             mDatabase.updateChildren(childUpdate)
 
             AlertDialog.Builder(this)
@@ -193,8 +223,6 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
             if (init == 0) {
                 Handler().postDelayed({
                     sydney = LatLng(location.getLatitude(), location.getLongitude())
-                    mMap!!.clear()
-                    mMap!!.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
                     mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15.toFloat()))
                     init = 1
                 }, 1000)

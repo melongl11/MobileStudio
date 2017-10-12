@@ -9,20 +9,39 @@ import android.content.Intent
 import android.os.Handler
 import android.os.IBinder
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 class MyService : Service() {
     var Notifi_M:NotificationManager? = null
+    private var mAuth: FirebaseAuth? = null
+    private var mAuthListener: FirebaseAuth.AuthStateListener? = null
+    private var userID:String = ""
 
 
     override fun onBind(intent: Intent): IBinder? {
         return null
     }
 
+    override fun onCreate() {
+        mAuth = FirebaseAuth.getInstance()
+        mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+            val user = firebaseAuth.currentUser
+            if (user != null) {
+                userID = user.uid
+            } else {
+            }
+        }
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Notifi_M = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val dbRef = FirebaseDatabase.getInstance().getReference("users")
-        dbRef.addChildEventListener(postListener)
+
+        mAuth!!.addAuthStateListener(mAuthListener!!)
+        Handler().postDelayed({
+            val dbRef = FirebaseDatabase.getInstance().getReference("users/" + userID)
+            dbRef.addChildEventListener(postListener)
+        },1000)
         return START_STICKY
     }
 

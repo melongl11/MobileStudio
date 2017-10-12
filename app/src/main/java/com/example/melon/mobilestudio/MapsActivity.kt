@@ -35,13 +35,14 @@ import com.google.firebase.database.ValueEventListener
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private var mMap: GoogleMap? = null
     private var datas = ArrayList<LaundryLocation>()
-    private var name: String = "h"
-    private var info: String = "h"
+    private var name: String = ""
+    private var info: String = ""
+    private var laundryID: String = ""
 
     override fun onMarkerClick(marker: Marker?): Boolean {
         tv_laundryInfo.setText(marker!!.snippet)
         tv_laundryName.setText(marker.title)
-        name = marker.title
+        laundryID = marker.title
         info = marker.snippet
 
         return true
@@ -67,6 +68,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             val intent = Intent(this, LaundryInfo::class.java)
             intent.putExtra("laundryInfo", info)
             intent.putExtra("laundryName", name)
+            intent.putExtra("laundryID", laundryID)
+
             startActivity(intent)
         }
         bt_checkAddress.setOnClickListener {
@@ -127,9 +130,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
                 Log.d("test",data.latitude.toString() + data.longitude.toString())
                 markerOption.position(location)
-                 markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
-                markerOption.title(data.name)
-                markerOption.snippet(data.address)
+                markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
+                markerOption.title(data.laundryID)
+                markerOption.snippet(data.name + "\n" + data.address + "\n")
                 mMap!!.addMarker(markerOption)
 
             }

@@ -2,6 +2,8 @@ package com.example.mobilestudio_laundry
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -12,15 +14,43 @@ class AcceptedList : AppCompatActivity() {
 
     private var datas = ArrayList<Accepted>()
     lateinit var adapter : AcceptedListAdt
+
+    private var mAuth: FirebaseAuth? = null
+    private var mAuthListener: FirebaseAuth.AuthStateListener? = null
+    private var userID:String = ""
+
+    override fun onStart() {
+        super.onStart()
+        mAuth!!.addAuthStateListener(mAuthListener!!)
+        Handler().postDelayed({
+            val dbRef = FirebaseDatabase.getInstance().getReference("laundry/" + userID +"/orders")
+            dbRef.addListenerForSingleValueEvent(postListener)
+
+            adapter = AcceptedListAdt(datas, this)
+            lv_accepted.setAdapter(adapter)
+        },1000)
+    }
+    override fun onStop() {
+        super.onStop()
+        if(mAuthListener != null) {
+            mAuth!!.removeAuthStateListener(mAuthListener!!)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_accepted)
 
-        val dbRef = FirebaseDatabase.getInstance().getReference("laundry/orders")
-        dbRef.addListenerForSingleValueEvent(postListener)
+        mAuth = FirebaseAuth.getInstance()
+        mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+            val user = firebaseAuth.currentUser
+            if (user != null) {
+                userID = user.uid
+            } else {
+            }
+        }
 
-        adapter = AcceptedListAdt(datas, this)
-        lv_accepted.setAdapter(adapter)
+
     }
     private val postListener = object : ValueEventListener {
         override fun onDataChange(datasnapshot: DataSnapshot) {

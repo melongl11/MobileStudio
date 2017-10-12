@@ -8,13 +8,17 @@ class Ordered() {
     var name:String = " "
     var address:String = " "
     var key:String= " "
+    var require:String = " "
     var state:Int = 0;
-    constructor(date:String, laundry:String, address:String, state:Int, key:String) : this() {
+    var userID:String = ""
+    constructor(date:String, laundry:String, address:String, require:String,state:Int, key:String, userID:String) : this() {
         this.date = date
         this.name = laundry
         this.address = address
+        this.require = require
         this.state = state
         this.key = key
+        this.userID = userID
     }
 
     fun toMap(): Map<String, Any>  {
@@ -24,6 +28,7 @@ class Ordered() {
         result.put("address",address)
         result.put("state",state)
         result.put("key",key)
+        result.put("userID",userID)
         return result
     }
 }

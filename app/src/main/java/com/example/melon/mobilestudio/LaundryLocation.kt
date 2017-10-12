@@ -8,10 +8,12 @@ class LaundryLocation() {
     var longitude:Double= 0.0
     var name:String = ""
     var address: String = ""
-    constructor(latitude:Double, longitude:Double, name:String, address:String) : this() {
+    var laundryID: String = ""
+    constructor(latitude:Double, longitude:Double, name:String, address:String, laundryID:String) : this() {
         this.latitude = latitude
         this.longitude = longitude
         this.name = name
         this.address = address
+        this.laundryID = laundryID
     }
 }

@@ -8,11 +8,13 @@ class Order() {
     var laundry:String = " "
     var state:Int = 0
     var key:String = " "
-    constructor(date:String, laundry:String, state:Int, key:String) : this() {
+    var laundryID:String = ""
+    constructor(date:String, laundry:String, state:Int, key:String, laundryID:String) : this() {
         this.date = date
         this.laundry = laundry
         this.state = state
         this.key = key
+        this.laundryID = laundryID
     }
 
     fun toMap(): Map<String, Any>  {
@@ -22,6 +24,7 @@ class Order() {
         result.put("laundry",laundry)
         result.put("state",state)
         result.put("key",key)
+        result.put("laundryID", laundryID)
         return result
     }
 }

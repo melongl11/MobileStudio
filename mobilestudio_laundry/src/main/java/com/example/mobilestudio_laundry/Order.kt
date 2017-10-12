@@ -8,20 +8,22 @@ class Order() {
     var laundry:String = " "
     var state:Int = 0
     var key:String = " "
-    constructor(date:String, laundry:String, state:Int, key:String) : this() {
+    var laundryID:String = ""
+    constructor(date:String, laundry:String, state:Int, key:String,laundryID: String) : this() {
         this.date = date
         this.laundry = laundry
         this.state = state
         this.key = key
+        this.laundryID = laundryID
     }
 
     fun toMap(): Map<String, Any>  {
         val result : HashMap<String, Any> = HashMap<String, Any>()
-
         result.put("date",date)
         result.put("laundry",laundry)
         result.put("state",state)
         result.put("key",key)
+        result.put("userID",laundryID)
         return result
     }
 }

@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.ordered_list.view.*
 class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseAdapter() {
     var inflater : LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     var key:String = " "
+    var userID = " "
     var ordered:Ordered? = null
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         if (convertView == null) {
@@ -37,8 +38,9 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
             mImageViewAccept.iv_accept.setImageResource(R.drawable.bt_accept)
 
             key = ordered!!.key
+            userID = ordered!!.userID
             mImageViewAccept.iv_accept.setOnClickListener{
-                val dbRef = FirebaseDatabase.getInstance().getReference("users")
+                val dbRef = FirebaseDatabase.getInstance().getReference("/users/"+userID)
                 dbRef.addListenerForSingleValueEvent(postListener)
             }
 
@@ -72,14 +74,14 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
             for(snapshot in datasnapshot.children) {
                 val order = snapshot.getValue(Order::class.java)
                 if(order!!.key == key) {
-                    val newOrder = Order(order.date, order.laundry, 1, key)
+                    val newOrder = Order(order.date, order.laundry, 1, key, order.laundryID)
                     val childUpdate = HashMap<String, Any>()
+                    childUpdate.put("users/"+userID+"/"+key, newOrder)
 
-                    childUpdate.put("users/" + key, newOrder)
                     mDatabase.updateChildren(childUpdate)
-                    val newOrdered = Ordered(ordered!!.date, ordered!!.name, ordered!!.address, 1,ordered!!.key)
+                    val newOrdered = Ordered(ordered!!.date, ordered!!.name, ordered!!.address, ordered!!.require,1, ordered!!.key, ordered!!.userID)
                     val acceptUpdate = HashMap<String, Any>()
-                    acceptUpdate.put("laundry/orders/" + key, newOrdered)
+                    acceptUpdate.put("laundry/" + order.laundryID + "/orders/" + key, newOrdered)
                     mDatabase.updateChildren(acceptUpdate)
                 }
             }
