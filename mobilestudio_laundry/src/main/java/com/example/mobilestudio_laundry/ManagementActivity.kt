@@ -54,7 +54,6 @@ class ManagementActivity : AppCompatActivity() {
         tv_visittime1.setOnClickListener{
             var dh  = DialogHandler()
             dh.show(supportFragmentManager,"time_picker")
-            startActivityForResult(intent,1111)
         }
 
         bt_plusvisit.setOnClickListener{
@@ -74,7 +73,7 @@ class ManagementActivity : AppCompatActivity() {
 
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+   /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1111) {
             if (resultCode == Activity.RESULT_OK) {
@@ -86,7 +85,7 @@ class ManagementActivity : AppCompatActivity() {
                 Toast.makeText(this,"이거 되는거냐",Toast.LENGTH_LONG).show()
             }
         }
-    }
+    }*/
 
     fun newlaundlist(laundry: String, fare: Int) {
 

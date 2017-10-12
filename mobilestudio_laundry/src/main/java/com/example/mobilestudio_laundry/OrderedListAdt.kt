@@ -84,6 +84,5 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
                 }
             }
         }
-
     }
 }

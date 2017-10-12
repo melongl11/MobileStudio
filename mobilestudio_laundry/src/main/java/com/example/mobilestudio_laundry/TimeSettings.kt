@@ -15,6 +15,7 @@ import android.widget.TimePicker
 import android.widget.Toast
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.activity_management.*
 import java.util.HashMap
 
 /**
@@ -31,16 +32,20 @@ class TimeSettings : TimePickerDialog.OnTimeSetListener,AppCompatActivity {
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute : Int) {
-
         var time = hourOfDay.toString()
         var time2 = minute.toString()
 
-        Toast.makeText(con,""+hourOfDay+" : "+minute,Toast.LENGTH_LONG).show()
-
-         var intent = Intent()
+        var intent = Intent()
         intent.putExtra("hour",time)
         intent.putExtra("minute",time2)
+        Toast.makeText(con,""+hourOfDay+" : "+minute,Toast.LENGTH_LONG).show()
+        /*
+        */
+
+    /*
         setResult(android.app.Activity.RESULT_OK,intent)
         finish()
+        */
     }
+
 }

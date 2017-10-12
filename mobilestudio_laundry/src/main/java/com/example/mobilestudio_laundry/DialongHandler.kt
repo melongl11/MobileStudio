@@ -26,7 +26,12 @@ class DialogHandler : DialogFragment(){
         var dialog : TimePickerDialog
         var ts = TimeSettings(activity)
         dialog = TimePickerDialog(activity,ts,hour,min,DateFormat.is24HourFormat(activity))
+
         return dialog
     }
+
+    var intent = Intent()
+    var time = intent.getStringExtra("hour")
+    var time2 = intent.getStringExtra("minute")
 
 }
