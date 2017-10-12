@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.CursorAdapter
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.activity_order.*
 import kotlinx.android.synthetic.main.activity_order2.*
 import kotlinx.android.synthetic.main.activity_order_finish.*
 import java.text.SimpleDateFormat
@@ -44,8 +45,8 @@ class OrderActivity : AppCompatActivity() {
             }
             val dialog: AlertDialog = builder.create()
             dialog.show()
-
         }
+
     }
     fun newOrder(date:String, laundry:String, state:Int) {
         val saveTime = saveFormat.format(Date())
