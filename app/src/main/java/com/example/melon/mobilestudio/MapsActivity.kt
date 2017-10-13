@@ -12,24 +12,22 @@ import android.util.Log
 import android.widget.TextView
 import android.widget.ToggleButton
 
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_order.*
 import android.Manifest.permission.WRITE_CALENDAR
 import android.location.*
 import android.support.v4.app.ActivityCompat
+import android.support.v4.app.FragmentTransaction
 import android.support.v4.content.ContextCompat
 import android.widget.Toast
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.*
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.android.gms.maps.MapFragment
+
+
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -38,6 +36,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private var name: String = ""
     private var info: String = ""
     private var laundryID: String = ""
+    private var enableCurrentLocation = true
 
     override fun onMarkerClick(marker: Marker?): Boolean {
         tv_laundryInfo.setText(marker!!.snippet)
@@ -51,18 +50,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order)
 
-        val lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        try {
-            Handler().postDelayed({
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0.001.toFloat(), mLocationListener)
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 0.001.toFloat(), mLocationListener)
-            val mapFragment = supportFragmentManager
-                    .findFragmentById(R.id.map) as SupportMapFragment
-            mapFragment.getMapAsync(this) }, 3000)
 
-        } catch (ex: SecurityException) {
-
-        }
+        val mapFragment = supportFragmentManager
+                .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
 
         bt_popup.setOnClickListener {
             val intent = Intent(this, LaundryInfo::class.java)
@@ -79,19 +70,28 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             tv_userAddress.setText(addressList.get(0).getAddressLine(0).toString())
 
         }
+        iv_location_button.setOnClickListener {
+            if (enableCurrentLocation) {
+                enableCurrentLocation = false
+                Toast.makeText(this,enableCurrentLocation.toString(), Toast.LENGTH_SHORT).show()
+            }
+            else {
+                enableCurrentLocation = true
+                Toast.makeText(this,enableCurrentLocation.toString(), Toast.LENGTH_SHORT).show()
+            }
+        }
+
 
 } // end of onCreate
 
     private val mLocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
-            Handler().postDelayed({
-                val sydney = LatLng(location.getLatitude(), location.getLongitude())
-                mMap!!.clear()
-                mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15.toFloat()))
-                val dbRef = FirebaseDatabase.getInstance().getReference("laundry_list")
-                dbRef.addListenerForSingleValueEvent(postListener)
-            },1000)
-
+            mMap!!.clear()
+            if(enableCurrentLocation) {
+                mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.getLatitude(), location.getLongitude()), 15.toFloat()))
+            }
+            /*val dbRef = FirebaseDatabase.getInstance().getReference("laundry_list")
+            dbRef.addListenerForSingleValueEvent(postListener)*/
             Log.d("test", "onLocationChanged, location:" + location)
         }
 
@@ -112,9 +112,33 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        val init = LatLng(37.59788, 126.86443)
-        mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(init, 10.toFloat()))
+        val uiSettings = mMap!!.getUiSettings()
+
+        /*uiSettings.setMyLocationButtonEnabled(true)
+        try {
+            mMap!!.setMyLocationEnabled(true)
+        } catch(e:SecurityException) {
+
+        }*/
+        val lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        var init = LatLng(37.59788, 126.86443)
+        var initLocation:Location? = null
+        try {
+             initLocation = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
+        } catch (e:SecurityException) {
+
+        }
+        if (initLocation != null) {
+            init = LatLng(initLocation.latitude, initLocation.longitude)
+        }
+        mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(init, 15.toFloat()))
         mMap!!.setOnMarkerClickListener(this)
+        try {
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 0.001.toFloat(), mLocationListener)
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 0.001.toFloat(), mLocationListener)
+        } catch (e: SecurityException) {
+
+        }
 
     }
     private val postListener = object : ValueEventListener {

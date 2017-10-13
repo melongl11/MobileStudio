@@ -17,12 +17,22 @@
             tools:context="com.example.melon.mobilestudio.MapsActivity">
 
             <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="right"
+                android:paddingTop="5dp"
+                android:paddingEnd="5dp"
+                android:src="@drawable/location_button"
+                android:id="@+id/iv_location_button"
+                />
+
+            <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/currentlocation"
                 android:layout_gravity="center"
-                android:contentDescription="@string/app_name"
-                />
+                android:contentDescription="@string/app_name" />
+
         </fragment>
         <TextView
             android:layout_width="match_parent"
