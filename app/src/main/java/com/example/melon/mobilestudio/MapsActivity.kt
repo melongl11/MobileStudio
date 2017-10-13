@@ -30,13 +30,16 @@ import com.google.android.gms.maps.MapFragment
 
 
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraMoveListener{
     private var mMap: GoogleMap? = null
+    private var uiSettings:UiSettings? = null
     private var datas = ArrayList<LaundryLocation>()
     private var name: String = ""
     private var info: String = ""
     private var laundryID: String = ""
     private var enableCurrentLocation = true
+    private var initLocation:Location? = null
+    private var lm:LocationManager? = null
 
     override fun onMarkerClick(marker: Marker?): Boolean {
         tv_laundryInfo.setText(marker!!.snippet)
@@ -46,6 +49,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
         return true
     }
+
+    override fun onCameraMove() {
+        enableCurrentLocation = false
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order)
@@ -73,11 +81,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         iv_location_button.setOnClickListener {
             if (enableCurrentLocation) {
                 enableCurrentLocation = false
-                Toast.makeText(this,enableCurrentLocation.toString(), Toast.LENGTH_SHORT).show()
             }
             else {
                 enableCurrentLocation = true
-                Toast.makeText(this,enableCurrentLocation.toString(), Toast.LENGTH_SHORT).show()
+                try {
+                    initLocation = lm!!.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
+                    if (initLocation != null) {
+                        val init = LatLng(initLocation!!.latitude, initLocation!!.longitude)
+                        mMap!!.moveCamera(CameraUpdateFactory.newLatLng(init))
+                    }
+
+                } catch (e:SecurityException) {
+
+                }
             }
         }
 
@@ -88,7 +104,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         override fun onLocationChanged(location: Location) {
             mMap!!.clear()
             if(enableCurrentLocation) {
-                mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.getLatitude(), location.getLongitude()), 15.toFloat()))
+                mMap!!.moveCamera(CameraUpdateFactory.newLatLng(LatLng(location.getLatitude(), location.getLongitude())))
             }
             /*val dbRef = FirebaseDatabase.getInstance().getReference("laundry_list")
             dbRef.addListenerForSingleValueEvent(postListener)*/
@@ -112,30 +128,31 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        val uiSettings = mMap!!.getUiSettings()
+        uiSettings = mMap!!.getUiSettings()
 
-        /*uiSettings.setMyLocationButtonEnabled(true)
+        /*uiSettings!!.setMyLocationButtonEnabled(true)
         try {
             mMap!!.setMyLocationEnabled(true)
         } catch(e:SecurityException) {
 
         }*/
-        val lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         var init = LatLng(37.59788, 126.86443)
-        var initLocation:Location? = null
+
         try {
-             initLocation = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
+             initLocation = lm!!.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
         } catch (e:SecurityException) {
 
         }
         if (initLocation != null) {
-            init = LatLng(initLocation.latitude, initLocation.longitude)
+            init = LatLng(initLocation!!.latitude, initLocation!!.longitude)
         }
         mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(init, 15.toFloat()))
         mMap!!.setOnMarkerClickListener(this)
+        mMap!!.setOnCameraMoveListener(this)
         try {
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 0.001.toFloat(), mLocationListener)
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 0.001.toFloat(), mLocationListener)
+            lm!!.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 0.00001.toFloat(), mLocationListener)
+            lm!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 0.00001.toFloat(), mLocationListener)
         } catch (e: SecurityException) {
 
         }
