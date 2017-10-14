@@ -24,25 +24,37 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_visittime1"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_visithour"
+                android:layout_width="10dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
-
+                android:textSize="10pt"
+                android:gravity="right"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10pt"
+                android:text=":"/>
+            <TextView
+                android:id="@+id/tv_visitminute"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="10pt"
+                />
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="~" />
-
             <TextView
                 android:id="@+id/tv_visittime2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:textSize="10pt" />
 
             <ImageView
                 android:id="@+id/bt_plusvisit"

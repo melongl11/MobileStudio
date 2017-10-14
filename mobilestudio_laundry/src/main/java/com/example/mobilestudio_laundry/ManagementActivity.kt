@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.firebase.ui.storage.images.FirebaseImageLoader
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -20,6 +21,10 @@ import kotlinx.android.synthetic.main.activity_modify.*
 import java.util.HashMap
 
 class ManagementActivity : AppCompatActivity() {
+
+    private var mAuth: FirebaseAuth? = null
+    private var mAuthListener: FirebaseAuth.AuthStateListener? = null
+    private var userID:String = ""
 /*
     private var mStorageRef : StorageReference = FirebaseStorage.getInstance().getReference()
 
@@ -36,8 +41,20 @@ class ManagementActivity : AppCompatActivity() {
     private var mDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference()
     var laundry : String = ""
     var fare : Int = 0
-    var hour : String = ""
-    var minute : String = ""
+    var hour : Int = 0
+    var minute : Int = 0
+
+    override fun onStart() {
+        super.onStart()
+        mAuth!!.addAuthStateListener(mAuthListener!!)
+    }
+    override fun onStop() {
+        super.onStop()
+        if(mAuthListener != null) {
+            mAuth!!.removeAuthStateListener(mAuthListener!!)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_management)
@@ -51,13 +68,27 @@ class ManagementActivity : AppCompatActivity() {
             setTitle("가게관리")
         }
 
-        tv_visittime1.setOnClickListener{
-            var dh  = DialogHandler()
+        mAuth = FirebaseAuth.getInstance()
+        mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+            val user = firebaseAuth.currentUser
+            if (user != null) {
+                userID = user.uid
+            } else {
+            }
+        }
+
+        tv_visithour.setOnClickListener{
+            val dh  = DialogHandler()
             dh.show(supportFragmentManager,"time_picker")
         }
 
         bt_plusvisit.setOnClickListener{
+            hour = tv_visithour.text.toString().toInt()
+            minute = tv_visitminute.text.toString().toInt()
             newtime(hour,minute)
+            tv_visithour.setText("")
+            tv_visitminute.setText("")
+            tv_visittime2.setText("")
         }
 
         bt_modify.setOnClickListener {
@@ -94,18 +125,18 @@ class ManagementActivity : AppCompatActivity() {
         val result: HashMap<String, Any> = HashMap<String, Any>()
         result.put("laundry", laundry)
         result.put("fare", fare)
-        childUpdate.put("/laundry/info/list", result)
+        childUpdate.put("/laundry/"+ userID  +"/info/list", result)
         mDatabase.updateChildren(childUpdate)
     }
 
-    fun newtime(time: String,time2 : String) {
+    fun newtime(time: Int,time2 : Int) {
 
         val childUpdate = HashMap<String, Any>()
 
         val result: HashMap<String, Any> = HashMap<String, Any>()
-        result.put("hourOfDay", hour)
-        result.put("minute",minute)
-        childUpdate.put("/laundry/info/time", result)
+        result.put("hourOfDay", time)
+        result.put("minute",time2)
+        childUpdate.put("/laundry/"+userID+"/info/time", result)
         mDatabase.updateChildren(childUpdate)
     }
 

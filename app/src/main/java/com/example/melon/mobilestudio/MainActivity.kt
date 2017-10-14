@@ -2,20 +2,26 @@ package com.example.melon.mobilestudio
 
 import android.Manifest
 import android.content.Intent
+import android.content.res.Configuration
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.ActionBar
 import android.view.Menu
 import android.view.View
-import android.widget.ActionMenuView
-import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_main.*
 import android.support.annotation.NonNull
-import android.widget.Toast
+import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.ActionBarDrawerToggle
+import android.view.MenuItem
+import android.widget.*
+import android.widget.ArrayAdapter
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +29,8 @@ class MainActivity : AppCompatActivity() {
     private var mAuth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
     private var userID:String = ""
+    private lateinit var drawerToggle:ActionBarDrawerToggle
+
 
     override fun onStart() {
         super.onStart()
@@ -40,6 +48,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val drawerLayout:DrawerLayout = findViewById(R.id.drawerlayout)
+        drawerToggle = ActionBarDrawerToggle(this, drawerLayout, R.string.app_name,R.string.app_name)
+        drawerLayout.addDrawerListener(drawerToggle)
+
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
 
         mAuth = FirebaseAuth.getInstance()
         mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
@@ -66,7 +81,31 @@ class MainActivity : AppCompatActivity() {
 
             startActivity(intent)
         }
+        btn_logout.setOnClickListener{
+            mAuth!!.signOut()
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
     override fun onBackPressed() {
-        backPressedHandler.onBackPressedEnd() }
+        backPressedHandler.onBackPressedEnd()
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        drawerToggle.syncState()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        super.onConfigurationChanged(newConfig)
+        drawerToggle.onConfigurationChanged(newConfig)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (drawerToggle.onOptionsItemSelected(item)) {
+            true
+        } else super.onOptionsItemSelected(item)
+    }
+
+
 }

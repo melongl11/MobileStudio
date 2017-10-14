@@ -9,8 +9,10 @@ import android.content.Intent.getIntent
 import android.content.Intent.getIntentOld
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.view.LayoutInflater
 import android.widget.TimePicker
 import kotlinx.android.synthetic.main.activity_management.*
+import kotlinx.android.synthetic.main.activity_management.view.*
 import java.util.*
 
 /**
@@ -18,20 +20,24 @@ import java.util.*
  */
 class DialogHandler : DialogFragment(){
 
+
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        var calender : Calendar = Calendar.getInstance()
-        var hour : Int = calender.get(Calendar.HOUR_OF_DAY)
-        var min : Int = calender.get(Calendar.MINUTE)
-        var dialog : TimePickerDialog
-        var ts = TimeSettings(activity)
-        dialog = TimePickerDialog(activity,ts,hour,min,DateFormat.is24HourFormat(activity))
+        val calender : Calendar = Calendar.getInstance()
+        val hour : Int = calender.get(Calendar.HOUR_OF_DAY)
+        val min : Int = calender.get(Calendar.MINUTE)
 
-        return dialog
+        return TimePickerDialog(activity,timePickerListener,hour,min,false)
+
     }
 
-    var intent = Intent()
-    var time = intent.getStringExtra("hour")
-    var time2 = intent.getStringExtra("minute")
+    private val timePickerListener = object: TimePickerDialog.OnTimeSetListener {
+        override fun onTimeSet(view: TimePicker?, hour: Int, minute: Int) {
+            activity.tv_visithour.setText(hour.toString())
+            activity.tv_visitminute.setText(minute.toString())
+            activity.tv_visittime2.setText(((hour+1).toString() + ":" + minute.toString()))
+        }
+    }
 
 }

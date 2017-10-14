@@ -106,8 +106,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             if(enableCurrentLocation) {
                 mMap!!.moveCamera(CameraUpdateFactory.newLatLng(LatLng(location.getLatitude(), location.getLongitude())))
             }
-            /*val dbRef = FirebaseDatabase.getInstance().getReference("laundry_list")
-            dbRef.addListenerForSingleValueEvent(postListener)*/
+            val dbRef = FirebaseDatabase.getInstance().getReference("laundry_list")
+            dbRef.addListenerForSingleValueEvent(postListener)
             Log.d("test", "onLocationChanged, location:" + location)
         }
 

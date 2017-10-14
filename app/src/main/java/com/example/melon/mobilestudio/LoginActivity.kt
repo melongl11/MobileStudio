@@ -25,8 +25,6 @@ import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity(),GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
-
-    private val TAG = "LoginActivity"
     private val RC_SIGN_IN = 9001
     private lateinit var mGoogleApiClient : GoogleApiClient
     private var mAuth:FirebaseAuth? = null
@@ -76,7 +74,6 @@ class LoginActivity : AppCompatActivity(),GoogleApiClient.OnConnectionFailedList
                 .addOnCompleteListener(this, OnCompleteListener<AuthResult> { task->
                     if (task.isSuccessful) {
                         val user = mAuth!!.currentUser
-
                         updateUI(user)
                     } else {
                         Toast.makeText(this,"Authentication faliled", Toast.LENGTH_SHORT).show()
