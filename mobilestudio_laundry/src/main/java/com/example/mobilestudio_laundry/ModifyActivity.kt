@@ -24,6 +24,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.firebase.ui.storage.images.FirebaseImageLoader
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
@@ -48,6 +49,7 @@ import kotlinx.android.synthetic.main.activity_modify.view.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.net.URI
+import javax.microedition.khronos.opengles.GL
 
 
 class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCameraMoveListener {
@@ -66,68 +68,6 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
         }
     }
 
-    // 사진 업로드  /////////////////////////////////////////////////////////////////
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQ_CODE_SELECT_IMAGE) {
-                imageUri= data!!.data
-                cropImage(data!!.data)
-            }
-            else if (requestCode == REQ_CODE_IMAGE_CROP) {
-                val extras : Bundle = data!!.extras
-                if(extras != null){
-                    bitmap = extras.getParcelable("data")
-                    uploadimg()
-                    var f = File(imageUri!!.path)
-                    if(f.exists()){
-                        f.delete()
-                    }
-                }
-            }
-        }
-    }
-        fun cropImage(uri : Uri) {
-            var intent: Intent = Intent("com.android.camera.action.CROP")
-            intent.setDataAndType(uri,"image/*")
-            intent.putExtra("crop","true")
-            intent.putExtra("aspectX",4)
-            intent.putExtra("aspectY",1)
-            intent.putExtra("outputX",256)
-            intent.putExtra("outputY",64)
-            intent.putExtra("scale",true)
-            intent.putExtra("return-data",true)
-            startActivityForResult(intent,REQ_CODE_IMAGE_CROP)
-        }
-
-        fun uploadimg(){
-            var riversRef : StorageReference = mStorageRef.child("laundry").child("image").child("real.jpg")
-            var baos : ByteArrayOutputStream = ByteArrayOutputStream()
-            bitmap?.compress(Bitmap.CompressFormat.JPEG,100,baos)
-            var data = baos.toByteArray()
-
-            var uploadTask : UploadTask = riversRef.putBytes(data)
-            uploadTask.addOnSuccessListener {
-                Toast.makeText(applicationContext,"사진을 업로드했습니다.", Toast.LENGTH_LONG).show()
-                downimg()
-            }.addOnSuccessListener { taskSnapshot ->
-                var DownloadURL = taskSnapshot.downloadUrl!!
-            }
-    }
-        fun downimg(){
-            var downRef : StorageReference = mStorageRef.child("laundry").child("image").child("real.jpg")
-            downRef.downloadUrl.addOnSuccessListener{
-                Glide.with(this).using(FirebaseImageLoader()).load(downRef).into(iv_Picture)
-                Toast.makeText(applicationContext,"다운성공.", Toast.LENGTH_LONG).show()
-            }.addOnFailureListener{
-                Toast.makeText(applicationContext,"다운실패.", Toast.LENGTH_LONG).show()
-            }
-        }
-
-
-    ////////////////////////////////////////////////////////////////////////////////
-
-
     private var init = 0
     private var mMap: GoogleMap? = null
     private var mDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference()
@@ -136,6 +76,7 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
     private var mAuth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
     private var userID:String = ""
+    open var url : Uri? = null
 
     override fun onStart() {
         super.onStart()
@@ -164,6 +105,7 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
         // 사진  ////////////////////////
 
         downimg()
+
 
         bt_setPicture.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -210,6 +152,72 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
         }
 
     }
+
+    // 사진 업로드  /////////////////////////////////////////////////////////////////
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQ_CODE_SELECT_IMAGE) {
+                imageUri= data!!.data
+                cropImage(data!!.data)
+            }
+            else if (requestCode == REQ_CODE_IMAGE_CROP) {
+                val extras : Bundle = data!!.extras
+                if(extras != null){
+                    bitmap = extras.getParcelable("data")
+                    uploadimg()
+                    var f = File(imageUri!!.path)
+                    if(f.exists()){
+                        f.delete()
+                    }
+                }
+            }
+        }
+    }
+    fun cropImage(uri : Uri) {
+        var intent: Intent = Intent("com.android.camera.action.CROP")
+        intent.setDataAndType(uri,"image/*")
+        intent.putExtra("crop","true")
+        intent.putExtra("aspectX",4)
+        intent.putExtra("aspectY",1)
+        intent.putExtra("outputX",256)
+        intent.putExtra("outputY",64)
+        intent.putExtra("scale",true)
+        intent.putExtra("return-data",true)
+        startActivityForResult(intent,REQ_CODE_IMAGE_CROP)
+    }
+
+    fun uploadimg(){
+        var riversRef : StorageReference = mStorageRef.child("/laundry/").child(userID+".jpg")
+        var baos : ByteArrayOutputStream = ByteArrayOutputStream()
+        bitmap?.compress(Bitmap.CompressFormat.JPEG,100,baos)
+        var data = baos.toByteArray()
+
+        var uploadTask : UploadTask = riversRef.putBytes(data)
+        uploadTask.addOnSuccessListener {
+            Toast.makeText(applicationContext,"사진을 업로드했습니다.", Toast.LENGTH_LONG).show()
+            downimg()
+        }.addOnSuccessListener { taskSnapshot ->
+            var DownloadURL = taskSnapshot.downloadUrl!!
+        }
+    }
+    fun downimg(){
+        var downRef : StorageReference = mStorageRef.child("/laundry/").child(userID+".jpg")
+        downRef.downloadUrl.addOnSuccessListener{
+            Glide.with(this).using(FirebaseImageLoader()).load(downRef).placeholder(R.drawable.ex).into(iv_Picture)
+            Toast.makeText(applicationContext,"다운성공.", Toast.LENGTH_LONG).show()
+        }.addOnFailureListener{
+            Toast.makeText(applicationContext,"다운실패.", Toast.LENGTH_LONG).show()
+            iv_Picture.setImageResource(R.drawable.ex)
+        }
+        if (url != null) {
+            iv_Picture.setImageURI(url)
+        }
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
