@@ -5,4 +5,7 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="toggle_open">open</string>
     <string name="toggle_close">close</string>
+    <string name="addressCheck">주소확인</string>
+    <string name="inputDetailAddress">상세주소를 입력하세요.</string>
+    <string name="locationButtonDescription">현재 위치로 이동</string>
 </resources>

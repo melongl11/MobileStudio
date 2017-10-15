@@ -37,10 +37,11 @@
         android:layout_height="30dp"
         android:background="#87bce6"
         android:text="주소"
-        android:textSize="10pt" />
+        android:textSize="10pt"
+        />
 
-    <EditText
-        android:id="@+id/et_useraddress"
+    <TextView
+        android:id="@+id/tv_userAddressCheck"
         android:layout_width="match_parent"
         android:layout_height="113dp" />
 

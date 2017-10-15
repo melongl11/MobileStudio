@@ -18,7 +18,7 @@ class Order() {
     }
 
     fun toMap(): Map<String, Any>  {
-        var result : HashMap<String, Any> = HashMap<String, Any>()
+        val result : HashMap<String, Any> = HashMap<String, Any>()
 
         result.put("date",date)
         result.put("laundry",laundry)

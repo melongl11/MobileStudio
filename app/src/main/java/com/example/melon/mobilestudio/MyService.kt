@@ -39,7 +39,7 @@ class MyService : Service() {
 
         mAuth!!.addAuthStateListener(mAuthListener!!)
         Handler().postDelayed({
-            val dbRef = FirebaseDatabase.getInstance().getReference("users/" + userID)
+            val dbRef = FirebaseDatabase.getInstance().getReference("users/$userID/orders")
             dbRef.addChildEventListener(postListener)
         },1000)
         return START_STICKY
@@ -52,7 +52,7 @@ class MyService : Service() {
 
             val order = datasnapshot!!.getValue(Order::class.java)
 
-            var notifiText:String=""
+            var notifiText=""
             if (order!!.state == 1) {
                 notifiText = "접수되었습니다."
             }
@@ -60,7 +60,7 @@ class MyService : Service() {
                 notifiText = "세탁완료되었습니다."
             }
             val Notifi = Notification.Builder(applicationContext)
-                    .setContentTitle("Title!")
+                    .setContentTitle("세탁왕")
                     .setContentText(notifiText)
                     .setSmallIcon(R.drawable.main_icon)
                     .setTicker("알림")

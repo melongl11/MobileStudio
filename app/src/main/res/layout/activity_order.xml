@@ -3,10 +3,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:map="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
@@ -19,17 +15,19 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:paddingTop="5dp"
                 android:paddingEnd="5dp"
+                android:paddingStart="0dp"
                 android:src="@drawable/location_button"
                 android:id="@+id/iv_location_button"
+                android:contentDescription="@string/locationButtonDescription"
                 />
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/currentlocation"
+                android:src="@drawable/location_marker"
                 android:layout_gravity="center"
                 android:contentDescription="@string/app_name" />
 
@@ -38,6 +36,11 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:id="@+id/tv_userAddress"/>
+        <EditText
+            android:hint="@string/inputDetailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_detailAddress"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -51,19 +54,18 @@
                 android:layout_width="200dp"
                 android:layout_height="50dp"
                 android:id="@+id/bt_checkAddress"
-                android:text="주소확인"/>
+                android:text="@string/addressCheck"/>
         </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_laundryName"/>
+            android:id="@+id/tv_laundryName"
+            android:textSize="15pt"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tv_laundryInfo"
-            android:textSize="15pt"/>
-
-    </LinearLayout>
+            android:textSize="10pt"/>
 
 </LinearLayout>

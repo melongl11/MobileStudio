@@ -1,6 +1,5 @@
 package com.example.mobilestudio_laundry
 
-import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,7 @@ import kotlinx.android.synthetic.main.ordered_list.view.*
  * Created by melon on 2017-09-20.
  */
 class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseAdapter() {
-    var inflater : LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    private var inflater : LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     var key:String = " "
     var userID = " "
     var ordered:Ordered? = null
@@ -25,22 +24,22 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
             val convert = inflater.inflate(R.layout.ordered_list,null)
             val mTextViewName : View = convert.findViewById(R.id.tv_name)
             val mTextViewAddress : View = convert.findViewById(R.id.tv_address)
-            val mTextViewVisittime : View = convert.findViewById(R.id.tv_visittime)
+            val mTextViewVisitTime : View = convert.findViewById(R.id.tv_visittime)
             val mImageViewAccept : View = convert.findViewById(R.id.iv_accept)
 
             if(datas.isEmpty()){
                 mTextViewAddress.tv_address.setText("주문이 없습니다.")
             }
-            ordered = datas.get(position)
+            ordered = datas[position]
             mTextViewName.tv_name.setText(ordered!!.name)
             mTextViewAddress.tv_address.setText(ordered!!.address)
-            mTextViewVisittime.tv_visittime.setText(ordered!!.date)
+            mTextViewVisitTime.tv_visittime.setText(ordered!!.date)
             mImageViewAccept.iv_accept.setImageResource(R.drawable.bt_accept)
 
             key = ordered!!.key
             userID = ordered!!.userID
             mImageViewAccept.iv_accept.setOnClickListener{
-                val dbRef = FirebaseDatabase.getInstance().getReference("/users/"+userID)
+                val dbRef = FirebaseDatabase.getInstance().getReference("/users/$userID/orders")
                 dbRef.addListenerForSingleValueEvent(postListener)
             }
 
@@ -53,7 +52,7 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
     }
 
     override fun getItem(p0: Int): Any {
-        return datas.get(p0)
+        return datas[p0]
     }
 
     override fun getItemId(p0: Int): Long {
@@ -69,19 +68,19 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
 
         }
 
-        override fun onDataChange(datasnapshot: DataSnapshot) {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
             val mDatabase = FirebaseDatabase.getInstance().reference
-            for(snapshot in datasnapshot.children) {
+            for(snapshot in dataSnapshot.children) {
                 val order = snapshot.getValue(Order::class.java)
                 if(order!!.key == key) {
                     val newOrder = Order(order.date, order.laundry, 1, key, order.laundryID)
                     val childUpdate = HashMap<String, Any>()
-                    childUpdate.put("users/"+userID+"/"+key, newOrder)
+                    childUpdate.put("users/$userID/orders/$key", newOrder)
 
                     mDatabase.updateChildren(childUpdate)
                     val newOrdered = Ordered(ordered!!.date, ordered!!.name, ordered!!.address, ordered!!.require,1, ordered!!.key, ordered!!.userID)
                     val acceptUpdate = HashMap<String, Any>()
-                    acceptUpdate.put("laundry/" + order.laundryID + "/orders/" + key, newOrdered)
+                    acceptUpdate.put("laundry/${order.laundryID}/orders/$key", newOrdered)
                     mDatabase.updateChildren(acceptUpdate)
                 }
             }

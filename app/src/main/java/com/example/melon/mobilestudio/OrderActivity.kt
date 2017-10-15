@@ -48,6 +48,8 @@ class OrderActivity : AppCompatActivity() {
             }
         }
         i = intent
+        address = i!!.getStringExtra("userAddress")
+        tv_userAddressCheck.setText(address)
         val dateFormat = SimpleDateFormat("yy-MM-dd")
         val today = dateFormat.format(Date())
         finalorder.setOnClickListener {
@@ -55,7 +57,6 @@ class OrderActivity : AppCompatActivity() {
             builder.setMessage("주문하시겠습니까?")
             builder.setPositiveButton("예"){dialog, whichButton ->
                 val intent = Intent(this,OrderFinishActivity::class.java)
-                address= et_useraddress.text.toString()
                 require = et_require.text.toString()
                 newOrder(today, require, 0)
                 intent.putExtra("require", require)
@@ -71,17 +72,17 @@ class OrderActivity : AppCompatActivity() {
         }
 
     }
-    fun newOrder(date:String, laundry:String, state:Int) {
+    private fun newOrder(date:String, laundry:String, state:Int) {
         val saveTime = saveFormat.format(Date())
         val order = Order(date, laundry, state, saveTime, i!!.getStringExtra("laundryID"))
         val orderValue = order.toMap()
 
         val childUpdate = HashMap<String, Any>()
 
-        childUpdate.put("/users/" + userID + "/"+saveTime, orderValue)
+        childUpdate.put("/users/$userID/orders/$saveTime", orderValue)
         mDatabase.updateChildren(childUpdate)
 
-        val result : HashMap<String, Any> = HashMap<String, Any>()
+        val result = HashMap<String, Any>()
         result.put("date",date)
         result.put("name",laundry)
         result.put("address",address)
@@ -89,7 +90,7 @@ class OrderActivity : AppCompatActivity() {
         result.put("state", state)
         result.put("key",saveTime)
         result.put("userID", userID)
-        childUpdate.put("/laundry/"+ i!!.getStringExtra("laundryID") + "/orders/" + saveTime, result)
+        childUpdate.put("/laundry/${i!!.getStringExtra("laundryID")}/orders/$saveTime", result)
         mDatabase.updateChildren(childUpdate)
 
     }

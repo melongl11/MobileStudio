@@ -18,9 +18,19 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/currentlocation"
+            android:src="@drawable/location_marker"
             android:layout_gravity="center"
             android:contentDescription="@string/app_name"
+            />
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end"
+            android:paddingTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="0dp"
+            android:src="@drawable/location_button"
+            android:id="@+id/iv_location_button"
             />
 
     </fragment>
@@ -35,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/et_laundryAddress"
-        android:hint="상세 주소를 적어주세요."/>
+        android:hint="세탁소 주소를 적어주세요."/>
 
     <Button
         android:id="@+id/bt_setPicture"

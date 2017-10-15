@@ -63,15 +63,17 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
     private var init = 0
     private var mMap: GoogleMap? = null
     private var mDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference()
-    var sydney :LatLng = LatLng(37.59788, 126.86443)
+    private var enableCurrentLocation = true
+    private var lm:LocationManager? = null
+    private var initLocation:Location? = null
 
     private var mAuth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
     private var userID:String = ""
 
     override fun onCameraMove() {
-        if (mMap!=null) {
-            center = mMap!!.projection.visibleRegion.latLngBounds.center
+        if(enableCurrentLocation) {
+            enableCurrentLocation = false
         }
     }
 
@@ -81,7 +83,7 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQ_CODE_SELECT_IMAGE) {
                 imageUri= data!!.data
-                cropImage(data!!.data)
+                cropImage(data.data)
             }
             else if (requestCode == REQ_CODE_IMAGE_CROP) {
                 val extras : Bundle = data!!.extras
@@ -168,18 +170,12 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
             intent.setType("image/*")
             startActivityForResult(intent, REQ_CODE_SELECT_IMAGE)
         }
-
         ///////////////////////////////
 
-
-
-
         try {
-
                 val mapFragment = supportFragmentManager
                         .findFragmentById(R.id.map) as SupportMapFragment
                 mapFragment.getMapAsync(this)
-
         } catch (ex: SecurityException) {
 
         }
@@ -204,6 +200,24 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
                     .setNegativeButton("닫기", DialogInterface.OnClickListener{ dialog, whichButton ->})
                     .show()
         }
+        iv_location_button.setOnClickListener {
+            if (enableCurrentLocation) {
+                enableCurrentLocation = false
+            }
+            else {
+                enableCurrentLocation = true
+                try {
+                    initLocation = lm!!.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
+                    if (initLocation != null) {
+                        val init = LatLng(initLocation!!.latitude, initLocation!!.longitude)
+                        mMap!!.moveCamera(CameraUpdateFactory.newLatLng(init))
+                    }
+
+                } catch (e:SecurityException) {
+
+                }
+            }
+        }
 
     }
 
@@ -212,10 +226,10 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
         val init = LatLng(37.59788, 126.86443)
         mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(init, 10.toFloat()))
         mMap!!.setOnCameraMoveListener(this)
-        val lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         try {
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 0.00001.toFloat(), mLocationListener)
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 0.00001.toFloat(), mLocationListener)
+            lm!!.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 0.00001.toFloat(), mLocationListener)
+            lm!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 0.00001.toFloat(), mLocationListener)
         } catch (e:SecurityException) {
 
         }
@@ -223,12 +237,8 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
 
     private val mLocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
-            if (init == 0) {
-                    sydney = LatLng(location.getLatitude(), location.getLongitude())
-                    mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15.toFloat()))
-                    init = 1
-                Log.d("test", "onLocationChanged, location:" + location)
-            }
+            mMap!!.moveCamera(CameraUpdateFactory.newLatLng(LatLng(location.getLatitude(), location.getLongitude())))
+            Log.d("test", "onLocationChanged, location:" + location)
         }
 
         override fun onProviderDisabled(provider: String) {

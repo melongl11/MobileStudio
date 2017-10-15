@@ -26,8 +26,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.android.gms.maps.MapFragment
-
-
+import kotlinx.android.synthetic.main.activity_order2.*
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraMoveListener{
@@ -43,7 +42,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     override fun onMarkerClick(marker: Marker?): Boolean {
         tv_laundryInfo.setText(marker!!.snippet)
-        tv_laundryName.setText(marker.title)
         laundryID = marker.title
         info = marker.snippet
 
@@ -51,7 +49,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
 
     override fun onCameraMove() {
-        enableCurrentLocation = false
+        if(enableCurrentLocation) {
+            enableCurrentLocation = false
+        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,6 +69,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             intent.putExtra("laundryInfo", info)
             intent.putExtra("laundryName", name)
             intent.putExtra("laundryID", laundryID)
+            intent.putExtra("userAddress",tv_userAddress.text.toString() + et_detailAddress.text.toString())
 
             startActivity(intent)
         }
@@ -102,7 +104,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     private val mLocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
-            mMap!!.clear()
             if(enableCurrentLocation) {
                 mMap!!.moveCamera(CameraUpdateFactory.newLatLng(LatLng(location.getLatitude(), location.getLongitude())))
             }
@@ -161,6 +162,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private val postListener = object : ValueEventListener {
         override fun onDataChange(datasnapshot: DataSnapshot) {
             datas.clear()
+            if (mMap != null) {
+                mMap!!.clear()
+            }
             for(snapshot in datasnapshot.getChildren()) {
                 val laundryLocation = snapshot.getValue(LaundryLocation::class.java)
                 datas.add(laundryLocation!!)
