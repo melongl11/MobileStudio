@@ -27,12 +27,12 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.android.gms.maps.MapFragment
 import kotlinx.android.synthetic.main.activity_order2.*
+import java.util.*
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraMoveListener{
     private var mMap: GoogleMap? = null
     private var uiSettings:UiSettings? = null
-    private var datas = ArrayList<LaundryLocation>()
     private var name: String = ""
     private var info: String = ""
     private var laundryID: String = ""
@@ -69,7 +69,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             intent.putExtra("laundryInfo", info)
             intent.putExtra("laundryName", name)
             intent.putExtra("laundryID", laundryID)
-            intent.putExtra("userAddress",tv_userAddress.text.toString() + et_detailAddress.text.toString())
+            intent.putExtra("userAddress","${tv_userAddress.text.toString()} ${et_detailAddress.text.toString()}")
 
             startActivity(intent)
         }
@@ -99,29 +99,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             }
         }
 
-
 } // end of onCreate
-
     private val mLocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
             if(enableCurrentLocation) {
                 mMap!!.moveCamera(CameraUpdateFactory.newLatLng(LatLng(location.getLatitude(), location.getLongitude())))
             }
-            val dbRef = FirebaseDatabase.getInstance().getReference("laundry_list")
-            dbRef.addListenerForSingleValueEvent(postListener)
             Log.d("test", "onLocationChanged, location:" + location)
         }
-
         override fun onProviderDisabled(provider: String) {
             // Disabled시
             Log.d("test", "onProviderDisabled, provider:" + provider)
         }
-
         override fun onProviderEnabled(provider: String) {
             // Enabled시
             Log.d("test", "onProviderEnabled, provider:" + provider)
         }
-
         override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
             // 변경시
             Log.d("test", "onStatusChanged, provider:$provider, status:$status ,Bundle:$extras")
@@ -157,40 +150,50 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         } catch (e: SecurityException) {
 
         }
+        val dbListenTimer = DBListenTimer(mMap!!)
 
-    }
-    private val postListener = object : ValueEventListener {
-        override fun onDataChange(datasnapshot: DataSnapshot) {
-            datas.clear()
-            if (mMap != null) {
-                mMap!!.clear()
-            }
-            for(snapshot in datasnapshot.getChildren()) {
-                val laundryLocation = snapshot.getValue(LaundryLocation::class.java)
-                datas.add(laundryLocation!!)
-            }
-            for (data in datas) {
-                val markerOption = MarkerOptions()
-                val location = LatLng(data.latitude, data.longitude)
-
-                Log.d("test",data.latitude.toString() + data.longitude.toString())
-                markerOption.position(location)
-                markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
-                markerOption.title(data.laundryID)
-                markerOption.snippet(data.name + "\n" + data.address + "\n")
-                mMap!!.addMarker(markerOption)
-
-            }
-        }
-
-        override fun onCancelled(p0: DatabaseError?) {
-
-        }
+        val timer = Timer()
+        timer.schedule(dbListenTimer,0,1000)
     }
 
     override fun onBackPressed() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+    }
+
+    class DBListenTimer(val mMap:GoogleMap) : TimerTask() {
+        private var datas = ArrayList<LaundryLocation>()
+        override fun run() {
+            val dbRef = FirebaseDatabase.getInstance().getReference("laundry_list")
+            dbRef.addListenerForSingleValueEvent(postListener)
+        }
+        private val postListener = object : ValueEventListener {
+            override fun onDataChange(datasnapshot: DataSnapshot) {
+                datas.clear()
+
+                mMap.clear()
+                for(snapshot in datasnapshot.getChildren()) {
+                    val laundryLocation = snapshot.getValue(LaundryLocation::class.java)
+                    datas.add(laundryLocation!!)
+                }
+                for (data in datas) {
+                    val markerOption = MarkerOptions()
+                    val location = LatLng(data.latitude, data.longitude)
+
+                    Log.d("test",data.latitude.toString() + data.longitude.toString())
+                    markerOption.position(location)
+                    markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
+                    markerOption.title(data.laundryID)
+                    markerOption.snippet(data.name + "\n" + data.address + "\n")
+                    mMap.addMarker(markerOption)
+
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+        }
     }
 
 }
