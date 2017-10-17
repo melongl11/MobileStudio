@@ -181,12 +181,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     val location = LatLng(data.latitude, data.longitude)
 
                     Log.d("test",data.latitude.toString() + data.longitude.toString())
-                    markerOption.position(location)
-                    markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
-                    markerOption.title(data.laundryID)
-                    markerOption.snippet(data.name + "\n" + data.address + "\n")
-                    mMap.addMarker(markerOption)
-
+                    if(mMap.projection.visibleRegion.latLngBounds.contains(location)) {
+                        markerOption.position(location)
+                        markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
+                        markerOption.title(data.laundryID)
+                        markerOption.snippet(data.name + "\n" + data.address + "\n")
+                        mMap.addMarker(markerOption)
+                    }
                 }
             }
 
