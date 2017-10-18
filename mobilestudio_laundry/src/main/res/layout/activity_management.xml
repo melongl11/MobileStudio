@@ -28,27 +28,28 @@
                 android:layout_width="10dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="10pt"
                 android:gravity="right"
-                />
+                android:textSize="10pt" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="10pt"
-                android:text=":"/>
+                android:textSize="10pt" />
+
             <TextView
                 android:id="@+id/tv_visitminute"
                 android:layout_width="10dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="10pt"
-                />
+                android:textSize="10pt" />
+
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="~" />
+
             <TextView
                 android:id="@+id/tv_visittime2"
                 android:layout_width="wrap_content"
@@ -63,6 +64,12 @@
                 android:layout_weight="1"
                 app:srcCompat="@drawable/bt_plus" />
         </LinearLayout>
+
+        <ListView
+            android:id="@+id/lv_visittime"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
 
     <LinearLayout
