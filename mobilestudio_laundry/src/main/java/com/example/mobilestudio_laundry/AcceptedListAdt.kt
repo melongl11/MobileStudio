@@ -42,7 +42,7 @@ class AcceptedListAdt (var datas:ArrayList<Accepted>, var context: Context) : Ba
                     mImageViewAccept.iv_state_a.setImageResource(R.drawable.user_history_1)
                     mImageViewAccept.iv_state_a.setOnClickListener {
                         val dbRef = FirebaseDatabase.getInstance().getReference("/users/$userID/orders")
-                        dbRef.addListenerForSingleValueEvent(postListener)
+                        dbRef.addValueEventListener(postListener)
                     }
                 }
                 2 -> {

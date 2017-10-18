@@ -30,19 +30,20 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
             if(datas.isEmpty()){
                 mTextViewAddress.tv_address.setText("주문이 없습니다.")
             }
-            ordered = datas[position]
-            mTextViewName.tv_name.setText(ordered!!.name)
-            mTextViewAddress.tv_address.setText(ordered!!.address)
-            mTextViewVisitTime.tv_visittime.setText(ordered!!.date)
-            mImageViewAccept.iv_accept.setImageResource(R.drawable.bt_accept)
+            else {
+                ordered = datas[position]
+                mTextViewName.tv_name.setText(ordered!!.name)
+                mTextViewAddress.tv_address.setText(ordered!!.address)
+                mTextViewVisitTime.tv_visittime.setText(ordered!!.date)
+                mImageViewAccept.iv_accept.setImageResource(R.drawable.bt_accept)
 
-            key = ordered!!.key
-            userID = ordered!!.userID
-            mImageViewAccept.iv_accept.setOnClickListener{
-                val dbRef = FirebaseDatabase.getInstance().getReference("/users/$userID/orders")
-                dbRef.addListenerForSingleValueEvent(postListener)
+                key = ordered!!.key
+                userID = ordered!!.userID
+                mImageViewAccept.iv_accept.setOnClickListener {
+                    val dbRef = FirebaseDatabase.getInstance().getReference("/users/$userID/orders")
+                    dbRef.addListenerForSingleValueEvent(postListener)
+                }
             }
-
             return convert
         }
         else {

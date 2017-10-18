@@ -64,16 +64,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        bt_popup.setOnClickListener {
-            val intent = Intent(this, LaundryInfo::class.java)
-            intent.putExtra("laundryInfo", info)
-            intent.putExtra("laundryName", name)
-            intent.putExtra("laundryID", laundryID)
-            intent.putExtra("userAddress","${tv_userAddress.text.toString()} ${et_detailAddress.text.toString()}")
+        iv_selectLaundry.setOnClickListener {
+            if(tv_userAddress.text == "") {
+                Toast.makeText(this, "주소를 확인해 주세요.",Toast.LENGTH_SHORT).show()
+            }
+            else if(laundryID == "") {
+                Toast.makeText(this, "세탁소를 선택해 주세요", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                val intent = Intent(this, LaundryInfo::class.java)
+                intent.putExtra("laundryInfo", info)
+                intent.putExtra("laundryName", name)
+                intent.putExtra("laundryID", laundryID)
+                intent.putExtra("userAddress","${tv_userAddress.text.toString()} ${et_detailAddress.text.toString()}")
 
-            startActivity(intent)
+                startActivity(intent)
+            }
         }
-        bt_checkAddress.setOnClickListener {
+        iv_checkAddress.setOnClickListener {
             val geocoder:Geocoder = Geocoder(this)
             val center = mMap!!.projection.visibleRegion.latLngBounds.center
             val addressList = geocoder.getFromLocation(center.latitude, center.longitude, 1)
@@ -92,9 +100,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                         val init = LatLng(initLocation!!.latitude, initLocation!!.longitude)
                         mMap!!.moveCamera(CameraUpdateFactory.newLatLng(init))
                     }
-
                 } catch (e:SecurityException) {
-
                 }
             }
         }
@@ -153,7 +159,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         val dbListenTimer = DBListenTimer(mMap!!)
 
         val timer = Timer()
-        timer.schedule(dbListenTimer,0,1000)
+        timer.schedule(dbListenTimer,0,500)
     }
 
     override fun onBackPressed() {
@@ -170,7 +176,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         private val postListener = object : ValueEventListener {
             override fun onDataChange(datasnapshot: DataSnapshot) {
                 datas.clear()
-
                 mMap.clear()
                 for(snapshot in datasnapshot.getChildren()) {
                     val laundryLocation = snapshot.getValue(LaundryLocation::class.java)

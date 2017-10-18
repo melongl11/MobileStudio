@@ -24,7 +24,7 @@ class OrderedActivity : AppCompatActivity() {
         super.onStart()
         mAuth!!.addAuthStateListener(mAuthListener!!)
         Handler().postDelayed({
-            val dbRef = FirebaseDatabase.getInstance().getReference("laundry/" + userID + "/orders")
+            val dbRef = FirebaseDatabase.getInstance().getReference("laundry/$userID/orders")
             dbRef.addValueEventListener(postListener)
 
             adapter = OrderedListAdt(datas, this)

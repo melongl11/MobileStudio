@@ -1,71 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:map="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            tools:context="com.example.melon.mobilestudio.MapsActivity">
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="298dp"
+        map:layout_constraintTop_toTopOf="parent"
+        tools:context="com.example.melon.mobilestudio.MapsActivity"
+        tools:layout_editor_absoluteX="0dp">
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="end"
-                android:paddingTop="5dp"
-                android:paddingEnd="5dp"
-                android:paddingStart="0dp"
-                android:src="@drawable/location_button"
-                android:id="@+id/iv_location_button"
-                android:contentDescription="@string/locationButtonDescription"
-                />
+        <ImageView
+            android:id="@+id/iv_location_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end"
+            android:contentDescription="@string/locationButtonDescription"
+            android:paddingEnd="5dp"
+            android:paddingStart="0dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/location_button" />
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/location_marker"
-                android:layout_gravity="center"
-                android:contentDescription="@string/app_name" />
-
-        </fragment>
-        <TextView
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:id="@+id/tv_userAddress"/>
-        <EditText
-            android:hint="@string/inputDetailAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/et_detailAddress"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
-            <Button
-                android:layout_width="200dp"
-                android:layout_height="50dp"
-                android:id="@+id/bt_popup"
-                android:text="팝업!"/>
-            <Button
-                android:layout_width="200dp"
-                android:layout_height="50dp"
-                android:id="@+id/bt_checkAddress"
-                android:text="@string/addressCheck"/>
-        </LinearLayout>
+            android:layout_gravity="center"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/location_marker" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_laundryName"
-            android:textSize="15pt"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_laundryInfo"
-            android:textSize="10pt"/>
+    </fragment>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_userAddress"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textSize="10pt"
+        app:layout_constraintBottom_toTopOf="@+id/et_detailAddress"
+        app:layout_constraintTop_toBottomOf="@+id/map"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <EditText
+        android:id="@+id/et_detailAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/inputDetailAddress"
+        app:layout_constraintBottom_toTopOf="@+id/tv_laundryInfo"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <TextView
+        android:id="@+id/tv_laundryInfo"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textSize="10pt"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_marginBottom="0dp"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp">
+
+        <ImageView
+            android:id="@+id/iv_checkAddress"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/user_check_address" />
+
+        <ImageView
+            android:id="@+id/iv_selectLaundry"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/user_select_laundry" />
+
+    </LinearLayout>
+
+
+
+</android.support.constraint.ConstraintLayout>
