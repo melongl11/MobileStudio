@@ -9,6 +9,7 @@ import android.os.Handler
 import android.support.annotation.IntegerRes
 import android.support.v4.app.ActivityCompat
 import android.view.View
+import android.widget.ListView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.firebase.ui.storage.images.FirebaseImageLoader
@@ -17,6 +18,7 @@ import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_management.*
+import kotlinx.android.synthetic.main.activity_management.view.*
 import kotlinx.android.synthetic.main.activity_modify.*
 import java.util.ArrayList
 import java.util.HashMap
@@ -58,6 +60,11 @@ class ManagementActivity : AppCompatActivity() {
         adapter = VisittimeListActivity(datas, this)
         lv_visittime.setAdapter(adapter)
      //      },1000)
+
+        var datas = ArrayList<Laundry>()
+        var adapter = LaundryListAdt(datas,this)
+        var ivvv : ListView = findViewById(R.id.lv_laund)
+        ivvv.lv_laund.setAdapter(adapter)
     }
 
     override fun onStop() {
@@ -79,6 +86,8 @@ class ManagementActivity : AppCompatActivity() {
         supportActionBar?.run {
             setTitle("가게관리")
         }
+
+
 
         mAuth = FirebaseAuth.getInstance()
         mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
