@@ -19,16 +19,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".LoginActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity android:name=".MainActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -41,7 +39,8 @@
         <activity android:name=".AcceptedList" />
         <activity android:name=".ModifyActivity" />
         <activity android:name=".ManagementActivity" />
-
+        <activity android:name=".VisittimeListActivity" />
+        <activity android:name=".LaundryListAdt"></activity>
     </application>
 
 </manifest>

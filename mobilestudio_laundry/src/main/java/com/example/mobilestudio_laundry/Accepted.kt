@@ -9,7 +9,7 @@ class Accepted(){
     var address:String = " "
     var key:String= " "
     var require:String = " "
-    var state:Int = 0;
+    var state:Int = 0
     var userID:String = ""
     constructor(date:String, laundry:String, address:String, require:String,state:Int, key:String, userID:String) : this() {
         this.date = date
