@@ -29,8 +29,7 @@ class ManagementActivity : AppCompatActivity() {
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
     private var userID:String = ""
 
-    private var datas = ArrayList<Visittime>()
-    lateinit var adapter : VisittimeListActivity
+    private var datas = ArrayList<Laundry>()
 /*
     private var mStorageRef : StorageReference = FirebaseStorage.getInstance().getReference()
 
@@ -53,15 +52,17 @@ class ManagementActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         mAuth!!.addAuthStateListener(mAuthListener!!)
-     // Handler().postDelayed({
+     /* Handler().postDelayed({
         val dbR = FirebaseDatabase.getInstance().getReference("/laundry/$userID/info/time")
         dbR.addValueEventListener(postListener)
 
         adapter = VisittimeListActivity(datas, this)
         lv_visittime.setAdapter(adapter)
-     //      },1000)
+           },1000)
+        */
 
-        var datas = ArrayList<Laundry>()
+        val dbR = FirebaseDatabase.getInstance().getReference("/laundry/$userID/info/list")
+        dbR.addValueEventListener(postListener)
         var adapter = LaundryListAdt(datas,this)
         var ivvv : ListView = findViewById(R.id.lv_laund)
         ivvv.lv_laund.setAdapter(adapter)
@@ -164,14 +165,11 @@ class ManagementActivity : AppCompatActivity() {
         override fun onDataChange(datasnapshot: DataSnapshot) {
             datas.clear()
             for(snapshot in datasnapshot.getChildren()) {
-                val visit = snapshot.getValue(Visittime::class.java)
-                datas.add(visit!!)
+                val fare = snapshot.getValue(Laundry::class.java)
+                datas.add(fare!!)
             }
-            adapter.notifyDataSetChanged()
         }
-
         override fun onCancelled(p0: DatabaseError?) {
-
         }
     }
 

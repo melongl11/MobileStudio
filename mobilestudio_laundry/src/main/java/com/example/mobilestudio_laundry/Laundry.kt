@@ -5,8 +5,8 @@ package com.example.mobilestudio_laundry
  */
 class Laundry() {
     var laundry : String = " "
-    var fare : String = " "
-    constructor(laundry:String, fare:String) : this() {
+    var fare : Int = 0
+    constructor(laundry:String, fare:Int) : this() {
         this.laundry = laundry
         this.fare = fare
     }
