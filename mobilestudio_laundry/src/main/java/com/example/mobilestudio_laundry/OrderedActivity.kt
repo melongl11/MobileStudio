@@ -61,6 +61,7 @@ class OrderedActivity : AppCompatActivity() {
                 if(ordered!!.state == 0)
                     datas.add(ordered)
             }
+            lv_ordered.adapter = adapter
             adapter.notifyDataSetChanged()
         }
 

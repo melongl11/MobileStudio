@@ -3,11 +3,9 @@ package com.example.mobilestudio_laundry
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_accepted.*
 
 class AcceptedList : AppCompatActivity() {
@@ -22,12 +20,11 @@ class AcceptedList : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         mAuth!!.addAuthStateListener(mAuthListener!!)
+        adapter = AcceptedListAdt(datas, this)
+        lv_accepted.setAdapter(adapter)
         Handler().postDelayed({
             val dbRef = FirebaseDatabase.getInstance().getReference("laundry/$userID/orders")
-            dbRef.addValueEventListener(postListener)
-
-            adapter = AcceptedListAdt(datas, this)
-            lv_accepted.setAdapter(adapter)
+            dbRef.addChildEventListener(postListener)
         },1000)
     }
     override fun onStop() {
@@ -52,17 +49,35 @@ class AcceptedList : AppCompatActivity() {
 
 
     }
-    private val postListener = object : ValueEventListener {
-        override fun onDataChange(datasnapshot: DataSnapshot) {
-            datas.clear()
-            for(snapshot in datasnapshot.getChildren()) {
-                val ordered = snapshot.getValue(Accepted::class.java)
-                if (ordered!!.state!=0)
-                    datas.add(ordered)
-            }
+    private val postListener = object : ChildEventListener {
+        override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
+            val ordered = p0!!.getValue(Accepted::class.java)
+            if (ordered!!.state != 0) datas.add(ordered)
             adapter.notifyDataSetChanged()
         }
 
+        override fun onChildRemoved(p0: DataSnapshot?) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        /*override fun onDataChange(datasnapshot: DataSnapshot?) {
+            datas.clear()
+            for(child in datasnapshot!!.children) {
+                val ordered = child.getValue(Accepted::class.java)
+                if (ordered!!.state != 0)
+                    datas.add(ordered)
+            }
+            lv_accepted.adapter = adapter
+            adapter.notifyDataSetChanged()
+        }*/
         override fun onCancelled(p0: DatabaseError?) {
 
         }

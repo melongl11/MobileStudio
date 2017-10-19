@@ -20,36 +20,28 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
     var userID = " "
     var ordered:Ordered? = null
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        if (convertView == null) {
-            val convert = inflater.inflate(R.layout.ordered_list,null)
-            val mTextViewName : View = convert.findViewById(R.id.tv_name)
-            val mTextViewAddress : View = convert.findViewById(R.id.tv_address)
-            val mTextViewVisitTime : View = convert.findViewById(R.id.tv_visittime)
-            val mImageViewAccept : View = convert.findViewById(R.id.iv_accept)
+        val convert = inflater.inflate(R.layout.ordered_list, null)
+        val mTextViewName: View = convert.findViewById(R.id.tv_name)
+        val mTextViewAddress: View = convert.findViewById(R.id.tv_address)
+        val mTextViewVisitTime: View = convert.findViewById(R.id.tv_visittime)
+        val mImageViewAccept: View = convert.findViewById(R.id.iv_accept)
 
-            if(datas.isEmpty()){
-                mTextViewAddress.tv_address.setText("주문이 없습니다.")
-            }
-            else {
-                ordered = datas[position]
-                mTextViewName.tv_name.setText(ordered!!.name)
-                mTextViewAddress.tv_address.setText(ordered!!.address)
-                mTextViewVisitTime.tv_visittime.setText(ordered!!.date)
-                mImageViewAccept.iv_accept.setImageResource(R.drawable.bt_accept)
-
-                key = ordered!!.key
-                userID = ordered!!.userID
-                mImageViewAccept.iv_accept.setOnClickListener {
-                    val dbRef = FirebaseDatabase.getInstance().getReference("/users/$userID/orders")
-                    dbRef.addListenerForSingleValueEvent(postListener)
-                }
-            }
-            return convert
+        if (datas.isEmpty()) {
+            mTextViewAddress.tv_address.setText("주문이 없습니다.")
         }
-        else {
+        ordered = datas[position]
+        mTextViewName.tv_name.setText(ordered!!.name)
+        mTextViewAddress.tv_address.setText(ordered!!.address)
+        mTextViewVisitTime.tv_visittime.setText(ordered!!.date)
+        mImageViewAccept.iv_accept.setImageResource(R.drawable.bt_accept)
 
-            return convertView
+        key = ordered!!.key
+        userID = ordered!!.userID
+        mImageViewAccept.iv_accept.setOnClickListener {
+            val dbRef = FirebaseDatabase.getInstance().getReference("/users/$userID/orders")
+            dbRef.addListenerForSingleValueEvent(postListener)
         }
+        return convert
     }
 
     override fun getItem(p0: Int): Any {

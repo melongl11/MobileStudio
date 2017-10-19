@@ -31,7 +31,6 @@ class ListAdapter(var datas:ArrayList<Order>, var context:Context) : BaseAdapter
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        if (convertView == null) {
             val convert = inflater.inflate(R.layout.history_list,null)
             val mTextViewDate : View = convert.findViewById(R.id.tv_date)
 
@@ -48,11 +47,6 @@ class ListAdapter(var datas:ArrayList<Order>, var context:Context) : BaseAdapter
                 2 -> mImageView.iv_state.setImageResource(R.drawable.user_history_2)
             }
             return convert
-        }
-        else {
-
-            return convertView
-        }
     }
 
 }
