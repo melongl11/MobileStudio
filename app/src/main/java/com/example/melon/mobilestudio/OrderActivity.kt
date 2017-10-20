@@ -63,6 +63,7 @@ class OrderActivity : AppCompatActivity() {
                 intent.putExtra("laundryInfo", i!!.getStringExtra("laundryInfo"))
                 intent.putExtra("date",today)
                 startActivity(intent)
+                finish()
             }
             builder.setNegativeButton("아니오"){dialog,whichButton ->
                 dialog.cancel()

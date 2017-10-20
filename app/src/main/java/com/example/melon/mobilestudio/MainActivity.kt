@@ -1,6 +1,7 @@
 package com.example.melon.mobilestudio
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.support.v7.app.AppCompatActivity
@@ -23,7 +24,7 @@ import android.widget.ArrayAdapter
 
 
 
-
+val arrayListforActivity = ArrayList<Activity>()
 class MainActivity : AppCompatActivity() {
     private var backPressedHandler = BackPressHandler(this)
     private var mAuth: FirebaseAuth? = null

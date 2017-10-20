@@ -20,6 +20,8 @@ class LaundryInfo : AppCompatActivity() {
             intent.putExtra("laundryID", i.getStringExtra("laundryID"))
             intent.putExtra("userAddress", i.getStringExtra("userAddress"))
             startActivity(intent);
+            arrayListforActivity.get(0).finish()
+            finish()
         }
         bt_close.setOnClickListener {
             this.finish()

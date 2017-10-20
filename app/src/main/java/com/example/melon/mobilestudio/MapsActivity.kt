@@ -79,6 +79,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 intent.putExtra("userAddress","${tv_userAddress.text.toString()} ${et_detailAddress.text.toString()}")
 
                 startActivity(intent)
+                arrayListforActivity.add(this)
             }
         }
         iv_checkAddress.setOnClickListener {
@@ -163,8 +164,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
 
     override fun onBackPressed() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+        finish()
     }
 
     class DBListenTimer(val mMap:GoogleMap) : TimerTask() {

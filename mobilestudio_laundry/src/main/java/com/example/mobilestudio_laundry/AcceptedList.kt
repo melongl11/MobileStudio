@@ -24,7 +24,7 @@ class AcceptedList : AppCompatActivity() {
         lv_accepted.setAdapter(adapter)
         Handler().postDelayed({
             val dbRef = FirebaseDatabase.getInstance().getReference("laundry/$userID/orders")
-            dbRef.addChildEventListener(postListener)
+            dbRef.addValueEventListener(postListener)
         },1000)
     }
     override fun onStop() {
@@ -49,8 +49,8 @@ class AcceptedList : AppCompatActivity() {
 
 
     }
-    private val postListener = object : ChildEventListener {
-        override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
+    private val postListener = object : ValueEventListener {
+        /*override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
 
@@ -66,18 +66,17 @@ class AcceptedList : AppCompatActivity() {
 
         override fun onChildRemoved(p0: DataSnapshot?) {
             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
+        }*/
 
-        /*override fun onDataChange(datasnapshot: DataSnapshot?) {
+        override fun onDataChange(datasnapshot: DataSnapshot?) {
             datas.clear()
             for(child in datasnapshot!!.children) {
                 val ordered = child.getValue(Accepted::class.java)
                 if (ordered!!.state != 0)
                     datas.add(ordered)
             }
-            lv_accepted.adapter = adapter
             adapter.notifyDataSetChanged()
-        }*/
+        }
         override fun onCancelled(p0: DatabaseError?) {
 
         }

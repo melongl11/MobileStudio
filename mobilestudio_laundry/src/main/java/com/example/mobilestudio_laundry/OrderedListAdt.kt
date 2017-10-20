@@ -39,7 +39,7 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
         userID = ordered!!.userID
         mImageViewAccept.iv_accept.setOnClickListener {
             val dbRef = FirebaseDatabase.getInstance().getReference("/users/$userID/orders")
-            dbRef.addListenerForSingleValueEvent(postListener)
+            dbRef.addValueEventListener(postListener)
         }
         return convert
     }

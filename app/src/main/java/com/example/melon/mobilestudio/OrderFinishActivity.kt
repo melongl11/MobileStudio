@@ -25,6 +25,8 @@ class OrderFinishActivity : AppCompatActivity() {
         }
     }
     override fun onBackPressed() {
-        backpreessHandler.onBackPressedEnd()
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
