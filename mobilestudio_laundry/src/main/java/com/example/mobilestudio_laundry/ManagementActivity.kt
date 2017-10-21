@@ -29,7 +29,8 @@ class ManagementActivity : AppCompatActivity() {
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
     private var userID:String = ""
 
-    private var datas = ArrayList<Laundry>()
+    private var laundryList = ArrayList<Laundry>()
+    lateinit private var laundryListAdapter : LaundryListAdt
 
     private var visitTimeList = ArrayList<Visittime>()
     lateinit private var visitTimeAdapter : VisittimeListAdt
@@ -65,14 +66,16 @@ class ManagementActivity : AppCompatActivity() {
 /*        var adapter = LaundryListAdt(datas,this)
         var ivvv : ListView = findViewById(R.id.lv_laund)
         ivvv.lv_laund.setAdapter(adapter)*/
+        laundryListAdapter = LaundryListAdt(laundryList,this)
+        lv_laund.adapter = laundryListAdapter
         visitTimeAdapter = VisittimeListAdt(visitTimeList, this)
         lv_visittime.adapter = visitTimeAdapter
         Handler().postDelayed({
-/*            val dbR = FirebaseDatabase.getInstance().getReference("/laundry/$userID/info/list")
-            dbR.addValueEventListener(postListener)*/
-
+            val dbRefForLaund = FirebaseDatabase.getInstance().getReference("laundry/$userID/info/list")
+            dbRefForLaund.addValueEventListener(laundryListener)
             val dbRefForVisitTime = FirebaseDatabase.getInstance().getReference("laundry/$userID/info/time")
             dbRefForVisitTime.addValueEventListener(visitTimeListener)
+
 
         },1000)
     }
@@ -152,11 +155,10 @@ class ManagementActivity : AppCompatActivity() {
     fun newlaundlist(laundry: String, fare: Int) {
 
         val childUpdate = HashMap<String, Any>()
-
         val result: HashMap<String, Any> = HashMap<String, Any>()
         result.put("laundry", laundry)
         result.put("fare", fare)
-        childUpdate.put("/laundry/"+ userID  +"/info/list", result)
+        childUpdate.put("/laundry/$userID/info/list/$laundry", result)
         mDatabase.updateChildren(childUpdate)
     }
 
@@ -170,13 +172,14 @@ class ManagementActivity : AppCompatActivity() {
         mDatabase.updateChildren(childUpdate)
     }
 
-    private val postListener = object : ValueEventListener {
+    private val laundryListener = object : ValueEventListener {
         override fun onDataChange(datasnapshot: DataSnapshot) {
-            datas.clear()
+            laundryList.clear()
             for(snapshot in datasnapshot.getChildren()) {
                 val fare = snapshot.getValue(Laundry::class.java)
-                datas.add(fare!!)
+                laundryList.add(fare!!)
             }
+            laundryListAdapter.notifyDataSetChanged()
         }
         override fun onCancelled(p0: DatabaseError?) {
         }

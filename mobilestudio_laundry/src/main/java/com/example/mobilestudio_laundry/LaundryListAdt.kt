@@ -10,7 +10,8 @@ import android.widget.BaseAdapter
 import kotlinx.android.synthetic.main.activity_laundry_list_adt.view.*
 
 class LaundryListAdt(var datas : ArrayList<Laundry>, var context: Context): BaseAdapter() {
-    var laundry : Laundry? = null
+    var laund : Laundry? = null
+    var inflater : LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     override fun getCount(): Int {
         return datas.size
@@ -25,19 +26,14 @@ class LaundryListAdt(var datas : ArrayList<Laundry>, var context: Context): Base
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-        val pos = position
-        val context : Context = parent!!.context
-        var inflater : LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val convert = inflater.inflate(R.layout.activity_laundry_list_adt,null)
-        if(convertView == null){
             val mTextViewlaun: View = convert.findViewById(R.id.tv_laund_name)
             val mTextViewfare: View = convert.findViewById(R.id.tv_laund_fare)
 
-            var laun : Laundry = datas.get(position)
+            laund = datas[position]
+        mTextViewlaun.tv_laund_name.text = laund!!.laundry
+        mTextViewfare.tv_laund_fare.text = laund!!.fare.toString()
 
-            mTextViewlaun.tv_laund_name.setText(laun.laundry)
-            mTextViewfare.tv_laund_fare.setText(laun.fare)
-        }
         return convert
     }
 }
