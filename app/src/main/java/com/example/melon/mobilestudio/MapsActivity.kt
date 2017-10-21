@@ -184,8 +184,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 for (data in datas) {
                     val markerOption = MarkerOptions()
                     val location = LatLng(data.latitude, data.longitude)
-
-                    Log.d("test",data.latitude.toString() + data.longitude.toString())
                     if(mMap.projection.visibleRegion.latLngBounds.contains(location)) {
                         markerOption.position(location)
                         markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))

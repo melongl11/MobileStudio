@@ -50,24 +50,6 @@ class AcceptedList : AppCompatActivity() {
 
     }
     private val postListener = object : ValueEventListener {
-        /*override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-
-        override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-
-        override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
-            val ordered = p0!!.getValue(Accepted::class.java)
-            if (ordered!!.state != 0) datas.add(ordered)
-            adapter.notifyDataSetChanged()
-        }
-
-        override fun onChildRemoved(p0: DataSnapshot?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }*/
-
         override fun onDataChange(datasnapshot: DataSnapshot?) {
             datas.clear()
             for(child in datasnapshot!!.children) {

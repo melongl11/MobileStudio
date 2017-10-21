@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import kotlinx.android.synthetic.main.activity_visittime_list.view.*
 
-class VisittimeListActivity(var datas : ArrayList<Visittime>,var context: Context) : BaseAdapter() {
+class VisittimeListAdt(var datas : ArrayList<Visittime>, var context: Context) : BaseAdapter() {
     var visit : Visittime? = null
     var inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -26,17 +26,13 @@ class VisittimeListActivity(var datas : ArrayList<Visittime>,var context: Contex
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        if (convertView == null) {
             val convert = inflater.inflate(R.layout.activity_visittime_list, null)
             val mTextViewfirst: View = convert.findViewById(R.id.tv_firsttime)
             val mTextViewlast: View = convert.findViewById(R.id.tv_lasttime)
 
             visit = datas[position]
-            mTextViewfirst.tv_firsttime.setText(visit!!.hourOfDay)
-            mTextViewlast.tv_lasttime.setText(visit!!.minute)
+            mTextViewfirst.tv_firsttime.text = ("${visit!!.hourOfDay} : ${visit!!.minute}")
+            mTextViewlast.tv_lasttime.text = ("${visit!!.hourOfDay + 1} : ${visit!!.minute}")
             return convert
-        } else {
-            return convertView
-        }
     }
 }

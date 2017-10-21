@@ -30,6 +30,9 @@ class ManagementActivity : AppCompatActivity() {
     private var userID:String = ""
 
     private var datas = ArrayList<Laundry>()
+
+    private var visitTimeList = ArrayList<Visittime>()
+    lateinit private var visitTimeAdapter : VisittimeListAdt
 /*
     private var mStorageRef : StorageReference = FirebaseStorage.getInstance().getReference()
 
@@ -52,20 +55,26 @@ class ManagementActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         mAuth!!.addAuthStateListener(mAuthListener!!)
-     /* Handler().postDelayed({
-        val dbR = FirebaseDatabase.getInstance().getReference("/laundry/$userID/info/time")
+
+/*        val dbR = FirebaseDatabase.getInstance().getReference("/laundry/$userID/info/time")
         dbR.addValueEventListener(postListener)
 
-        adapter = VisittimeListActivity(datas, this)
+        adapter = VisittimeListAdt(datas, this)
         lv_visittime.setAdapter(adapter)
-           },1000)
-        */
-
-        val dbR = FirebaseDatabase.getInstance().getReference("/laundry/$userID/info/list")
-        dbR.addValueEventListener(postListener)
-        var adapter = LaundryListAdt(datas,this)
+           },1000)*/
+/*        var adapter = LaundryListAdt(datas,this)
         var ivvv : ListView = findViewById(R.id.lv_laund)
-        ivvv.lv_laund.setAdapter(adapter)
+        ivvv.lv_laund.setAdapter(adapter)*/
+        visitTimeAdapter = VisittimeListAdt(visitTimeList, this)
+        lv_visittime.adapter = visitTimeAdapter
+        Handler().postDelayed({
+/*            val dbR = FirebaseDatabase.getInstance().getReference("/laundry/$userID/info/list")
+            dbR.addValueEventListener(postListener)*/
+
+            val dbRefForVisitTime = FirebaseDatabase.getInstance().getReference("laundry/$userID/info/time")
+            dbRefForVisitTime.addValueEventListener(visitTimeListener)
+
+        },1000)
     }
 
     override fun onStop() {
@@ -152,12 +161,12 @@ class ManagementActivity : AppCompatActivity() {
     }
 
     fun newtime(time: Int,time2 : Int) {
-
         val childUpdate = HashMap<String, Any>()
         val result: HashMap<String, Any> = HashMap<String, Any>()
         result.put("hourOfDay", time)
         result.put("minute",time2)
-        childUpdate.put("/laundry/"+userID+"/info/time", result)
+        val dbKey = time.toString() + time2.toString()
+        childUpdate.put("/laundry/$userID/info/time/$dbKey", result)
         mDatabase.updateChildren(childUpdate)
     }
 
@@ -169,6 +178,20 @@ class ManagementActivity : AppCompatActivity() {
                 datas.add(fare!!)
             }
         }
+        override fun onCancelled(p0: DatabaseError?) {
+        }
+    }
+
+    private val visitTimeListener = object : ValueEventListener {
+        override fun onDataChange(datasnapshot: DataSnapshot) {
+            visitTimeList.clear()
+            for (snapshot in datasnapshot.getChildren()) {
+                val visitTime = snapshot.getValue(Visittime::class.java)
+                visitTimeList.add(visitTime!!)
+            }
+            visitTimeAdapter.notifyDataSetChanged()
+        }
+
         override fun onCancelled(p0: DatabaseError?) {
         }
     }

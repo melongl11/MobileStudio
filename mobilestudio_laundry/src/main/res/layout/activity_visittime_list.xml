@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="55dp"
-    tools:context="com.example.mobilestudio_laundry.VisittimeListActivity"
+    tools:context="com.example.mobilestudio_laundry.VisittimeListAdt"
     tools:layout_editor_absoluteY="81dp">
 
     <LinearLayout

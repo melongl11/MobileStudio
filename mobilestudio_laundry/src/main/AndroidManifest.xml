@@ -39,7 +39,7 @@
         <activity android:name=".AcceptedList" />
         <activity android:name=".ModifyActivity" />
         <activity android:name=".ManagementActivity" />
-        <activity android:name=".VisittimeListActivity" />
+        <activity android:name=".VisittimeListAdt" />
         <activity android:name=".LaundryListAdt"></activity>
     </application>
 
