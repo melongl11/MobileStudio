@@ -1,6 +1,7 @@
 package com.example.mobilestudio_laundry
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -12,9 +13,12 @@ import android.media.Image
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
 import android.provider.MediaStore
+import android.renderscript.Sampler
 import android.support.annotation.NonNull
+import android.support.v4.app.ActivityCompat
 import android.support.v4.view.LayoutInflaterFactory
 import android.support.v7.app.AlertDialog
 import android.util.Log
@@ -48,6 +52,7 @@ import kotlinx.android.synthetic.main.activity_modify.view.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.net.URI
+import kotlin.collections.ArrayList
 
 
 class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCameraMoveListener {
@@ -55,10 +60,13 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
     var center:LatLng? = null
     var bitmap : Bitmap? = null
     var imageUri : Uri? = null
+    var mCurrentPhoto : String? = null
 
     private var mStorageRef : StorageReference = FirebaseStorage.getInstance().getReference()
     val REQ_CODE_SELECT_IMAGE = 0
     val REQ_CODE_IMAGE_CROP = 1
+    val REQ_CODE_CAMERA = 2
+    val REQ_CAMERA = 3
 
     private var init = 0
     private var mMap: GoogleMap? = null
@@ -66,6 +74,7 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
     private var enableCurrentLocation = true
     private var lm:LocationManager? = null
     private var initLocation:Location? = null
+    private var mImageCaptureUri : Uri? = null
 
     private var mAuth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
@@ -85,6 +94,9 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
                 imageUri= data!!.data
                 cropImage(data.data)
             }
+            else if (requestCode == REQ_CODE_CAMERA){
+                cropImage(data!!.data)
+            }
             else if (requestCode == REQ_CODE_IMAGE_CROP) {
                 val extras : Bundle = data!!.extras
                 if(extras != null){
@@ -98,8 +110,9 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
             }
         }
     }
+
         fun cropImage(uri : Uri) {
-            var intent: Intent = Intent("com.android.camera.action.CROP")
+            var intent = Intent("com.android.camera.action.CROP")
             intent.setDataAndType(uri,"image/*")
             intent.putExtra("crop","true")
             intent.putExtra("aspectX",4)
@@ -119,13 +132,14 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
 
             var uploadTask : UploadTask = riversRef.putBytes(data)
             uploadTask.addOnSuccessListener {
+
                 Toast.makeText(applicationContext,"사진을 업로드했습니다.", Toast.LENGTH_LONG).show()
                 downimg()
             }.addOnSuccessListener { taskSnapshot ->
                 var DownloadURL = taskSnapshot.downloadUrl!!
             }
     }
-        fun downimg(){
+            fun downimg(){
             var downRef : StorageReference = mStorageRef.child("laundry").child("image").child("real.jpg")
             downRef.downloadUrl.addOnSuccessListener{
                 Glide.with(this).using(FirebaseImageLoader()).load(downRef).into(iv_Picture)
@@ -166,9 +180,23 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
         downimg()
 
         bt_setPicture.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            intent.setType("image/*")
-            startActivityForResult(intent, REQ_CODE_SELECT_IMAGE)
+            var ad  = AlertDialog.Builder(this)
+            ad.setTitle("사진수정")
+            ad.setMessage("방법을 선택해주세요")
+                    .setNegativeButton("카메라"){ dialog,whichButton ->
+                        var takepic = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                        /*var imageFileName  = "tmp_"+System.currentTimeMillis().toString()+".jpg"
+                        mImageCaptureUri = Uri.fromFile(File(Environment.getExternalStorageDirectory(),imageFileName))
+                        takepic.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,mImageCaptureUri)*/
+                        startActivityForResult(takepic,REQ_CODE_CAMERA)
+                    }
+                    .setPositiveButton("사진"){ dialog,whichButton ->
+                        val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                        intent.setType("image/*")
+                        startActivityForResult(intent, REQ_CODE_SELECT_IMAGE)
+                    }
+            val dialog: AlertDialog = ad.create()
+            dialog.show()
         }
         ///////////////////////////////
 
