@@ -87,6 +87,10 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
+        btn_modify_address.setOnClickListener {
+            val intent = Intent(this, UserSaveAddressActivity::class.java)
+            startActivity(intent)
+        }
     }
     override fun onBackPressed() {
         backPressedHandler.onBackPressedEnd()

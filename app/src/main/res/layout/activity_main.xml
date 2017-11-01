@@ -72,6 +72,11 @@
             android:layout_height="wrap_content"
             android:text="로그아웃"
             android:id="@+id/btn_logout"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="주소변경"
+            android:id="@+id/btn_modify_address"/>
     </LinearLayout>
 
 
