@@ -6,7 +6,7 @@ package com.example.mobilestudio_laundry
 class Visittime() {
     var hourOfDay : Int = 0
     var minute : Int = 0
-    constructor(hourOfDay : Int,minute : Int) : this(){
+    constructor(hourOfDay : Int, minute : Int) : this(){
         this.hourOfDay = hourOfDay
         this.minute = minute
     }

@@ -6,7 +6,7 @@ package com.example.mobilestudio_laundry
 class Laundry() {
     var laundry : String = " "
     var fare : Int = 0
-    constructor(laundry:String, fare:Int) : this() {
+    constructor(fare:Int, laundry:String) : this() {
         this.laundry = laundry
         this.fare = fare
     }
