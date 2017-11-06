@@ -70,5 +70,8 @@ class OrderedActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        finish()
+    }
 
 }

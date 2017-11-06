@@ -74,21 +74,23 @@ class MainActivity : AppCompatActivity() {
         }
         iv_order.setOnClickListener {
             val intent = Intent(this, MapsActivity::class.java)
-
+            arrayListforActivity.add(this)
             startActivity(intent)
         }
         iv_history.setOnClickListener {
             val intent = Intent(this, HistoryActivity::class.java)
-
+            arrayListforActivity.add(this)
             startActivity(intent)
         }
         btn_logout.setOnClickListener{
             mAuth!!.signOut()
             val intent = Intent(this, LoginActivity::class.java)
+            arrayListforActivity.add(this)
             startActivity(intent)
         }
         btn_modify_address.setOnClickListener {
             val intent = Intent(this, UserSaveAddressActivity::class.java)
+            arrayListforActivity.add(this)
             startActivity(intent)
         }
     }

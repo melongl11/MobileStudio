@@ -22,6 +22,7 @@ class OrderFinishActivity : AppCompatActivity() {
         confirm.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
     override fun onBackPressed() {

@@ -65,7 +65,7 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
             val mDatabase = FirebaseDatabase.getInstance().reference
             for(snapshot in dataSnapshot.children) {
                 val order = snapshot.getValue(Order::class.java)
-                if(order!!.key == key) {
+                if(order!!.key == key && order.state == 0) {
                     val newOrder = Order(order.date, order.laundry, 1, key, order.laundryID)
                     val childUpdate = HashMap<String, Any>()
                     childUpdate.put("users/$userID/orders/$key", newOrder)

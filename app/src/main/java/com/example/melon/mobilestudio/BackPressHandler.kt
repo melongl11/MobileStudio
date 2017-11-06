@@ -23,6 +23,8 @@ class BackPressHandler {
             return;
         }
         if(System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+            for( i in arrayListforActivity)
+                i.finish()
             activity!!.finish()
         }
     }
