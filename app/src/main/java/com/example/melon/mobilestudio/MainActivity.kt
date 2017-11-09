@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.os.PersistableBundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -21,18 +22,21 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import android.widget.*
 import android.widget.ArrayAdapter
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.activity_history.*
 
 
 val arrayListforActivity = ArrayList<Activity>()
+var userLatitude = 0.0
+var userLongitude = 0.0
 class MainActivity : AppCompatActivity() {
     private var backPressedHandler = BackPressHandler(this)
     private var mAuth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
     private var userID:String = ""
     private lateinit var drawerToggle:ActionBarDrawerToggle
-
+    private var mDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference()
+    private var user:FirebaseUser? = null
 
     override fun onStart() {
         super.onStart()
@@ -40,6 +44,35 @@ class MainActivity : AppCompatActivity() {
         val serviceIntent = Intent(this, MyService::class.java)
         serviceIntent.putExtra("userID",userID)
         startService(serviceIntent)
+
+        Handler().postDelayed({
+            val dbRef = FirebaseDatabase.getInstance().getReference("/users/$userID/info/name")
+            dbRef.addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError?) {
+                }
+                override fun onDataChange(datasnapshot: DataSnapshot) {
+                    if (!datasnapshot.hasChildren()) {
+                        for (userInfo in user!!.providerData) {
+                            val name = userInfo.displayName.toString()
+                            val phoneNumber = userInfo.phoneNumber.toString()
+                            val userInformation = HashMap<String, Any>()
+                            userInformation.put("name", name)
+                            userInformation.put("phoneNumber", phoneNumber)
+                            val childUpdate = HashMap<String, Any>()
+                            childUpdate.put("/users/${user!!.uid}/info/name/", userInformation)
+                            mDatabase.updateChildren(childUpdate)
+                        }
+                    }
+                    val information = datasnapshot.getValue(Information::class.java)
+                    if(information!!.phoneNumber == "") {
+                        Toast.makeText(this@MainActivity, "휴대전화를 등록해 주세요.", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@MainActivity, UserModifyInformationActivity::class.java)
+                        arrayListforActivity.add(this@MainActivity)
+                        startActivity(intent)
+                    }
+                }
+            })
+        },500)
     }
     override fun onStop() {
         super.onStop()
@@ -59,9 +92,9 @@ class MainActivity : AppCompatActivity() {
 
         mAuth = FirebaseAuth.getInstance()
         mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
-            val user = firebaseAuth.currentUser
+            user = firebaseAuth.currentUser
             if (user != null) {
-                userID = user.uid
+                userID = user!!.uid
             } else {
             }
         }

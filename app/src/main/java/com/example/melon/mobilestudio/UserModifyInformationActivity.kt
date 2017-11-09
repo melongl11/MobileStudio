@@ -20,7 +20,7 @@ class UserModifyInformationActivity : AppCompatActivity() {
         super.onStart()
         mAuth!!.addAuthStateListener(mAuthListener!!)
         Handler().postDelayed({
-            val dbRef = FirebaseDatabase.getInstance().getReference("/users/${userID}/info/")
+            val dbRef = FirebaseDatabase.getInstance().getReference("/users/${userID}/info/name")
             dbRef.addValueEventListener(postListener)
         },500)
     }
@@ -61,25 +61,14 @@ class UserModifyInformationActivity : AppCompatActivity() {
         }
 
         override fun onDataChange(datasnapshot: DataSnapshot) {
-            for (snapshot in datasnapshot.children) {
-                val information = snapshot.getValue(Information::class.java)
-                et_user_name.setText(information!!.name)
-                et_phone_number.setText(information.phoneNumber)
-            }
+            val information = datasnapshot.getValue(Information::class.java)
+            et_user_name.setText(information!!.name)
+            et_phone_number.setText(information.phoneNumber)
         }
     }
-}
-class Information() {
-    var name:String = ""
-    var phoneNumber : String = ""
-    constructor(name : String, phoneNumber : String) : this(){
-        this.name = name
-        this.phoneNumber = phoneNumber
-    }
-    fun toMap() : Map<String, Any> {
-        val result : HashMap<String, Any> = HashMap<String, Any>()
-        result.put("name", name)
-        result.put("phoneNumber", phoneNumber)
-        return result
+
+    override fun onBackPressed() {
+        finish()
     }
 }
+

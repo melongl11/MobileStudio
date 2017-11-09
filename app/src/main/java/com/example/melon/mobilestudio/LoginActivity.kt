@@ -30,7 +30,7 @@ class LoginActivity : AppCompatActivity(),GoogleApiClient.OnConnectionFailedList
     private val RC_SIGN_IN = 9001
     private lateinit var mGoogleApiClient : GoogleApiClient
     private var mAuth:FirebaseAuth? = null
-    private var mDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +53,7 @@ class LoginActivity : AppCompatActivity(),GoogleApiClient.OnConnectionFailedList
     override fun onStart() {
         super.onStart()
 
-        val currentUser:FirebaseUser? = mAuth?.getCurrentUser()
+        val currentUser:FirebaseUser? = mAuth?.currentUser
         updateUI(currentUser)
     }
 
@@ -79,7 +79,7 @@ class LoginActivity : AppCompatActivity(),GoogleApiClient.OnConnectionFailedList
                         val user = mAuth!!.currentUser
                         updateUI(user)
                     } else {
-                        Toast.makeText(this,"Authentication faliled", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this,"Authentication failed", Toast.LENGTH_SHORT).show()
                         updateUI(null)
                     }
                 })
@@ -93,20 +93,11 @@ class LoginActivity : AppCompatActivity(),GoogleApiClient.OnConnectionFailedList
     private fun updateUI(user: FirebaseUser?) {
         if(user != null) { //다음 Activity로 넘어가는 부분.
             val intent = Intent(this, MainActivity::class.java)
-            for( userInfo in user.providerData) {
-                val name  = userInfo.displayName.toString()
-                val phoneNumber = userInfo.phoneNumber.toString()
-                val userInformation = HashMap<String, Any>()
-                userInformation.put("name", name)
-                userInformation.put("phoneNumber", phoneNumber)
-                val childUpdate = HashMap<String, Any>()
-                childUpdate.put("/users/${user.uid}/info/name/",userInformation)
-                mDatabase.updateChildren(childUpdate)
-            }
+
             startActivity(intent)
             finish()
         } else {
-            bt_google_signin.setVisibility(View.VISIBLE)
+            bt_google_signin.visibility = View.VISIBLE
         }
     }
 

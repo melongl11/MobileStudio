@@ -28,6 +28,9 @@ class UserSaveAddressActivity : AppCompatActivity(), OnMapReadyCallback, GoogleM
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
     private var userID:String = ""
     private var mDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference()
+
+    private var userLatitude = 0.0
+    private var userLongitude = 0.0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_save_address)
@@ -48,11 +51,15 @@ class UserSaveAddressActivity : AppCompatActivity(), OnMapReadyCallback, GoogleM
             if(tv_userAddress2.text == "") {
                 Toast.makeText(this, "주소를 확인해 주세요.", Toast.LENGTH_SHORT).show()
             } else {
-
                 val userAddress = "${tv_userAddress2.text.toString()} ${et_detailAddress2.text.toString()}"
+                val data = HashMap<String, Any>()
+                data.put("address", userAddress)
+                data.put("latitude", userLatitude)
+                data.put("longitude", userLongitude)
+
                 val childUpdate = HashMap<String, Any>()
 
-                childUpdate.put("/users/$userID/info/address", userAddress)
+                childUpdate.put("/users/$userID/info/address", data)
                 mDatabase.updateChildren(childUpdate)
                 Toast.makeText(this, "주소를 저장했습니다.", Toast.LENGTH_SHORT).show()
             }
@@ -61,6 +68,8 @@ class UserSaveAddressActivity : AppCompatActivity(), OnMapReadyCallback, GoogleM
             val geocoder: Geocoder = Geocoder(this)
             val center = mMap!!.projection.visibleRegion.latLngBounds.center
             val addressList = geocoder.getFromLocation(center.latitude, center.longitude, 1)
+            userLatitude = center.latitude
+            userLongitude = center.longitude
             tv_userAddress2.setText(addressList.get(0).getAddressLine(0).toString())
         }
         iv_location_button2.setOnClickListener {

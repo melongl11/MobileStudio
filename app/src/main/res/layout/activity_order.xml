@@ -27,12 +27,6 @@
             android:paddingTop="5dp"
             android:src="@drawable/location_button" />
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/location_marker" />
 
     </fragment>
 
