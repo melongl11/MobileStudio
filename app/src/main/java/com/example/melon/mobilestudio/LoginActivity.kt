@@ -21,6 +21,8 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -28,6 +30,7 @@ class LoginActivity : AppCompatActivity(),GoogleApiClient.OnConnectionFailedList
     private val RC_SIGN_IN = 9001
     private lateinit var mGoogleApiClient : GoogleApiClient
     private var mAuth:FirebaseAuth? = null
+    private var mDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,6 +93,16 @@ class LoginActivity : AppCompatActivity(),GoogleApiClient.OnConnectionFailedList
     private fun updateUI(user: FirebaseUser?) {
         if(user != null) { //다음 Activity로 넘어가는 부분.
             val intent = Intent(this, MainActivity::class.java)
+            for( userInfo in user.providerData) {
+                val name  = userInfo.displayName.toString()
+                val phoneNumber = userInfo.phoneNumber.toString()
+                val userInformation = HashMap<String, Any>()
+                userInformation.put("name", name)
+                userInformation.put("phoneNumber", phoneNumber)
+                val childUpdate = HashMap<String, Any>()
+                childUpdate.put("/users/${user.uid}/info/name/",userInformation)
+                mDatabase.updateChildren(childUpdate)
+            }
             startActivity(intent)
             finish()
         } else {

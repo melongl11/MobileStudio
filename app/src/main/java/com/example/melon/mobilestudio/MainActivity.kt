@@ -21,7 +21,8 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import android.widget.*
 import android.widget.ArrayAdapter
-
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 
 val arrayListforActivity = ArrayList<Activity>()
@@ -56,7 +57,6 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-
         mAuth = FirebaseAuth.getInstance()
         mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
             val user = firebaseAuth.currentUser
@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity() {
             } else {
             }
         }
+
 
         val permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
         if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -90,6 +91,11 @@ class MainActivity : AppCompatActivity() {
         }
         btn_modify_address.setOnClickListener {
             val intent = Intent(this, UserSaveAddressActivity::class.java)
+            arrayListforActivity.add(this)
+            startActivity(intent)
+        }
+        btn_modify_info.setOnClickListener {
+            val intent = Intent(this, UserModifyInformationActivity::class.java)
             arrayListforActivity.add(this)
             startActivity(intent)
         }

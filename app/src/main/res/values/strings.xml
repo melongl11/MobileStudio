@@ -8,4 +8,6 @@
     <string name="addressCheck">주소확인</string>
     <string name="inputDetailAddress">상세주소를 입력하세요.</string>
     <string name="locationButtonDescription">현재 위치로 이동</string>
+    <string name="user_name" >이름 : </string>
+    <string name="user_phone_number" >휴대전화 : </string>
 </resources>

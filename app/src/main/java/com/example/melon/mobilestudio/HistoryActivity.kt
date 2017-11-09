@@ -26,8 +26,8 @@ class HistoryActivity : AppCompatActivity() {
         mAuth!!.addAuthStateListener(mAuthListener!!)
         Handler().postDelayed({
             val dbRef = FirebaseDatabase.getInstance().getReference("/users/$userID/orders")
-            dbRef.addListenerForSingleValueEvent(postListener)
-            adapter = com.example.melon.mobilestudio.ListAdapter(datas, this)
+            dbRef.addValueEventListener(postListener)
+            adapter = com.example.melon.mobilestudio.ListAdapter(datas, this,userID)
             lv_history.setAdapter(adapter)
         },500)
     }
