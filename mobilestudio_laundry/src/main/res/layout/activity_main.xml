@@ -1,44 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Drawerlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.mobilestudio_laundry.MainActivity">
 
-    <ImageView
-        android:id="@+id/bt_orderedlist"
-        android:layout_width="249dp"
-        android:layout_height="115dp"
-        app:layout_constraintBottom_toTopOf="@+id/bt_acceptedlist"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_signout"
-        app:srcCompat="@drawable/bt_order" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/bt_acceptedlist"
-        android:layout_width="254dp"
-        android:layout_height="127dp"
-        app:layout_constraintBottom_toTopOf="@+id/bt_management"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_orderedlist"
-        app:srcCompat="@drawable/bt_accepted" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/bt_management"
-        android:layout_width="254dp"
-        android:layout_height="127dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_acceptedlist"
-        app:srcCompat="@drawable/bt_management" />
+            <ImageView
+                android:id="@+id/bt_orderedlist"
+                android:layout_width="249dp"
+                android:layout_height="115dp"
+                android:layout_marginTop="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/bt_acceptedlist"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/bt_order" />
 
-    <Button
-        android:id="@+id/bt_signout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="signout"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="8dp" />
+            <ImageView
+                android:id="@+id/bt_acceptedlist"
+                android:layout_width="254dp"
+                android:layout_height="127dp"
+                app:layout_constraintBottom_toTopOf="@+id/bt_management"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bt_orderedlist"
+                app:srcCompat="@drawable/bt_accepted" />
 
-</android.support.constraint.ConstraintLayout>
+            <ImageView
+                android:id="@+id/bt_management"
+                android:layout_width="254dp"
+                android:layout_height="127dp"
+                android:layout_marginBottom="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bt_acceptedlist"
+                app:srcCompat="@drawable/bt_management" />
+
+        </android.support.constraint.ConstraintLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/lv_activity_main"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#EDEDED"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/bt_signout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="signout"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:layout_editor_absoluteY="8dp" />
+    </LinearLayout>
+
+</android.support.v4.widget.DrawerLayout>
