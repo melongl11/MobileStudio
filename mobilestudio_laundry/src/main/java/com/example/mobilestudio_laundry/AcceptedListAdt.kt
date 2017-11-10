@@ -78,7 +78,7 @@ class AcceptedListAdt (var datas:ArrayList<Accepted>, var context: Context) : Ba
                     childUpdate.put("users/$userID/orders/$key", newOrder)
 
                     mDatabase.updateChildren(childUpdate)
-                    val complete = Accepted(accepted!!.date, accepted!!.name, accepted!!.address, accepted!!.require,2, accepted!!.key, accepted!!.userID)
+                    val complete = Accepted(accepted!!.date, accepted!!.name, accepted!!.address, accepted!!.require,2, accepted!!.key, accepted!!.userID,accepted!!.hour, accepted!!.minute)
                     val acceptUpdate = HashMap<String, Any>()
                     acceptUpdate.put("laundry/${order.laundryID}/orders/$key", complete)
                     mDatabase.updateChildren(acceptUpdate)

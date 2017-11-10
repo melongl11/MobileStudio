@@ -71,7 +71,7 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
                     childUpdate.put("users/$userID/orders/$key", newOrder)
 
                     mDatabase.updateChildren(childUpdate)
-                    val newOrdered = Ordered(ordered!!.date, ordered!!.name, ordered!!.address, ordered!!.require,1, ordered!!.key, ordered!!.userID)
+                    val newOrdered = Ordered(ordered!!.date, ordered!!.name, ordered!!.address, ordered!!.require,1, ordered!!.key, ordered!!.userID,ordered!!.hour, ordered!!.minute)
                     val acceptUpdate = HashMap<String, Any>()
                     acceptUpdate.put("laundry/${order.laundryID}/orders/$key", newOrdered)
                     mDatabase.updateChildren(acceptUpdate)
