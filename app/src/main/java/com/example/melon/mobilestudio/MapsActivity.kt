@@ -15,6 +15,7 @@ import android.widget.ToggleButton
 import kotlinx.android.synthetic.main.activity_order.*
 import android.Manifest.permission.WRITE_CALENDAR
 import android.location.*
+import android.renderscript.Sampler
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.content.ContextCompat
@@ -44,6 +45,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private var mAuth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
     private var userID:String = ""
+    private var phoneNumber = ""
 
     override fun onStart() {
         super.onStart()
@@ -97,9 +99,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             else {
                 val intent = Intent(this, OrderActivity::class.java)
                 intent.putExtra("laundryInfo", info)
-                intent.putExtra("laundryName", name)
                 intent.putExtra("laundryID", laundryID)
                 intent.putExtra("userAddress",address)
+                intent.putExtra("userName", name)
+                intent.putExtra("userPhoneNumber", phoneNumber)
 
                 startActivity(intent)
                 arrayListforActivity.add(this)
@@ -176,16 +179,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
 
         Handler().postDelayed({
-            Toast.makeText(this@MapsActivity, userID.toString(), Toast.LENGTH_SHORT).show()
             val dbRefForUserAddress = FirebaseDatabase.getInstance().getReference("users/$userID/info/address")
             dbRefForUserAddress.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError?) {
+                override fun onCancelled(p0: DatabaseError) {
                 }
                 override fun onDataChange(p0: DataSnapshot) {
                     val userAddress = p0.getValue(UserAddress::class.java)
                     userLatitude = userAddress!!.latitude
                     userLongitude = userAddress.longitude
                     address = userAddress.address
+                }
+            })
+            val dbRefForUserInfo = FirebaseDatabase.getInstance().getReference("users/$userID/info/name")
+            dbRefForUserInfo.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                }
+                override fun onDataChange(p0: DataSnapshot) {
+                    val userInfo = p0.getValue(Information::class.java)
+                    name = userInfo!!.name
+                    phoneNumber = userInfo.phoneNumber
                 }
             })
         }, 500)

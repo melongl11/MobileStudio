@@ -19,9 +19,6 @@ import java.util.*
  * Created by kim on 2017-10-05.
  */
 class DialogHandler : DialogFragment(){
-
-
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val calender : Calendar = Calendar.getInstance()

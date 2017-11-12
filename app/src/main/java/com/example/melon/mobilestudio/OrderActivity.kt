@@ -73,7 +73,7 @@ class OrderActivity : AppCompatActivity() {
             builder.setPositiveButton("예"){dialog, whichButton ->
                 val intent = Intent(this,OrderFinishActivity::class.java)
                 require = et_require.text.toString()
-                newOrder(today, require, 0)
+                newOrder(today, i!!.getStringExtra("laundryID"), 0)
                 intent.putExtra("require", require)
                 intent.putExtra("laundryInfo", i!!.getStringExtra("laundryInfo"))
                 intent.putExtra("date",today)
@@ -98,17 +98,9 @@ class OrderActivity : AppCompatActivity() {
         childUpdate.put("/users/$userID/orders/$saveTime", orderValue)
         mDatabase.updateChildren(childUpdate)
 
-        val result = HashMap<String, Any>()
-        result.put("date",date)
-        result.put("name",laundry)
-        result.put("address",address)
-        result.put("require", require)
-        result.put("state", state)
-        result.put("key",saveTime)
-        result.put("userID", userID)
-        result.put("hour", visitHour)
-        result.put("minute", visitMinute)
-        childUpdate.put("/laundry/${i!!.getStringExtra("laundryID")}/orders/$saveTime", result)
+        val orderToLaundry = OrderToLaundry(date, i!!.getStringExtra("userName"), address, require, state, saveTime, userID, visitHour, visitMinute, i!!.getStringExtra("userPhoneNumber"))
+        val result = orderToLaundry.toMap()
+        childUpdate.put("/laundry/${laundry}/orders/$saveTime", result)
         mDatabase.updateChildren(childUpdate)
 
     }
