@@ -31,9 +31,9 @@ class DialogHandler : DialogFragment(){
 
     private val timePickerListener = object: TimePickerDialog.OnTimeSetListener {
         override fun onTimeSet(view: TimePicker?, hour: Int, minute: Int) {
-            activity.tv_visithour.setText(hour.toString())
-            activity.tv_visitminute.setText(minute.toString())
-            activity.tv_visittime2.setText(((hour+1).toString() + ":" + minute.toString()))
+            activity.tv_visithour.text = hour.toString()
+            activity.tv_visitminute.text = minute.toString()
+            activity.tv_visittime2.text = ((hour+1).toString() + ":" + minute.toString())
         }
     }
 

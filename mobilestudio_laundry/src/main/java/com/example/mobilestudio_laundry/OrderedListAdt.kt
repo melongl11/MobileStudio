@@ -27,12 +27,12 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
         val mImageViewAccept: View = convert.findViewById(R.id.iv_accept)
 
         if (datas.isEmpty()) {
-            mTextViewAddress.tv_address.setText("주문이 없습니다.")
+            mTextViewAddress.tv_address.text = "주문이 없습니다."
         }
         ordered = datas[position]
-        mTextViewName.tv_name.setText(ordered!!.name)
-        mTextViewAddress.tv_address.setText(ordered!!.address)
-        mTextViewVisitTime.tv_visittime.setText(ordered!!.date)
+        mTextViewName.tv_name.text = ordered!!.name
+        mTextViewAddress.tv_address.text = ordered!!.address
+        mTextViewVisitTime.tv_visittime.text = ordered!!.date
         mImageViewAccept.iv_accept.setImageResource(R.drawable.bt_accept)
 
         key = ordered!!.key
@@ -71,9 +71,10 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
                     childUpdate.put("users/$userID/orders/$key", newOrder)
 
                     mDatabase.updateChildren(childUpdate)
-                    val newOrdered = Ordered(ordered!!.date, ordered!!.name, ordered!!.address, ordered!!.require,1, ordered!!.key, ordered!!.userID,ordered!!.hour, ordered!!.minute)
+                    val newOrdered = Ordered(ordered!!.date, ordered!!.name, ordered!!.address, ordered!!.require,1, ordered!!.key, ordered!!.userID,ordered!!.hour, ordered!!.minute,ordered!!.phoneNumber)
+                    val orderedValue = newOrdered.toMap()
                     val acceptUpdate = HashMap<String, Any>()
-                    acceptUpdate.put("laundry/${order.laundryID}/orders/$key", newOrdered)
+                    acceptUpdate.put("laundry/${order.laundryID}/orders/$key", orderedValue)
                     mDatabase.updateChildren(acceptUpdate)
                 }
             }

@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.history_list.view.*
 /**
  * Created by melon on 2017-09-12.
  */
-class ListAdapter(var datas:ArrayList<Order>, var context:Context, var userID:String) : BaseAdapter() {
+class HistoryListAdt(var datas:ArrayList<Order>, var context:Context, var userID:String) : BaseAdapter() {
     var inflater : LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     var key:String = ""
     override fun getCount(): Int {

@@ -24,7 +24,6 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener {
 
         mAuth = FirebaseAuth.getInstance()
     }
-
     override fun onStart() {
         super.onStart()
         var currentUser : FirebaseUser? = mAuth?.getCurrentUser()

@@ -9,11 +9,12 @@ class Accepted(){
     var address:String = " "
     var key:String= " "
     var require:String = " "
-    var state:Int = 0
+    var state:Int = 0;
     var userID:String = ""
     var hour:Int = 0
     var minute:Int = 0
-    constructor(date:String, laundry:String, address:String, require:String,state:Int, key:String, userID:String, hour:Int, minute:Int) : this() {
+    var phoneNumber:String = ""
+    constructor(date:String, laundry:String, address:String, require:String,state:Int, key:String, userID:String, hour:Int, minute:Int, phoneNumber:String) : this() {
         this.date = date
         this.name = laundry
         this.address = address
@@ -23,6 +24,7 @@ class Accepted(){
         this.userID = userID
         this.hour = hour
         this.minute = minute
+        this.phoneNumber = phoneNumber
     }
 
     fun toMap(): Map<String, Any>  {
@@ -36,6 +38,7 @@ class Accepted(){
         result.put("require", require)
         result.put("hour", hour)
         result.put("minute",minute)
+        result.put("phoneNumber", phoneNumber)
         return result
     }
 }

@@ -25,14 +25,14 @@ class OrderActivity : AppCompatActivity() {
 
     var address:String = " "
     var require:String = " "
-    var saveFormat = SimpleDateFormat("yyMMddhhmmss")
+    private var saveFormat = SimpleDateFormat("yyMMddhhmmss")
     var visitHour:Int = 0
     var visitMinute:Int = 0
-    var i:Intent? = null
+    private var i:Intent? = null
     private var mAuth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
     private var userID:String = ""
-    private var mDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference()
+    private var mDatabase: DatabaseReference = FirebaseDatabase.getInstance().reference
     private var spinnerList = ArrayList<String>()
 
     override fun onStart() {
@@ -64,7 +64,7 @@ class OrderActivity : AppCompatActivity() {
         i = intent
         address = i!!.getStringExtra("userAddress")
 
-        tv_userAddressCheck.setText(address)
+        tv_userAddressCheck.text = address
         val dateFormat = SimpleDateFormat("yy-MM-dd")
         val today = dateFormat.format(Date())
         finalorder.setOnClickListener {
@@ -80,7 +80,7 @@ class OrderActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
-            builder.setNegativeButton("아니오"){dialog,whichButton ->
+            builder.setNegativeButton("아니오"){dialog, whichButton ->
                 dialog.cancel()
             }
             val dialog: AlertDialog = builder.create()
@@ -90,7 +90,7 @@ class OrderActivity : AppCompatActivity() {
     }
     private fun newOrder(date:String, laundry:String, state:Int) {
         val saveTime = saveFormat.format(Date())
-        val order = Order(date, laundry, state, saveTime, i!!.getStringExtra("laundryID"))
+        val order = Order(date, i!!.getStringExtra("laundryInfo"), state, saveTime, i!!.getStringExtra("laundryID"))
         val orderValue = order.toMap()
 
         val childUpdate = HashMap<String, Any>()
@@ -100,7 +100,7 @@ class OrderActivity : AppCompatActivity() {
 
         val orderToLaundry = OrderToLaundry(date, i!!.getStringExtra("userName"), address, require, state, saveTime, userID, visitHour, visitMinute, i!!.getStringExtra("userPhoneNumber"))
         val result = orderToLaundry.toMap()
-        childUpdate.put("/laundry/${laundry}/orders/$saveTime", result)
+        childUpdate.put("/laundry/$laundry/orders/$saveTime", result)
         mDatabase.updateChildren(childUpdate)
 
     }
@@ -108,8 +108,8 @@ class OrderActivity : AppCompatActivity() {
     private val postListener = object : ValueEventListener {
         override fun onCancelled(p0: DatabaseError?) {
         }
-        override fun onDataChange(datasnapshot: DataSnapshot) {
-            for(snapshot in datasnapshot.children) {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            for(snapshot in dataSnapshot.children) {
                 val visitTime = snapshot.getValue(VisitTime::class.java)
                 visitHour = visitTime!!.hourOfDay
                 visitMinute = visitTime.minute

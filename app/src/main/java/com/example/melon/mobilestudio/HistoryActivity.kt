@@ -1,13 +1,8 @@
 package com.example.melon.mobilestudio
 
-import android.database.Cursor
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.renderscript.Sampler
-import android.widget.ArrayAdapter
-import android.widget.ListAdapter
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_history.*
@@ -15,7 +10,7 @@ import kotlin.collections.ArrayList
 
 class HistoryActivity : AppCompatActivity() {
     private var datas = ArrayList<Order>()
-    lateinit var adapter : com.example.melon.mobilestudio.ListAdapter
+    lateinit var adapter : HistoryListAdt
 
     private var mAuth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
@@ -27,8 +22,8 @@ class HistoryActivity : AppCompatActivity() {
         Handler().postDelayed({
             val dbRef = FirebaseDatabase.getInstance().getReference("/users/$userID/orders")
             dbRef.addValueEventListener(postListener)
-            adapter = com.example.melon.mobilestudio.ListAdapter(datas, this,userID)
-            lv_history.setAdapter(adapter)
+            adapter = HistoryListAdt(datas, this,userID)
+            lv_history.adapter = adapter
         },500)
     }
     override fun onStop() {
@@ -53,9 +48,9 @@ class HistoryActivity : AppCompatActivity() {
 
     }
     private val postListener = object : ValueEventListener {
-        override fun onDataChange(datasnapshot: DataSnapshot) {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
             datas.clear()
-            for(snapshot in datasnapshot.getChildren()) {
+            for(snapshot in dataSnapshot.children) {
                 val order = snapshot.getValue(Order::class.java)
                 datas.add(order!!)
             }
