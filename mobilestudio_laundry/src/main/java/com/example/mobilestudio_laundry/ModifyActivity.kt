@@ -2,6 +2,7 @@ package com.example.mobilestudio_laundry
 
 import android.app.Activity
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -28,6 +29,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.firebase.ui.storage.images.FirebaseImageLoader
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
@@ -46,6 +48,7 @@ import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
+import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_accepted.*
 import kotlinx.android.synthetic.main.activity_management.*
 import kotlinx.android.synthetic.main.activity_modify.view.*
@@ -58,15 +61,12 @@ import kotlin.collections.ArrayList
 class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCameraMoveListener {
     var marker: Marker?= null
     var center:LatLng? = null
-    var bitmap : Bitmap? = null
-    var imageUri : Uri? = null
-    var mCurrentPhoto : String? = null
 
-    private var mStorageRef : StorageReference = FirebaseStorage.getInstance().getReference()
-    val REQ_CODE_SELECT_IMAGE = 0
-    val REQ_CODE_IMAGE_CROP = 1
-    val REQ_CODE_CAMERA = 2
-    val REQ_CAMERA = 3
+    private var filePath : Uri? = null
+    private var fileExtras : Bundle? = null
+    private var bitmap : Bitmap? = null
+
+    var storage = FirebaseStorage.getInstance()
 
     private var init = 0
     private var mMap: GoogleMap? = null
@@ -74,7 +74,6 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
     private var enableCurrentLocation = true
     private var lm:LocationManager? = null
     private var initLocation:Location? = null
-    private var mImageCaptureUri : Uri? = null
 
     private var mAuth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
@@ -85,71 +84,6 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
             enableCurrentLocation = false
         }
     }
-
-    // 사진 업로드  /////////////////////////////////////////////////////////////////
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQ_CODE_SELECT_IMAGE) {
-                imageUri= data!!.data
-                cropImage(data.data)
-            }
-            else if (requestCode == REQ_CODE_CAMERA){
-                cropImage(data!!.data)
-            }
-            else if (requestCode == REQ_CODE_IMAGE_CROP) {
-                val extras : Bundle = data!!.extras
-                if(extras != null){
-                    bitmap = extras.getParcelable("data")
-                    uploadimg()
-                    var f = File(imageUri!!.path)
-                    if(f.exists()){
-                        f.delete()
-                    }
-                }
-            }
-        }
-    }
-
-        fun cropImage(uri : Uri) {
-            var intent = Intent("com.android.camera.action.CROP")
-            intent.setDataAndType(uri,"image/*")
-            intent.putExtra("crop","true")
-            intent.putExtra("aspectX",4)
-            intent.putExtra("aspectY",1)
-            intent.putExtra("outputX",256)
-            intent.putExtra("outputY",64)
-            intent.putExtra("scale",true)
-            intent.putExtra("return-data",true)
-            startActivityForResult(intent,REQ_CODE_IMAGE_CROP)
-        }
-
-        fun uploadimg(){
-            var riversRef : StorageReference = mStorageRef.child("laundry").child("image").child("real.jpg")
-            var baos : ByteArrayOutputStream = ByteArrayOutputStream()
-            bitmap?.compress(Bitmap.CompressFormat.JPEG,100,baos)
-            var data = baos.toByteArray()
-
-            var uploadTask : UploadTask = riversRef.putBytes(data)
-            uploadTask.addOnSuccessListener {
-
-                Toast.makeText(applicationContext,"사진을 업로드했습니다.", Toast.LENGTH_LONG).show()
-                downimg()
-            }.addOnSuccessListener { taskSnapshot ->
-                var DownloadURL = taskSnapshot.downloadUrl!!
-            }
-    }
-            fun downimg(){
-            var downRef : StorageReference = mStorageRef.child("laundry").child("image").child("real.jpg")
-            downRef.downloadUrl.addOnSuccessListener{
-                Glide.with(this).using(FirebaseImageLoader()).load(downRef).into(iv_Picture)
-                Toast.makeText(applicationContext,"다운성공.", Toast.LENGTH_LONG).show()
-            }.addOnFailureListener{
-                Toast.makeText(applicationContext,"다운실패.", Toast.LENGTH_LONG).show()
-            }
-        }
-
-    ////////////////////////////////////////////////////////////////////////////////
 
     override fun onStart() {
         super.onStart()
@@ -175,30 +109,15 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
             }
         }
 
-        // 사진  ////////////////////////
+        down()
 
-        downimg()
 
         bt_setPicture.setOnClickListener {
-            var ad  = AlertDialog.Builder(this)
-            ad.setTitle("사진수정")
-            ad.setMessage("방법을 선택해주세요")
-                    .setNegativeButton("카메라"){ dialog,whichButton ->
-                        var takepic = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                        /*var imageFileName  = "tmp_"+System.currentTimeMillis().toString()+".jpg"
-                        mImageCaptureUri = Uri.fromFile(File(Environment.getExternalStorageDirectory(),imageFileName))
-                        takepic.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,mImageCaptureUri)*/
-                        startActivityForResult(takepic,REQ_CODE_CAMERA)
-                    }
-                    .setPositiveButton("사진"){ dialog,whichButton ->
-                        val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                        intent.setType("image/*")
-                        startActivityForResult(intent, REQ_CODE_SELECT_IMAGE)
-                    }
-            val dialog: AlertDialog = ad.create()
-            dialog.show()
+            var intent = Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            intent.setType("image/*")
+            startActivityForResult(Intent.createChooser(intent,"이미지를 선택하세요."),0)
         }
-        ///////////////////////////////
+
 
         try {
                 val mapFragment = supportFragmentManager
@@ -285,5 +204,79 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
+        if(requestCode == 0){
+            cropImage(data!!.data)
+        }
+        if(requestCode == 1){
+            fileExtras = data!!.extras
+            if(fileExtras != null){
+                bitmap = fileExtras!!.getParcelable("data")
+                iv_Picture.setImageBitmap(bitmap)
+                uploadFile()
+            }
+            iv_Picture.setImageBitmap(bitmap)
+            uploadFile()
+        }
+    }
+
+    fun uploadFile(){
+        if (fileExtras != null){
+            val progressDialog = ProgressDialog(this)
+            progressDialog.show()
+
+
+            var filename = "image.jpg"
+            var storageRef = storage.getReference().child("image/$userID").child(filename)
+            var baos : ByteArrayOutputStream = ByteArrayOutputStream()
+            bitmap?.compress(Bitmap.CompressFormat.JPEG,100,baos)
+            var data = baos.toByteArray()
+
+            storageRef.putBytes(data)
+                    .addOnSuccessListener { task ->
+                        progressDialog.dismiss()
+                        Toast.makeText(applicationContext,"업로드 완료!",Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener { task ->
+                        progressDialog.dismiss()
+                        Toast.makeText(applicationContext,"업로드 실패!",Toast.LENGTH_LONG).show()
+                    }
+                    .addOnProgressListener { taskSnapshot: UploadTask.TaskSnapshot? ->
+                        var progress = (100 * taskSnapshot!!.bytesTransferred / taskSnapshot.totalByteCount)
+                        progressDialog.setMessage("업로드 중 " +(progress.toInt()) + "% ..." )
+                    }
+
+        } else {
+            Toast.makeText(applicationContext, "파일을 먼저 선택하세요.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun down(){
+        var filename = "image.jpg"
+        var storageRef = storage.getReference().child("image/$userID").child(filename)
+
+        Glide.with(this)
+                .using(FirebaseImageLoader())
+                .load(storageRef)
+                .placeholder(R.mipmap.ic_launcher_round)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .bitmapTransform(CropCircleTransformation(CustomBitmapPool()))
+                .into(iv_Picture)
+    }
+
+    fun cropImage(uri : Uri) {
+        var intent = Intent("com.android.camera.action.CROP")
+        intent.setDataAndType(uri,"image/*")
+        intent.putExtra("crop","true")
+        intent.putExtra("aspectX",1)
+        intent.putExtra("aspectY",1)
+        intent.putExtra("outputX",256)
+        intent.putExtra("outputY",256)
+        intent.putExtra("scale",true)
+        intent.putExtra("return-data",true)
+        startActivityForResult(intent,1)
+    }
 }
