@@ -40,6 +40,18 @@
         app:layout_constraintVertical_bias="1.0"
         tools:layout_editor_absoluteX="0dp" />
 
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="77dp"
+        android:layout_height="82dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_userAddress"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@color/common_google_signin_btn_text_dark_disabled"
+        tools:layout_editor_absoluteX="0dp" />
+
     <EditText
         android:id="@+id/et_detailAddress"
         android:layout_width="match_parent"

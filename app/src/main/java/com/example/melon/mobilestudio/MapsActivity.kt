@@ -20,6 +20,9 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.content.ContextCompat
 import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.firebase.ui.storage.images.FirebaseImageLoader
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.google.firebase.database.DataSnapshot
@@ -28,6 +31,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.android.gms.maps.MapFragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
+import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_order2.*
 import java.util.*
 
@@ -47,6 +52,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private var userID:String = ""
     private var phoneNumber = ""
 
+    var storage = FirebaseStorage.getInstance()
+
     override fun onStart() {
         super.onStart()
         mAuth!!.addAuthStateListener(mAuthListener!!)
@@ -62,6 +69,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         tv_laundryInfo.setText(marker!!.snippet)
         laundryID = marker.title
         info = marker.snippet
+        down(laundryID)
 
         return true
     }
@@ -206,6 +214,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
         val makerTimer = Timer()
         makerTimer.schedule(dbListenTimer,0,500)
+    }
+
+    fun down(laundID : String){
+        var filename = "image.jpg"
+        var storageRef = storage.getReference().child("image/$laundID").child(filename)
+
+        Glide.with(this)
+                .using(FirebaseImageLoader())
+                .load(storageRef)
+                .placeholder(R.mipmap.ic_launcher_round)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .bitmapTransform(CropCircleTransformation(CustomBitmapPool()))
+                .into(iv_icon)
     }
 
     override fun onBackPressed() {
