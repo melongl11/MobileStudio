@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerToggle:ActionBarDrawerToggle
     private var mDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference()
     private var user:FirebaseUser? = null
+    private var address:String = ""
 
     override fun onStart() {
         super.onStart()
@@ -47,31 +48,9 @@ class MainActivity : AppCompatActivity() {
 
         Handler().postDelayed({
             val dbRef = FirebaseDatabase.getInstance().getReference("/users/$userID/info/name")
-            dbRef.addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError?) {
-                }
-                override fun onDataChange(datasnapshot: DataSnapshot) {
-                    if (!datasnapshot.hasChildren()) {
-                        for (userInfo in user!!.providerData) {
-                            val name = userInfo.displayName.toString()
-                            val phoneNumber = userInfo.phoneNumber.toString()
-                            val userInformation = HashMap<String, Any>()
-                            userInformation.put("name", name)
-                            userInformation.put("phoneNumber", phoneNumber)
-                            val childUpdate = HashMap<String, Any>()
-                            childUpdate.put("/users/${user!!.uid}/info/name/", userInformation)
-                            mDatabase.updateChildren(childUpdate)
-                        }
-                    }
-                    val information = datasnapshot.getValue(Information::class.java)
-                    if(information!!.phoneNumber == "") {
-                        Toast.makeText(this@MainActivity, "휴대전화를 등록해 주세요.", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@MainActivity, UserModifyInformationActivity::class.java)
-                        arrayListforActivity.add(this@MainActivity)
-                        startActivity(intent)
-                    }
-                }
-            })
+            dbRef.addValueEventListener(infoListener)
+            val dbRefForAddress  = FirebaseDatabase.getInstance().getReference("/users/$userID/info/address")
+            dbRefForAddress.addValueEventListener(addressListener)
         },500)
     }
     override fun onStop() {
@@ -107,9 +86,13 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),100)
         }
         iv_order.setOnClickListener {
-            val intent = Intent(this, MapsActivity::class.java)
-            arrayListforActivity.add(this)
-            startActivity(intent)
+            if (address == "") {
+                Toast.makeText(this@MainActivity, "주소를 등록해 주세요", Toast.LENGTH_SHORT).show()
+            } else {
+                val intent = Intent(this, MapsActivity::class.java)
+                arrayListforActivity.add(this)
+                startActivity(intent)
+            }
         }
         iv_history.setOnClickListener {
             val intent = Intent(this, HistoryActivity::class.java)
@@ -153,5 +136,41 @@ class MainActivity : AppCompatActivity() {
         } else super.onOptionsItemSelected(item)
     }
 
-
+    private val infoListener = object : ValueEventListener {
+        override fun onCancelled(p0: DatabaseError?) {
+        }
+        override fun onDataChange(datasnapshot: DataSnapshot) {
+            if (!datasnapshot.hasChildren()) {
+                for (userInfo in user!!.providerData) {
+                    val name = userInfo.displayName.toString()
+                    val phoneNumber = userInfo.phoneNumber.toString()
+                    val userInformation = HashMap<String, Any>()
+                    userInformation.put("name", name)
+                    userInformation.put("phoneNumber", phoneNumber)
+                    val childUpdate = HashMap<String, Any>()
+                    childUpdate.put("/users/${user!!.uid}/info/name/", userInformation)
+                    mDatabase.updateChildren(childUpdate)
+                }
+            }
+            val information = datasnapshot.getValue(Information::class.java)
+            if(information!!.phoneNumber == "") {
+                Toast.makeText(this@MainActivity, "휴대전화를 등록해 주세요.", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@MainActivity, UserModifyInformationActivity::class.java)
+                arrayListforActivity.add(this@MainActivity)
+                startActivity(intent)
+            }
+        }
+    }
+    private val addressListener = object : ValueEventListener {
+        override fun onCancelled(p0: DatabaseError?) {
+        }
+        override fun onDataChange(datasnapshot: DataSnapshot) {
+            if (!datasnapshot.hasChildren()) {
+                address = ""
+            } else {
+                val userAddress = datasnapshot.getValue(UserAddress::class.java)
+                address = userAddress!!.address
+            }
+        }
+    }
 }
