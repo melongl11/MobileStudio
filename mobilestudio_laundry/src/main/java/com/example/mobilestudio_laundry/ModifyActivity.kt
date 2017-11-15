@@ -105,11 +105,11 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
             val user = firebaseAuth.currentUser
             if (user != null) {
                 userID = user.uid
+                down()
             } else {
             }
         }
 
-        down()
 
 
         bt_setPicture.setOnClickListener {
@@ -239,6 +239,7 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
                     .addOnSuccessListener { task ->
                         progressDialog.dismiss()
                         Toast.makeText(applicationContext,"업로드 완료!",Toast.LENGTH_SHORT).show()
+                        down()
                     }
                     .addOnFailureListener { task ->
                         progressDialog.dismiss()
