@@ -131,6 +131,7 @@ class ModifyActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCame
             val saveTime = saveFormat.format(Date())
             val childUpdate = HashMap<String, Any>()
             val currentLocation = HashMap<String, Any>()
+            center = mMap!!.projection.visibleRegion.latLngBounds.center
 
             currentLocation.put("latitude",center!!.latitude)
             currentLocation.put("longitude",center!!.longitude)
