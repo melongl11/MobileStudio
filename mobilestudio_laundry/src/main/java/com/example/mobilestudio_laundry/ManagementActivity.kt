@@ -34,18 +34,6 @@ class ManagementActivity : AppCompatActivity() {
 
     private var visitTimeList = ArrayList<Visittime>()
     lateinit private var visitTimeAdapter : VisittimeListAdt
-/*
-    private var mStorageRef : StorageReference = FirebaseStorage.getInstance().getReference()
-
-    fun downimg(){
-        var downRef : StorageReference = mStorageRef.child("laundry").child("image").child("real.jpg")
-        downRef.downloadUrl.addOnSuccessListener{
-            Glide.with(this).using(FirebaseImageLoader()).load(downRef).into(imageView3)
-            Toast.makeText(applicationContext,"다운성공.", Toast.LENGTH_LONG).show()
-        }.addOnFailureListener{
-            Toast.makeText(applicationContext,"다운실패.", Toast.LENGTH_LONG).show()
-        }
-    }*/
 
     private var mDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference()
     var laundry : String = ""
@@ -57,15 +45,6 @@ class ManagementActivity : AppCompatActivity() {
         super.onStart()
         mAuth!!.addAuthStateListener(mAuthListener!!)
 
-/*        val dbR = FirebaseDatabase.getInstance().getReference("/laundry/$userID/info/time")
-        dbR.addValueEventListener(postListener)
-
-        adapter = VisittimeListAdt(datas, this)
-        lv_visittime.setAdapter(adapter)
-           },1000)*/
-/*        var adapter = LaundryListAdt(datas,this)
-        var ivvv : ListView = findViewById(R.id.lv_laund)
-        ivvv.lv_laund.setAdapter(adapter)*/
         laundryListAdapter = LaundryListAdt(laundryList,this)
         lv_laund.adapter = laundryListAdapter
         visitTimeAdapter = VisittimeListAdt(visitTimeList, this)
@@ -137,21 +116,6 @@ class ManagementActivity : AppCompatActivity() {
         }
 
     }
-
-   /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1111) {
-            if (resultCode == Activity.RESULT_OK) {
-                var intent = Intent(this, TimeSettings::class.java)
-                hour = intent.getStringExtra("hour")
-                minute = intent.getStringExtra("minute")
-                tv_visittime1.setText("1111")
-                tv_visittime2.setText("!!!!")
-                Toast.makeText(this,"이거 되는거냐",Toast.LENGTH_LONG).show()
-            }
-        }
-    }*/
-
     fun newlaundlist(laundry: String, fare: Int) {
 
         val childUpdate = HashMap<String, Any>()

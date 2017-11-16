@@ -39,12 +39,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
     private var userID:String = ""
     private var phoneNumber = ""
+    private var ItemList = ArrayList<Item>()
+    lateinit private var ItemListAdt : ItemListAdapter
 
     var storage = FirebaseStorage.getInstance()
 
     override fun onStart() {
         super.onStart()
         mAuth!!.addAuthStateListener(mAuthListener!!)
+        ItemListAdt = ItemListAdapter(ItemList,this)
+
 
     }
     override fun onStop() {
@@ -58,6 +62,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         laundryID = marker.title
         info = marker.snippet
         down(laundryID)
+        val dbRefItem = FirebaseDatabase.getInstance().getReference("laundry/$laundryID/info/list/")
+        dbRefItem.addListenerForSingleValueEvent(laundryListener)
+        lv_laundry.adapter = ItemListAdt
 
         return true
     }
@@ -211,6 +218,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 .skipMemoryCache(true)
                 .bitmapTransform(CropCircleTransformation(CustomBitmapPool()))
                 .into(iv_icon)
+    }
+
+    private val laundryListener = object : ValueEventListener {
+        override fun onDataChange(datasnapshot: DataSnapshot) {
+            ItemList.clear()
+            for(snapshot in datasnapshot.getChildren()) {
+                val fare = snapshot.getValue(Item::class.java)
+                ItemList.add(fare!!)
+            }
+            ItemListAdt.notifyDataSetChanged()
+        }
+        override fun onCancelled(p0: DatabaseError?) {
+        }
     }
 
     override fun onBackPressed() {
