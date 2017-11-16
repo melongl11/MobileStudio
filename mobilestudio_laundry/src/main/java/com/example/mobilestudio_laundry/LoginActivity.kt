@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity(),View.OnClickListener {
 
+    private var backPressedHandler = BackPressHandler(this)
     private var mAuth: FirebaseAuth? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,5 +73,9 @@ class LoginActivity : AppCompatActivity(),View.OnClickListener {
         } else if ( i == R.id.bt_signup) {
             createAccount(et_Email.text.toString(),et_passw.text.toString())
         }
+    }
+
+    override fun onBackPressed() {
+        backPressedHandler.onBackPressedEnd()
     }
 }

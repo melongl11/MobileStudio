@@ -30,9 +30,11 @@ class LoginActivity : AppCompatActivity(),GoogleApiClient.OnConnectionFailedList
     private val RC_SIGN_IN = 9001
     private lateinit var mGoogleApiClient : GoogleApiClient
     private var mAuth:FirebaseAuth? = null
+    private var backPressedHandler = BackPressHandler(this)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
@@ -110,5 +112,9 @@ class LoginActivity : AppCompatActivity(),GoogleApiClient.OnConnectionFailedList
 
     override fun onConnectionFailed(p0: ConnectionResult) {
         Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show()
+    }
+    
+    override fun onBackPressed() {
+        backPressedHandler.onBackPressedEnd()
     }
 }
