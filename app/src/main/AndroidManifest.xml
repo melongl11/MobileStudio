@@ -18,11 +18,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
         <!--
@@ -35,7 +30,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCX4bgikWgHIccLr_YsgXcliZYr-iZPgwk" />
+            android:value="AIzaSyA3BeEjEQLZ0pT63RZCo-QhE7cyvNu-TXs" />
 
         <activity
             android:name=".MapsActivity"
@@ -53,7 +48,14 @@
             android:exported="true" />
 
         <activity android:name=".UserSaveAddressActivity" />
-        <activity android:name=".UserModifyInformationActivity"></activity>
+        <activity android:name=".UserModifyInformationActivity" />
+        <activity android:name=".SplashActivity"
+            android:theme="@style/Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter></activity>
     </application>
 
 </manifest>
