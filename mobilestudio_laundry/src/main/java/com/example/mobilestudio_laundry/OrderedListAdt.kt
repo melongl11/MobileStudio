@@ -21,18 +21,22 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
     var ordered:Ordered? = null
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val convert = inflater.inflate(R.layout.ordered_list, null)
-        val mTextViewName: View = convert.findViewById(R.id.tv_name)
+        val mTextViewName: View = convert.findViewById(R.id.tv_costumer_name)
         val mTextViewAddress: View = convert.findViewById(R.id.tv_address)
+        val mTextViewVisitDay: View = convert.findViewById(R.id.tv_visitday)
         val mTextViewVisitTime: View = convert.findViewById(R.id.tv_visittime)
         val mImageViewAccept: View = convert.findViewById(R.id.iv_accept)
+        val mTextViewPhone: View = convert.findViewById(R.id.tv_costumer_phone)
 
         if (datas.isEmpty()) {
             mTextViewAddress.tv_address.text = "주문이 없습니다."
         }
         ordered = datas[position]
-        mTextViewName.tv_name.text = ordered!!.name
+        mTextViewPhone.tv_costumer_phone.text = ordered!!.phoneNumber
+        mTextViewName.tv_costumer_name.text = ordered!!.name
         mTextViewAddress.tv_address.text = ordered!!.address
-        mTextViewVisitTime.tv_visittime.text = ordered!!.date
+        mTextViewVisitTime.tv_visittime.text = ("${ordered!!.hour} : ${ordered!!.minute} ~ ${ordered!!.hour + 1} : ${ordered!!.minute} 방문 요망")
+        mTextViewVisitDay.tv_visitday.text = ordered!!.date
         mImageViewAccept.iv_accept.setImageResource(R.drawable.bt_accept)
 
         key = ordered!!.key

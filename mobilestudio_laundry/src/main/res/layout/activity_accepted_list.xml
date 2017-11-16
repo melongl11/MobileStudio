@@ -10,27 +10,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tv_date_aa"
-            android:layout_width="21dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:textSize="15pt" />
-
         <TextView
             android:id="@+id/tv_name_aa"
-            android:layout_width="81dp"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="15pt"
+            android:fontFamily="@font/dxx"
+            android:layout_marginLeft="5dp"/>
+        <TextView
+            android:id="@+id/tv_phone_aa"
+            android:layout_width="294dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textSize="10pt" />
+            android:textSize="13pt"
+            android:fontFamily="@font/dxx"
+            android:layout_marginLeft="5dp"/>
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_address_aa"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:textSize="7pt" />
+        android:layout_height="wrap_content"
+        android:textSize="10pt"
+        android:fontFamily="@font/dxx"
+        android:layout_marginLeft="5dp"/>
+    <TextView
+        android:id="@+id/tv_date_aa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="10pt"
+        android:fontFamily="@font/dxx"
+        android:layout_marginLeft="5dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,15 +50,18 @@
         android:gravity="right">
 
         <TextView
+            android:layout_marginTop="15dp"
             android:id="@+id/tv_visittime_aa"
-            android:layout_width="match_parent"
+            android:layout_width="252dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textSize="7pt" />
+            android:textSize="10pt"
+            android:fontFamily="@font/dxx"
+            android:layout_marginLeft="5dp"/>
 
         <ImageView
             android:layout_width="120dp"
-            android:layout_height="60dp"
-            android:id="@+id/iv_state_a"/>
+            android:layout_height="50dp"
+            android:id="@+id/iv_state_a" />
     </LinearLayout>
 </LinearLayout>

@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             val information = datasnapshot.getValue(Information::class.java)
-            if(information!!.phoneNumber == "") {
+            if(information!!.phoneNumber == "" || information.phoneNumber =="null") {
                 Toast.makeText(this@MainActivity, "휴대전화를 등록해 주세요.", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this@MainActivity, UserModifyInformationActivity::class.java)
                 arrayListforActivity.add(this@MainActivity)

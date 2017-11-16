@@ -27,11 +27,15 @@ class AcceptedListAdt (var datas:ArrayList<Accepted>, var context: Context) : Ba
             val mTextViewAddress: View = convert.findViewById(R.id.tv_address_aa)
             val mTextViewVisittime: View = convert.findViewById(R.id.tv_visittime_aa)
             val mImageViewAccept : View = convert.findViewById(R.id.iv_state_a)
+            val mTextViewDate: View = convert.findViewById(R.id.tv_date_aa)
+            val mTextViewPhone:View = convert.findViewById(R.id.tv_phone_aa)
 
             accepted = datas[position]
             mTextViewName.tv_name_aa.text = accepted!!.name
             mTextViewAddress.tv_address_aa.text = accepted!!.address
-            mTextViewVisittime.tv_visittime_aa.text = accepted!!.date
+            mTextViewVisittime.tv_visittime_aa.text = ("${accepted!!.hour} : ${accepted!!.minute} ~ ${accepted!!.hour} : ${accepted!!.minute}")
+            mTextViewDate.tv_date_aa.text = accepted!!.date
+            mTextViewPhone.tv_phone_aa.text = accepted!!.phoneNumber
             userID = accepted!!.userID
             key = accepted!!.key
             when(accepted!!.state) {
