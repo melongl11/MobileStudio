@@ -17,8 +17,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.R.array
 import android.widget.ArrayAdapter
-
-
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.firebase.ui.storage.images.FirebaseImageLoader
+import com.google.firebase.storage.FirebaseStorage
+import jp.wasabeef.glide.transformations.CropCircleTransformation
 
 
 class OrderActivity : AppCompatActivity() {
@@ -28,6 +31,8 @@ class OrderActivity : AppCompatActivity() {
     private var saveFormat = SimpleDateFormat("yyMMddhhmmss")
     var visitHour:Int = 0
     var visitMinute:Int = 0
+    var storage = FirebaseStorage.getInstance()
+    var laundid = ""
     private var i:Intent? = null
     private var mAuth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
@@ -63,6 +68,10 @@ class OrderActivity : AppCompatActivity() {
         }
         i = intent
         address = i!!.getStringExtra("userAddress")
+
+       down()
+
+        tv_laundryN2.text = i!!.getStringExtra("laundryInfo")
 
         tv_userAddressCheck.text = address
         val dateFormat = SimpleDateFormat("yy-MM-dd")
@@ -116,7 +125,6 @@ class OrderActivity : AppCompatActivity() {
                 val timeFormat = SimpleDateFormat("HH : mm")
                 val fromTime = timeFormat.format(Date(2000,1,1,visitHour, visitMinute,0))
                 val toTime = timeFormat.format(Date(2000,1,1,visitHour+1, visitMinute,0))
-                val time =
                 spinnerList.add("${fromTime} ~  ${toTime}")
             }
             val spinnerAdapter = ArrayAdapter(this@OrderActivity, android.R.layout.simple_spinner_item, spinnerList)
@@ -124,5 +132,20 @@ class OrderActivity : AppCompatActivity() {
             spin_visit_time.adapter = spinnerAdapter
 
         }
+    }
+
+    fun down(){
+        var filename = "image.jpg"
+        var laundID = i!!.getStringExtra("laundryID")
+        var storageRef = storage.getReference().child("image/$laundID").child(filename)
+
+        Glide.with(this)
+                .using(FirebaseImageLoader())
+                .load(storageRef)
+                .placeholder(R.mipmap.ic_launcher_round)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .bitmapTransform(CropCircleTransformation(CustomBitmapPool()))
+                .into(iv_laundryPic)
     }
 }

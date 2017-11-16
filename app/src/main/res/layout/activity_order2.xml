@@ -1,99 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.melon.mobilestudio.OrderActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="#87bce6"
-        android:text="요구사항"
-        android:textSize="10pt" />
-
-    <EditText
-        android:id="@+id/et_require"
-        android:layout_width="match_parent"
-        android:layout_height="120dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="#87bce6"
-        android:text="방문시간"
-        android:textSize="10pt" />
-
-    <Spinner
-        android:id="@+id/spin_visit_time"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:dropDownWidth="match_parent" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="#87bce6"
-        android:text="주소"
-        android:textSize="10pt"
-        />
-
-    <TextView
-        android:id="@+id/tv_userAddressCheck"
-        android:layout_width="match_parent"
-        android:layout_height="113dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="#87bce6"
-        android:text="결제방식"
-        android:textSize="10pt" />
-
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/radio_card"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:text="카드결제"
-            android:textSize="10pt" />
-
-        <RadioButton
-            android:id="@+id/radio_cash"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:text="현금결제"
-            android:textSize="10pt" />
-
-    </RadioGroup>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:gravity="bottom"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#ECEFF1">
 
-        <TextView
-            android:id="@+id/tv_laundry"
-            android:layout_width="308dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textSize="15pt" />
-
-        <ImageView
-            android:id="@+id/finalorder"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/name_pic"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteY="59dp"
+            android:background="#039BFF">
+
+            <TextView
+                android:id="@+id/tv_laundryN2"
+                android:layout_width="385dp"
+                android:layout_height="40dp"
+                android:fontFamily="@font/dxx"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:textSize="35sp"
+                app:layout_constraintBottom_toTopOf="@+id/iv_laundryPic"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_laundryPic"
+                android:layout_width="127dp"
+                android:layout_height="113dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/tv_laundryN2"
+                app:layout_constraintStart_toStartOf="@+id/tv_laundryN2"
+                app:layout_constraintTop_toBottomOf="@+id/tv_laundryN"
+                app:srcCompat="@color/common_google_signin_btn_text_dark_disabled" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/require"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteY="201dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:background="#87bce6"
+                android:text="  요구사항"
+                android:fontFamily="@font/dxx"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/et_require"
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteY="83dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:background="#87bce6"
+                android:text="  주소"
+                android:fontFamily="@font/dxx"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_userAddressCheck"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:fontFamily="@font/dxx"
+                android:text="123123"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/visittime"
+            android:layout_width="match_parent"
+            android:layout_height="89dp"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteY="388dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:background="#87bce6"
+                android:text="  방문시간"
+                android:fontFamily="@font/dxx"
+                android:textSize="20sp" />
+
+            <Spinner
+                android:id="@+id/spin_visit_time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:dropDownWidth="match_parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/card"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/user_bt_order2" />
+            android:orientation="vertical"
+            tools:layout_editor_absoluteY="207dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="#87bce6"
+                android:fontFamily="@font/dxx"
+                android:text="  결제방식"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radio_cash"
+                        android:layout_width="32dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/dxx"
+                        android:text="현금결제"
+                        android:textSize="10pt" />
+
+                    <RadioButton
+                        android:id="@+id/radio_card"
+                        android:layout_width="117dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/dxx"
+                        android:text="카드결제"
+                        android:textSize="10pt" />
+
+                    <TextView
+                        android:id="@+id/finalorder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#039BFF"
+                        android:fontFamily="@font/dxx"
+                        android:gravity="center"
+                        android:text="주문하기"
+                        android:textColor="#ffffff"
+                        android:textAlignment="center"
+                        android:textSize="45sp" />
+
+                </RadioGroup>
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 
 
-</android.support.v7.widget.LinearLayoutCompat>
+</android.support.constraint.ConstraintLayout>

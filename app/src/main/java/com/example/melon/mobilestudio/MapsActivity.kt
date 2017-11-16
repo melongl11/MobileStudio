@@ -1,24 +1,14 @@
 package com.example.melon.mobilestudio
 
-import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.support.v4.app.FragmentActivity
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.widget.TextView
-import android.widget.ToggleButton
 
 import kotlinx.android.synthetic.main.activity_order.*
-import android.Manifest.permission.WRITE_CALENDAR
 import android.location.*
-import android.renderscript.Sampler
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.FragmentTransaction
-import android.support.v4.content.ContextCompat
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -29,11 +19,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.android.gms.maps.MapFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import jp.wasabeef.glide.transformations.CropCircleTransformation
-import kotlinx.android.synthetic.main.activity_order2.*
 import java.util.*
 
 
@@ -66,7 +54,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         }
     }
     override fun onMarkerClick(marker: Marker?): Boolean {
-        tv_laundryInfo.setText(marker!!.snippet)
+        tv_laundryN.setText(marker!!.snippet)
         laundryID = marker.title
         info = marker.snippet
         down(laundryID)
@@ -116,12 +104,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 arrayListforActivity.add(this)
             }
         }
-        iv_checkAddress.setOnClickListener {
-            val geocoder:Geocoder = Geocoder(this)
-            val center = mMap!!.projection.visibleRegion.latLngBounds.center
-            val addressList = geocoder.getFromLocation(center.latitude, center.longitude, 1)
-            tv_userAddress.setText(addressList.get(0).getAddressLine(0).toString())
-        }
+
         iv_location_button.setOnClickListener {
             if (enableCurrentLocation) {
                 enableCurrentLocation = false
