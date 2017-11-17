@@ -159,7 +159,7 @@ class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
         }
 
         bt_setPicture.setOnClickListener {
-            var intent = Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            val intent = Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.setType("image/*")
             startActivityForResult(Intent.createChooser(intent,"이미지를 선택하세요."),0)
         }

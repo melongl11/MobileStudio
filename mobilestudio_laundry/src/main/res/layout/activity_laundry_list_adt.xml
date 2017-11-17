@@ -22,7 +22,8 @@
         app:layout_constraintEnd_toStartOf="@+id/tv_laund_fare"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="17dp" />
+        tools:layout_editor_absoluteY="17dp"
+        />
 
     <TextView
         android:id="@+id/tv_laund_fare"
