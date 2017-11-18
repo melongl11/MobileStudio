@@ -131,67 +131,35 @@
 
                 <TextView
                     android:id="@+id/tv_visithour"
-                    android:layout_width="81dp"
+                    android:layout_width="107dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="15dp"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:gravity="right"
                     android:textSize="10pt"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/textView"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="5dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text=":"
-                    android:textSize="10pt"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_bias="0.505"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_visithour"
-                    app:layout_constraintRight_toLeftOf="@+id/tv_visitminute"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_visitminute"
-                    android:layout_width="39dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    android:textSize="10pt"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/textView9"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/textView"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginLeft="15dp" />
 
                 <TextView
                     android:id="@+id/textView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:text="~"
                     android:textSize="10pt"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/tv_visittime2"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_visitminute"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginRight="8dp" />
+                    app:layout_constraintLeft_toRightOf="@+id/tv_visithour"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_visittime2"
@@ -199,7 +167,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="28dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:textSize="10pt"
@@ -209,11 +177,11 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.555"
                     android:layout_marginRight="8dp"
-                    android:layout_marginStart="28dp" />
+                    android:layout_marginStart="8dp" />
 
                 <Button
                     android:id="@+id/bt_plusvisit"
-                    android:layout_width="71dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
@@ -287,16 +255,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/bt_modify"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/bt_refactor" />
-        </LinearLayout>
     </LinearLayout>
 </ScrollView>

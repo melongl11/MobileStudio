@@ -20,7 +20,7 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
     var userID = " "
     var ordered:Ordered? = null
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val convert = inflater.inflate(R.layout.ordered_list, null)
+        val convert = inflater.inflate(R.layout.ordered_list, parent, false)
         val mTextViewName: View = convert.findViewById(R.id.tv_costumer_name)
         val mTextViewAddress: View = convert.findViewById(R.id.tv_address)
         val mTextViewVisitDay: View = convert.findViewById(R.id.tv_visitday)
@@ -39,9 +39,9 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
         mTextViewVisitDay.tv_visitday.text = ordered!!.date
         mImageViewAccept.iv_accept.setImageResource(R.drawable.bt_accept)
 
-        key = ordered!!.key
-        userID = ordered!!.userID
         mImageViewAccept.iv_accept.setOnClickListener {
+            key = datas[position].key
+            userID = datas[position].userID
             val dbRef = FirebaseDatabase.getInstance().getReference("/users/$userID/orders")
             dbRef.addValueEventListener(postListener)
         }
@@ -75,7 +75,8 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
                     childUpdate.put("users/$userID/orders/$key", newOrder)
 
                     mDatabase.updateChildren(childUpdate)
-                    val newOrdered = Ordered(ordered!!.date, ordered!!.name, ordered!!.address, ordered!!.require,1, ordered!!.key, ordered!!.userID,ordered!!.hour, ordered!!.minute,ordered!!.phoneNumber)
+                    val newOrdered = ordered
+                    newOrdered!!.state = 1
                     val orderedValue = newOrdered.toMap()
                     val acceptUpdate = HashMap<String, Any>()
                     acceptUpdate.put("laundry/${order.laundryID}/orders/$key", orderedValue)

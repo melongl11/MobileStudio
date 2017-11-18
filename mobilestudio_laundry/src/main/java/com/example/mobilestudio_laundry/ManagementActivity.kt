@@ -87,11 +87,13 @@ class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
         super.onStart()
         mAuth!!.addAuthStateListener(mAuthListener!!)
 
-        laundryListAdapter = LaundryListAdt(laundryList,this)
-        lv_laund.adapter = laundryListAdapter
-        visitTimeAdapter = VisittimeListAdt(visitTimeList, this)
-        lv_visittime.adapter = visitTimeAdapter
+
+
         Handler().postDelayed({
+            laundryListAdapter = LaundryListAdt(laundryList,this)
+            lv_laund.adapter = laundryListAdapter
+            visitTimeAdapter = VisittimeListAdt(visitTimeList, userID,this)
+            lv_visittime.adapter = visitTimeAdapter
             val dbRefForLaund = FirebaseDatabase.getInstance().getReference("laundry/$userID/info/list")
             dbRefForLaund.addValueEventListener(laundryListener)
             val dbRefForVisitTime = FirebaseDatabase.getInstance().getReference("laundry/$userID/info/time")
@@ -139,17 +141,12 @@ class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
         }
 
         bt_plusvisit.setOnClickListener{
-            hour = tv_visithour.text.toString().toInt()
-            minute = tv_visitminute.text.toString().toInt()
+            val newVisitTime = tv_visithour.text.toString()
+            hour = newVisitTime.subSequence(0,2).toString().trim().toInt()
+            minute = newVisitTime.subSequence(6, newVisitTime.length).toString().trim().toInt()
             newtime(hour,minute)
             tv_visithour.setText("")
-            tv_visitminute.setText("")
             tv_visittime2.setText("")
-        }
-
-        bt_modify.setOnClickListener {
-            val intent = Intent(this, ModifyActivity::class.java)
-            startActivity(intent)
         }
 
         bt_pluslaund.setOnClickListener{

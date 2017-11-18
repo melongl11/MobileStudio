@@ -36,12 +36,13 @@ class AcceptedListAdt (var datas:ArrayList<Accepted>, var context: Context) : Ba
             mTextViewVisittime.tv_visittime_aa.text = ("${accepted!!.hour} : ${accepted!!.minute} ~ ${accepted!!.hour} : ${accepted!!.minute}")
             mTextViewDate.tv_date_aa.text = accepted!!.date
             mTextViewPhone.tv_phone_aa.text = accepted!!.phoneNumber
-            userID = accepted!!.userID
-            key = accepted!!.key
+
             when(accepted!!.state) {
                 1 -> {
                     mImageViewAccept.iv_state_a.setImageResource(R.drawable.user_history_1)
                     mImageViewAccept.iv_state_a.setOnClickListener {
+                        userID = datas[position].userID
+                        key = datas[position].key
                         val dbRef = FirebaseDatabase.getInstance().getReference("/users/$userID/orders")
                         dbRef.addValueEventListener(postListener)
                     }
@@ -82,7 +83,8 @@ class AcceptedListAdt (var datas:ArrayList<Accepted>, var context: Context) : Ba
                     childUpdate.put("users/$userID/orders/$key", newOrder)
 
                     mDatabase.updateChildren(childUpdate)
-                    val complete = Accepted(accepted!!.date, accepted!!.name, accepted!!.address, accepted!!.require,2, accepted!!.key, accepted!!.userID,accepted!!.hour, accepted!!.minute, accepted!!.phoneNumber)
+                    val complete = accepted
+                    complete!!.state = 2
                     val acceptUpdate = HashMap<String, Any>()
                     acceptUpdate.put("laundry/${order.laundryID}/orders/$key", complete)
                     mDatabase.updateChildren(acceptUpdate)
