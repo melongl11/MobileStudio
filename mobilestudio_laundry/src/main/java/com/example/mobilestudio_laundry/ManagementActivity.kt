@@ -90,10 +90,11 @@ class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
 
 
         Handler().postDelayed({
-            laundryListAdapter = LaundryListAdt(laundryList,this)
+            laundryListAdapter = LaundryListAdt(laundryList, userID,this)
             lv_laund.adapter = laundryListAdapter
             visitTimeAdapter = VisittimeListAdt(visitTimeList, userID,this)
             lv_visittime.adapter = visitTimeAdapter
+
             val dbRefForLaund = FirebaseDatabase.getInstance().getReference("laundry/$userID/info/list")
             dbRefForLaund.addValueEventListener(laundryListener)
             val dbRefForVisitTime = FirebaseDatabase.getInstance().getReference("laundry/$userID/info/time")
@@ -149,7 +150,7 @@ class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
             tv_visittime2.setText("")
         }
 
-        bt_pluslaund.setOnClickListener{
+        tv_pluslaund.setOnClickListener{
             laundry= et_pluslaund.text.toString()
             fare = Integer.parseInt(et_fare.text.toString())
             newlaundlist(laundry,fare)
@@ -161,12 +162,10 @@ class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
             startActivityForResult(Intent.createChooser(intent,"이미지를 선택하세요."),0)
         }
 
-        lv_visittime.setOnTouchListener (object : View.OnTouchListener {
-            override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
-                scrollView.requestDisallowInterceptTouchEvent(true)
-                return false
-            }
-        })
+        lv_visittime.setOnTouchListener { p0, p1 ->
+            scrollView.requestDisallowInterceptTouchEvent(true)
+            false
+        }
 
         lv_laund.setOnTouchListener (object : View.OnTouchListener {
             override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {

@@ -44,7 +44,6 @@ class VisittimeListAdt(var datas : ArrayList<Visittime>, var userID:String, var 
         mTextViewfirst.text = ("${visit!!.hourOfDay.toString()} : ${visit!!.minute.toString()}")
         mTextViewlast.text = ("${(visit!!.hourOfDay + 1).toString()} : ${visit!!.minute.toString()}")
         mTextViewDelete.setOnClickListener {
-            Toast.makeText(context, datas[position].hourOfDay.toString()+datas[position].minute.toString(), Toast.LENGTH_SHORT ).show()
             val builder: AlertDialog.Builder = AlertDialog.Builder(context)
             builder.setMessage("방문 시간을 삭제 하시겠습니까?")
             builder.setPositiveButton("예"){dialog, whichButton ->
