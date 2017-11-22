@@ -156,7 +156,7 @@ class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
             newlaundlist(laundry,fare)
         }
 
-        bt_setPicture.setOnClickListener {
+        iv_Picture.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.setType("image/*")
             startActivityForResult(Intent.createChooser(intent,"이미지를 선택하세요."),0)
@@ -312,17 +312,25 @@ class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
         super.onActivityResult(requestCode, resultCode, data)
 
         if(requestCode == 0){
-            cropImage(data!!.data)
+            if(data != null) {
+                cropImage(data.data)
+            }else{
+                finish()
+            }
         }
         if(requestCode == 1){
-            fileExtras = data!!.extras
-            if(fileExtras != null){
-                bitmap = fileExtras!!.getParcelable("data")
+            if(data != null) {
+                fileExtras = data!!.extras
+                if (fileExtras != null) {
+                    bitmap = fileExtras!!.getParcelable("data")
+                    iv_Picture.setImageBitmap(bitmap)
+                    uploadFile()
+                }
                 iv_Picture.setImageBitmap(bitmap)
                 uploadFile()
+            } else {
+                finish()
             }
-            iv_Picture.setImageBitmap(bitmap)
-            uploadFile()
         }
     }
 
