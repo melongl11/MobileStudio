@@ -19,9 +19,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".MainActivity"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -36,7 +35,8 @@
         <activity android:name=".ManagementActivity" />
         <activity android:name=".VisittimeListAdt" />
         <activity android:name=".LaundryListAdt" />
-        <activity android:name=".SplashActivity"
+        <activity
+            android:name=".SplashActivity"
             android:theme="@style/Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,6 +44,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".LaundryService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

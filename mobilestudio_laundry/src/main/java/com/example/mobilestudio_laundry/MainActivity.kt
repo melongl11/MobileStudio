@@ -18,13 +18,30 @@ val arrayListforActivity = ArrayList<Activity>()
 class MainActivity : AppCompatActivity() {
 
     private var backPressedHandler = BackPressHandler(this)
-    var mAuth : FirebaseAuth? = null
+    private var mAuth : FirebaseAuth? = null
+    private var mAuthListener: FirebaseAuth.AuthStateListener? = null
+    private var userID:String = ""
+    private var user:FirebaseUser? = null
     private lateinit var drawerToggle:ActionBarDrawerToggle
+
+    override fun onStart() {
+        super.onStart()
+        val serviceIntent = Intent(this, LaundryService::class.java)
+        serviceIntent.putExtra("userID",userID)
+        startService(serviceIntent)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         mAuth = FirebaseAuth.getInstance()
+        mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+            user = firebaseAuth.currentUser
+            if (user != null) {
+                userID = user!!.uid
+            } else {
+            }
+        }
 
         val drawerLayout: DrawerLayout = findViewById(R.id.Drawerlayout)
         drawerToggle = ActionBarDrawerToggle(this, drawerLayout, R.string.app_name,R.string.app_name)
