@@ -10,15 +10,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#ECEFF1">
+        android:background="#ECEFF1"
+        android:orientation="vertical">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/name_pic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:layout_editor_absoluteY="59dp"
-            android:background="#039BFF">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            tools:layout_editor_absoluteY="59dp">
 
             <TextView
                 android:id="@+id/tv_laundryN2"
@@ -27,7 +27,7 @@
                 android:fontFamily="@font/dxx"
                 android:gravity="center"
                 android:textAlignment="center"
-                android:textColor="#ffffff"
+                android:textColor="#039BFF"
                 android:textSize="35sp"
                 app:layout_constraintBottom_toTopOf="@+id/iv_laundryPic"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -36,6 +36,7 @@
                 android:id="@+id/iv_laundryPic"
                 android:layout_width="127dp"
                 android:layout_height="113dp"
+                android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/tv_laundryN2"
                 app:layout_constraintStart_toStartOf="@+id/tv_laundryN2"
@@ -54,9 +55,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
-                android:background="#87bce6"
-                android:text="  요구사항"
+                android:background="#039BFF"
                 android:fontFamily="@font/dxx"
+                android:text="  요구사항"
                 android:textSize="20sp" />
 
             <EditText
@@ -75,9 +76,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
-                android:background="#87bce6"
-                android:text="  주소"
+                android:background="#039BFF"
                 android:fontFamily="@font/dxx"
+                android:text="  주소"
                 android:textSize="20sp" />
 
             <TextView
@@ -92,16 +93,16 @@
         <LinearLayout
             android:id="@+id/visittime"
             android:layout_width="match_parent"
-            android:layout_height="89dp"
+            android:layout_height="71dp"
             android:orientation="vertical"
             tools:layout_editor_absoluteY="388dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
-                android:background="#87bce6"
-                android:text="  방문시간"
+                android:background="#039BFF"
                 android:fontFamily="@font/dxx"
+                android:text="  방문시간"
                 android:textSize="20sp" />
 
             <Spinner
@@ -123,7 +124,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="#87bce6"
+                android:background="#039BFF"
                 android:fontFamily="@font/dxx"
                 android:text="  결제방식"
                 android:textSize="20sp" />
@@ -146,8 +147,10 @@
                         android:id="@+id/radio_cash"
                         android:layout_width="32dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_weight="1"
                         android:fontFamily="@font/dxx"
+                        android:gravity="center"
                         android:text="현금결제"
                         android:textSize="10pt" />
 
@@ -155,6 +158,7 @@
                         android:id="@+id/radio_card"
                         android:layout_width="117dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:fontFamily="@font/dxx"
                         android:text="카드결제"
                         android:textSize="10pt" />
@@ -168,8 +172,8 @@
                         android:fontFamily="@font/dxx"
                         android:gravity="center"
                         android:text="주문하기"
-                        android:textColor="#ffffff"
                         android:textAlignment="center"
+                        android:textColor="#ffffff"
                         android:textSize="45sp" />
 
                 </RadioGroup>

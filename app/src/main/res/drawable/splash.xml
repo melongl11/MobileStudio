@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/colorPrimaryDark"/>
-    <item android:id="@+id/list_item_splash"
-        android:top="8dp"
-        android:bottom="8dp"
-        android:left="8dp"
-        android:right="8dp"
-        >
-        <bitmap android:src="@drawable/main_icon"
-            android:gravity="center"/>
-    </item>
+<item android:drawable="@color/colorPrimary"/>
+<item
+    android:id="@+id/list_item_splash"
+    android:top="8dp"
+    android:bottom="8dp"
+    android:left="8dp"
+    android:right="8dp"
+    android:drawable="@drawable/splashimg"
+    >
+</item>
 </layer-list>
