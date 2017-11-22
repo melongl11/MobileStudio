@@ -15,8 +15,8 @@
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/name_pic"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="428dp"
+            android:layout_height="187dp"
             android:background="#FFFFFF"
             tools:layout_editor_absoluteY="59dp">
 
@@ -41,14 +41,14 @@
                 app:layout_constraintEnd_toEndOf="@+id/tv_laundryN2"
                 app:layout_constraintStart_toStartOf="@+id/tv_laundryN2"
                 app:layout_constraintTop_toBottomOf="@+id/tv_laundryN"
-                app:srcCompat="@color/common_google_signin_btn_text_dark_disabled" />
+                app:srcCompat="@drawable/loading" />
 
         </android.support.constraint.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/require"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="120dp"
             android:orientation="vertical"
             tools:layout_editor_absoluteY="201dp">
 
@@ -58,12 +58,13 @@
                 android:background="#039BFF"
                 android:fontFamily="@font/dxx"
                 android:text="  요구사항"
+                android:textColor="#ffffff"
                 android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/et_require"
                 android:layout_width="match_parent"
-                android:layout_height="80dp" />
+                android:layout_height="95dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -79,6 +80,7 @@
                 android:background="#039BFF"
                 android:fontFamily="@font/dxx"
                 android:text="  주소"
+                android:textColor="#ffffff"
                 android:textSize="20sp" />
 
             <TextView
@@ -86,14 +88,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:fontFamily="@font/dxx"
-                android:text="123123"
                 android:textSize="30sp" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/visittime"
             android:layout_width="match_parent"
-            android:layout_height="71dp"
+            android:layout_height="63dp"
             android:orientation="vertical"
             tools:layout_editor_absoluteY="388dp">
 
@@ -103,12 +104,13 @@
                 android:background="#039BFF"
                 android:fontFamily="@font/dxx"
                 android:text="  방문시간"
+                android:textColor="#ffffff"
                 android:textSize="20sp" />
 
             <Spinner
                 android:id="@+id/spin_visit_time"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="47dp"
                 android:dropDownWidth="match_parent" />
 
         </LinearLayout>
@@ -127,6 +129,7 @@
                 android:background="#039BFF"
                 android:fontFamily="@font/dxx"
                 android:text="  결제방식"
+                android:textColor="#ffffff"
                 android:textSize="20sp" />
 
             <LinearLayout

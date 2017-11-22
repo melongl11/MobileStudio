@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/mainbackground"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     tools:context="com.example.melon.mobilestudio.LoginActivity">
 
@@ -36,5 +36,15 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView">
 
     </com.google.android.gms.common.SignInButton>
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="39.5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/wave_w" />
 
 </android.support.constraint.ConstraintLayout>

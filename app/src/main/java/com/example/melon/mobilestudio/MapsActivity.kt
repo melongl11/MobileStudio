@@ -213,7 +213,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         Glide.with(this)
                 .using(FirebaseImageLoader())
                 .load(storageRef)
-                .placeholder(R.mipmap.ic_launcher_round)
+                .placeholder(R.drawable.loading)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .bitmapTransform(CropCircleTransformation(CustomBitmapPool()))

@@ -2,7 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="228dp"
+    android:layout_width="210dp"
     android:layout_height="35dp">
 
     <TextView
@@ -32,9 +32,10 @@
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="30dp"
+        android:layout_width="38dp"
         android:layout_height="35dp"
         android:layout_marginEnd="4dp"
+        android:layout_marginStart="3dp"
         app:layout_constraintEnd_toStartOf="@+id/tv_item"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,22 +48,22 @@
         android:layout_height="28dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:gravity="center"
         android:text="/"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_fare"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tv_item"
-        app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView5"
-        android:layout_width="34dp"
+        android:layout_width="26dp"
         android:layout_height="35dp"
+        android:gravity="center"
         android:text="원"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tv_fare"
-        tools:layout_editor_absoluteY="0dp"
-        android:gravity="center"/>
+        tools:layout_editor_absoluteY="0dp" />
 </android.support.constraint.ConstraintLayout>
