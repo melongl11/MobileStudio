@@ -88,6 +88,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
+                android:fontFamily="@font/dxx"
                 android:text="현재위치로 설정"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -104,6 +105,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="10pt"
+                android:fontFamily="@font/dxx"
                 android:textColor="#FFFFFF"
                 android:background="#039BFF"
                 android:text="방문시간" />
@@ -124,6 +126,7 @@
                     android:layout_weight="1"
                     android:gravity="right"
                     android:textSize="10pt"
+                    android:fontFamily="@font/dxx"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/textView9"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -136,47 +139,58 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:text="~"
                     android:textSize="10pt"
+                    android:fontFamily="@font/dxx"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/tv_visittime2"
+                    app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintLeft_toRightOf="@+id/tv_visithour"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/tv_visittime2"
                     android:layout_width="107dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="92dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:textSize="10pt"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/bt_plusvisit"
-                    app:layout_constraintLeft_toRightOf="@+id/textView9"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.555"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginStart="8dp" />
-
-                <Button
-                    android:id="@+id/bt_plusvisit"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    android:text="추가"
+                    android:fontFamily="@font/dxx"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_visittime2"
+                    app:layout_constraintLeft_toRightOf="@+id/textView9"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginRight="8dp" />
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/tv_plusvisit"
+                    android:layout_width="72dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:background="#C4E1F7"
+                    android:fontFamily="@font/dxx"
+                    android:text="추가"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13pt"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.983"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_visittime2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0" />
             </android.support.constraint.ConstraintLayout>
 
             <ListView
@@ -199,46 +213,70 @@
                 android:textSize="10pt"
                 android:textColor="#FFFFFF"
                 android:background="#039BFF"
+                android:fontFamily="@font/dxx"
                 android:text="세탁물 관리" />
 
-            <LinearLayout
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
                 <EditText
                     android:id="@+id/et_pluslaund"
-                    android:layout_width="96dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="세탁물 종류"
-                    android:textAlignment="center"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:hint="세탁물 종류"
+                    android:inputType="textPersonName"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/dxx"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/et_fare"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
-                    android:hint="가격"
-                    android:textAlignment="center"
                     android:id="@+id/et_fare"
-                    android:layout_width="104dp"
+                    android:layout_width="128dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="96dp"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="number" />
+                    android:hint="가격"
+                    android:inputType="number"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/dxx"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintLeft_toRightOf="@id/et_pluslaund"
+                    app:layout_constraintRight_toLeftOf="@+id/tv_pluslaund"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.75" />
 
                 <TextView
                     android:id="@+id/tv_pluslaund"
-                    android:text="추가"
-                    android:textSize="13pt"
-                    android:textAlignment="center"
-                    android:layout_width="wrap_content"
+                    android:layout_width="72dp"
                     android:layout_height="wrap_content"
-                    android:background="#C4E1F7"
-                    android:textColor="#FFFFFF"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_weight="1"
-                    android:layout_marginRight="5pt"
+                    android:background="#C4E1F7"
+                    android:fontFamily="@font/dxx"
+                    android:text="추가"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13pt"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.973"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
                     app:srcCompat="@drawable/bt_plus" />
-            </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
 
             <ListView
                 android:id="@+id/lv_laund"

@@ -141,7 +141,7 @@ class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
             dh.show(supportFragmentManager,"time_picker")
         }
 
-        bt_plusvisit.setOnClickListener{
+        tv_plusvisit.setOnClickListener{
             val newVisitTime = tv_visithour.text.toString()
             hour = newVisitTime.subSequence(0,2).toString().trim().toInt()
             minute = newVisitTime.subSequence(6, newVisitTime.length).toString().trim().toInt()
