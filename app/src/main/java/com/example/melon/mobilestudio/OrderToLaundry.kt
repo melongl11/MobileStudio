@@ -39,8 +39,8 @@ class OrderToLaundry() {
         result.put("state", state)
         result.put("key",saveTime)
         result.put("userID", userID)
-        result.put("hour", visitHour)
-        result.put("minute", visitMinute)
+        result.put("visitHour", visitHour)
+        result.put("visitMinute", visitMinute)
         result.put("phoneNumber", phoneNumber)
         return result
     }

@@ -26,7 +26,9 @@
                 android:layout_marginTop="80dp"
                 android:src="@drawable/bt_order"
                 app:layout_constraintBottom_toTopOf="@+id/iv_history"
-                app:layout_constraintEnd_toEndOf="@+id/iv_history"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
@@ -37,15 +39,18 @@
                 android:src="@drawable/bt_list"
                 app:layout_constraintBottom_toTopOf="@+id/imageView2"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv_order" />
 
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="wrap_content"
                 android:layout_height="39.5dp"
+                android:layout_marginBottom="-1dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/wave" />
 

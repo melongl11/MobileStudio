@@ -9,11 +9,13 @@ class LaundryLocation() {
     var name:String = ""
     var address: String = ""
     var laundryID: String = ""
-    constructor(latitude:Double, longitude:Double, name:String, address:String, laundryID:String) : this() {
+    var laundryNum:String = ""
+    constructor(latitude:Double, longitude:Double, name:String, address:String, laundryID:String, laundryNum:String) : this() {
         this.latitude = latitude
         this.longitude = longitude
         this.name = name
         this.address = address
         this.laundryID = laundryID
+        this.laundryNum = laundryNum
     }
 }

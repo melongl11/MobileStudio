@@ -205,6 +205,7 @@ class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
             currentLocation.put("address", et_laundryAddress.text.toString())
             currentLocation.put("name",et_laundryName.text.toString())
             currentLocation.put("laundryID", userID)
+            currentLocation.put("laundryNum",et_phoneNum.text.toString())
 
 
             childUpdate.put("/laundry_list/"+userID , currentLocation)
@@ -214,7 +215,7 @@ class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
                     .setMessage("세탁소 정보를 등록하였습니다.")
                     .setNegativeButton("닫기", DialogInterface.OnClickListener{ dialog, whichButton ->})
                     .show()
-        }
+    }
         iv_location_button.setOnClickListener {
             if (enableCurrentLocation) {
                 enableCurrentLocation = false
