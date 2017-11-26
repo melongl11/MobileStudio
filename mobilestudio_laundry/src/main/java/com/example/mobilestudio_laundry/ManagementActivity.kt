@@ -1,6 +1,7 @@
 package com.example.mobilestudio_laundry
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
@@ -18,12 +19,14 @@ import android.support.annotation.IntegerRes
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ListView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.mobilestudio_laundry.R.id.container
 import com.firebase.ui.storage.images.FirebaseImageLoader
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -44,7 +47,7 @@ import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCameraMoveListener {
+class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCameraMoveListener, GoogleMap.OnCameraIdleListener{
 
     var marker: Marker?= null
     var center: LatLng? = null
@@ -81,6 +84,11 @@ class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
         if(enableCurrentLocation) {
             enableCurrentLocation = false
         }
+        scrollView.requestDisallowInterceptTouchEvent(true)
+    }
+
+    override fun onCameraIdle() {
+        scrollView.requestDisallowInterceptTouchEvent(false)
     }
 
     override fun onStart() {
@@ -111,6 +119,7 @@ class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
         }
     }
 
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_management)
@@ -179,6 +188,8 @@ class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
             val mapFragment = supportFragmentManager
                     .findFragmentById(R.id.map) as SupportMapFragment
             mapFragment.getMapAsync(this)
+
+
         } catch (ex: SecurityException) {
 
         }
