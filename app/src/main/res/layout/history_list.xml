@@ -2,39 +2,86 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:textSize="15pt"
-        android:id="@+id/tv_date"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="10pt"
-        android:id="@+id/tv_laundry"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="7pt"
-        android:id="@+id/tv_require_list"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="7pt"
-        android:id="@+id/tv_visittime"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="end">
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="122dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:textSize="15pt" />
+
+        <Space
+            android:layout_width="85dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tv_laundry"
+            android:layout_width="202dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="10pt" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_require_list"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:textSize="7pt" />
+
+    <TextView
+        android:id="@+id/tv_visittime"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:textSize="7pt" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="135dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="세탁완료 배달시간 선택" />
+
         <Spinner
             android:id="@+id/sp_deliver_time"
-            android:layout_width="270dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_weight="1"
             android:dropDownWidth="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_call"
+            android:layout_width="228dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="가게 전화하기"
+            android:gravity="center"/>
+
         <ImageView
+            android:id="@+id/iv_state"
             android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:id="@+id/iv_state"/>
+            android:layout_height="50dp" />
     </LinearLayout>
 </LinearLayout>
