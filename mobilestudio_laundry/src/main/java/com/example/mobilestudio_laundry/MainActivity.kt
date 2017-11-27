@@ -1,10 +1,13 @@
 package com.example.mobilestudio_laundry
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
@@ -42,6 +45,14 @@ class MainActivity : AppCompatActivity() {
             } else {
             }
         }
+
+        val permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),100)
+        } else {
+            ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),100)
+        }
+
 
         val drawerLayout: DrawerLayout = findViewById(R.id.Drawerlayout)
         drawerToggle = ActionBarDrawerToggle(this, drawerLayout, R.string.app_name,R.string.app_name)

@@ -78,13 +78,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
+        //사용자 위치 사용 권한 받기.
         val permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
         if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
             ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),100)
         } else {
             ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),100)
         }
+
         iv_order.setOnClickListener {
             if (address == "") {
                 Toast.makeText(this@MainActivity, "주소를 등록해 주세요", Toast.LENGTH_SHORT).show()
