@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_accepted_list.view.*
 /**
  * Created by melon on 2017-09-20.
  */
-class AcceptedListAdt (var datas:ArrayList<Accepted>, var context: Context) : BaseAdapter() {
+class AcceptedListAdt (var datas:ArrayList<Accepted>, var context: Context, var uID:String) : BaseAdapter() {
     private var inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     var userID:String = ""
@@ -26,7 +26,7 @@ class AcceptedListAdt (var datas:ArrayList<Accepted>, var context: Context) : Ba
             val mTextViewName: View = convert!!.findViewById(R.id.tv_name_aa)
             val mTextViewAddress: View = convert.findViewById(R.id.tv_address_aa)
             val mTextViewVisittime: View = convert.findViewById(R.id.tv_visittime_aa)
-            val mImageViewAccept : View = convert.findViewById(R.id.iv_state_a)
+            val mTextViewAccept : View = convert.findViewById(R.id.tv_state_a)
             val mTextViewDate: View = convert.findViewById(R.id.tv_date_aa)
             val mTextViewPhone:View = convert.findViewById(R.id.tv_phone_aa)
 
@@ -39,8 +39,8 @@ class AcceptedListAdt (var datas:ArrayList<Accepted>, var context: Context) : Ba
 
             when(accepted!!.state) {
                 1 -> {
-                    mImageViewAccept.iv_state_a.setImageResource(R.drawable.user_history_1)
-                    mImageViewAccept.iv_state_a.setOnClickListener {
+                    mTextViewAccept.tv_state_a.text = "세탁완료"
+                    mTextViewAccept.tv_state_a.setOnClickListener {
                         userID = datas[position].userID
                         key = datas[position].key
                         val dbRef = FirebaseDatabase.getInstance().getReference("/users/$userID/orders")
@@ -48,7 +48,18 @@ class AcceptedListAdt (var datas:ArrayList<Accepted>, var context: Context) : Ba
                     }
                 }
                 2 -> {
-                    mImageViewAccept.iv_state_a.setImageResource(R.drawable.user_history_2)
+                    mTextViewAccept.tv_state_a.text = "배송대기"
+                }
+                3 -> {
+                    mTextViewAccept.tv_state_a.text = "배송출발"
+                    mTextViewAccept.tv_state_a.setOnClickListener {
+                        val newState = HashMap<String, Any>()
+                        FirebaseDatabase.getInstance().getReference("users/${datas[position].userID}/orders/${datas[position].key}/state").setValue(4)
+                        FirebaseDatabase.getInstance().getReference("laundry/${uID}/orders/${datas[position].key}/state").setValue(4)
+                    }
+                }
+                4-> {
+                    mTextViewAccept.tv_state_a.text = "배송중"
                 }
             }
             //if(!datas.isEmpty()) Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()

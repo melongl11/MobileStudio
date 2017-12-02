@@ -59,9 +59,13 @@
             android:fontFamily="@font/dxx"
             android:layout_marginLeft="5dp"/>
 
-        <ImageView
+        <TextView
             android:layout_width="120dp"
             android:layout_height="50dp"
-            android:id="@+id/iv_state_a" />
+            android:id="@+id/tv_state_a"
+            android:textSize="10pt"
+            android:fontFamily="@font/dxx"
+            android:textColor="#FFFFFF"
+            android:background="#039BFF"/>
     </LinearLayout>
 </LinearLayout>

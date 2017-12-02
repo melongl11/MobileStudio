@@ -46,7 +46,7 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".UserSaveAddressActivity" />
+        <activity android:name=".UserSaveAddressActivity" android:windowSoftInputMode = "stateAlwaysVisible"/>
         <activity android:name=".UserModifyInformationActivity" />
         <activity
             android:name=".SplashActivity"

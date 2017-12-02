@@ -20,9 +20,9 @@ class AcceptedList : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         mAuth!!.addAuthStateListener(mAuthListener!!)
-        adapter = AcceptedListAdt(datas, this)
-        lv_accepted.setAdapter(adapter)
         Handler().postDelayed({
+            adapter = AcceptedListAdt(datas, this, userID)
+            lv_accepted.setAdapter(adapter)
             val dbRef = FirebaseDatabase.getInstance().getReference("laundry/$userID/orders")
             dbRef.addValueEventListener(postListener)
         },1000)
