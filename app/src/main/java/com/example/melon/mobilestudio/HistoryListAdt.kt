@@ -102,12 +102,23 @@ class HistoryListAdt(var datas:ArrayList<Order>, var context:Context, var userID
         when(order.state) {
             0 -> mImageView.iv_state.setImageResource(R.drawable.user_history_0)
             1 -> {
-                mImageView.iv_state.setImageResource(R.drawable.user_history_1)
+                mImageView.iv_state.setImageResource(R.drawable.user_history_4)
                 val dbref = FirebaseDatabase.getInstance().getReference("laundry/${datas.get(position).laundryID}/info/time/")
                 dbref.addValueEventListener(postListener)
             }
             2 -> {
+                mImageView.iv_state.setImageResource(R.drawable.user_history_1)
+                    if(spinner != null) {
+                        var spinn = spinner?.selectedItem.toString()
+                        FirebaseDatabase.getInstance().getReference("users/${userID}/orders/${datas[position].key}/state").setValue(3)
+                        FirebaseDatabase.getInstance().getReference("laundry/${datas[position].laundryID}/orders/${datas[position].key}/state").setValue(3)
+                    }
+            }
+            3 -> {
                 mImageView.iv_state.setImageResource(R.drawable.user_history_2)
+            }
+            4 -> {
+                mImageView.iv_state.setImageResource(R.drawable.user_history_3)
                 mImageView.iv_state.setOnClickListener {
                     val builder: AlertDialog.Builder = AlertDialog.Builder(context)
                     builder.setMessage("세탁물을 수령 하셨습니까?")
