@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_order_finish.*
 import java.text.SimpleDateFormat
 import java.util.*
 import android.R.array
+import android.os.AsyncTask
 import android.widget.ArrayAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -33,6 +34,7 @@ class OrderActivity : AppCompatActivity() {
     var visitMinute:Int = 0
     var storage = FirebaseStorage.getInstance()
     var laundid = ""
+    var payment:String = ""
     private var i:Intent? = null
     private var mAuth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
@@ -81,6 +83,9 @@ class OrderActivity : AppCompatActivity() {
             builder.setMessage("주문하시겠습니까?")
             builder.setPositiveButton("예"){dialog, whichButton ->
                 val intent = Intent(this,OrderFinishActivity::class.java)
+                var id = rg.checkedRadioButtonId
+                var rb : RadioButton = findViewById(id)
+                payment = rb.text.toString()
                 require = et_require.text.toString()
                 newOrder(today, i!!.getStringExtra("laundryID"), 0)
                 intent.putExtra("require", require)
@@ -107,7 +112,7 @@ class OrderActivity : AppCompatActivity() {
         childUpdate.put("/users/$userID/orders/$saveTime", orderValue)
         mDatabase.updateChildren(childUpdate)
 
-        val orderToLaundry = OrderToLaundry(date, i!!.getStringExtra("userName"), address, require, state, saveTime, userID, visitHour, visitMinute, i!!.getStringExtra("userPhoneNumber"))
+        val orderToLaundry = OrderToLaundry(date, i!!.getStringExtra("userName"), address, require, state, saveTime, userID, visitHour, visitMinute, i!!.getStringExtra("userPhoneNumber"),payment)
         val result = orderToLaundry.toMap()
         childUpdate.put("/laundry/$laundry/orders/$saveTime", result)
         mDatabase.updateChildren(childUpdate)

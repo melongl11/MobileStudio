@@ -16,8 +16,9 @@ class OrderToLaundry() {
     var visitHour:Int = 0
     var visitMinute:Int = 0
     var phoneNumber:String = ""
+    var payment: String = ""
 
-    constructor(date:String, name:String, address:String, require:String, state:Int, saveTime:String, userID:String, visitHour:Int, visitMinute:Int, phoneNumber:String):this() {
+    constructor(date:String, name:String, address:String, require:String, state:Int, saveTime:String, userID:String, visitHour:Int, visitMinute:Int, phoneNumber:String, payment:String):this() {
         this.date = date
         this.name = name
         this.address = address
@@ -28,6 +29,7 @@ class OrderToLaundry() {
         this.visitHour = visitHour
         this.visitMinute = visitMinute
         this.phoneNumber = phoneNumber
+        this.payment = payment
     }
 
     fun toMap() : Map<String, Any> {
@@ -42,6 +44,7 @@ class OrderToLaundry() {
         result.put("visitHour", visitHour)
         result.put("visitMinute", visitMinute)
         result.put("phoneNumber", phoneNumber)
+        result.put("payment",payment)
         return result
     }
 }
