@@ -17,10 +17,16 @@ import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.Spinner
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.firebase.ui.storage.images.FirebaseImageLoader
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import jp.wasabeef.glide.transformations.CropCircleTransformation
+import kotlinx.android.synthetic.main.activity_order.*
 import kotlinx.android.synthetic.main.activity_order2.*
 import kotlinx.android.synthetic.main.activity_user_modify_information.*
 import kotlinx.android.synthetic.main.history_list.*
@@ -42,6 +48,7 @@ class HistoryListAdt(var datas:ArrayList<Order>, var context:Context, var userID
     var visitHourR :Int = 0
     var visitMinuteR:Int = 0
 
+
     private var spinnerList = java.util.ArrayList<String>()
     override fun getCount(): Int {
         return datas.size
@@ -61,8 +68,8 @@ class HistoryListAdt(var datas:ArrayList<Order>, var context:Context, var userID
         val mTextViewLaundry : View = convert.findViewById(R.id.tv_laundry)
         val mImageView :View = convert.findViewById(R.id.iv_state)
         val mCall : View = convert.findViewById(R.id.tv_call)
-        val mReq :View = convert.findViewById(R.id.tv_require_list)
-        val mVisit : View = convert.findViewById(R.id.tv_visittime)
+        val mReq :View = convert.findViewById(R.id.tv_require_list2)
+        val mVisit : View = convert.findViewById(R.id.tv_visittime2)
 
         val order : Order = datas.get(position)
         val dbrefR = FirebaseDatabase.getInstance().getReference("laundry/${order.laundryID}/orders/${order.key}")
@@ -70,10 +77,10 @@ class HistoryListAdt(var datas:ArrayList<Order>, var context:Context, var userID
 
         mTextViewDate.tv_date.setText(order.date)
         mTextViewLaundry.tv_laundry.setText(order.laundry)
-        mReq.tv_require_list.setText(require)
-        mVisit.tv_visittime.setText("$visitHourR : $visitMinuteR")
+        mReq.tv_require_list2.setText(require)
+        mVisit.tv_visittime2.setText("$visitHourR : $visitMinuteR")
 
-        val dbrefphone = FirebaseDatabase.getInstance().getReference("laundry_list/${datas.get(position).laundryID}")
+        val dbrefphone = FirebaseDatabase.getInstance().getReference("laundry_list/${order.laundryID}")
         dbrefphone.addValueEventListener(postListener2)
 
         mCall.tv_call.setOnClickListener {
@@ -119,6 +126,8 @@ class HistoryListAdt(var datas:ArrayList<Order>, var context:Context, var userID
         }
         return convert
     }
+
+
     private val postListener = object : ValueEventListener {
         override fun onCancelled(p0: DatabaseError?) {
         }
