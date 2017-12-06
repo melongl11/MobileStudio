@@ -10,16 +10,21 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/name_pic"
-        android:layout_width="428dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:background="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/address"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tv_laundryN2"
             android:layout_width="0dp"
-            android:layout_height="37dp"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/dxx"
             android:gravity="center"
             android:textAlignment="center"
@@ -27,6 +32,7 @@
             android:textSize="35sp"
             app:layout_constraintBottom_toTopOf="@+id/iv_laundryPic"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,12 +40,10 @@
             android:id="@+id/iv_laundryPic"
             android:layout_width="127dp"
             android:layout_height="113dp"
-            android:layout_marginBottom="60dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/tv_laundryN2"
-            app:layout_constraintHorizontal_bias="0.463"
-            app:layout_constraintStart_toStartOf="@+id/tv_laundryN2"
-            app:layout_constraintTop_toBottomOf="@+id/tv_laundryN"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_laundryN2"
             app:srcCompat="@drawable/loading" />
 
     </android.support.constraint.ConstraintLayout>

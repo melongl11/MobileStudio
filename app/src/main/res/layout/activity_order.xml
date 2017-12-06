@@ -34,7 +34,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout3"
         android:layout_width="match_parent"
-        android:layout_height="211dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/map">
 
@@ -42,6 +42,8 @@
             android:id="@+id/lv_laundry"
             android:layout_width="210dp"
             android:layout_height="110dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/iv_selectLaundry"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_laundryN" />
 
@@ -61,7 +63,7 @@
         <TextView
             android:id="@+id/tv_laundryN"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:background="#039BFF"
             android:fontFamily="@font/dxx"
             android:gravity="center"
@@ -76,12 +78,12 @@
             android:id="@+id/iv_selectLaundry"
             android:layout_width="151dp"
             android:layout_height="37dp"
-            android:fontFamily="@font/dxx"
             android:background="#039BFF"
+            android:fontFamily="@font/dxx"
             android:text="세탁소 선택"
             android:textAlignment="center"
-            android:textSize="30sp"
             android:textColor="#ffffff"
+            android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lv_laundry"
