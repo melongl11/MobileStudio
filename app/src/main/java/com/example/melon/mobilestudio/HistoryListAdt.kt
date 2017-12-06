@@ -72,7 +72,7 @@ class HistoryListAdt(var datas:ArrayList<Order>, var context:Context, var userID
         val mVisit : View = convert.findViewById(R.id.tv_visittime2)
 
         val order : Order = datas.get(position)
-        val dbrefR = FirebaseDatabase.getInstance().getReference("laundry/${order.laundryID}/orders/${order.key}")
+        val dbrefR = FirebaseDatabase.getInstance().getReference("laundry/${datas.get(position).laundryID}/orders/${datas.get(position).key}")
         dbrefR.addValueEventListener(postListener3)
 
         mTextViewDate.tv_date.setText(order.date)
@@ -80,7 +80,7 @@ class HistoryListAdt(var datas:ArrayList<Order>, var context:Context, var userID
         mReq.tv_require_list2.setText(require)
         mVisit.tv_visittime2.setText("$visitHourR : $visitMinuteR")
 
-        val dbrefphone = FirebaseDatabase.getInstance().getReference("laundry_list/${order.laundryID}")
+        val dbrefphone = FirebaseDatabase.getInstance().getReference("laundry_list/${datas.get(position).laundryID}")
         dbrefphone.addValueEventListener(postListener2)
 
         mCall.tv_call.setOnClickListener {

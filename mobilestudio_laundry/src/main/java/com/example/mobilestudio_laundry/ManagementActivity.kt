@@ -199,22 +199,32 @@ class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
             val childUpdate = HashMap<String, Any>()
             val currentLocation = HashMap<String, Any>()
             center = mMap!!.projection.visibleRegion.latLngBounds.center
+            if(et_laundryAddress.text.toString() == "") {
+                Toast.makeText(this, "세탁소 주소를 작성해 주세요.",Toast.LENGTH_SHORT).show()
+            }
+            else if(et_laundryName.text.toString() == "") {
+                Toast.makeText(this, "세탁소 이름을 작성해 주세요.",Toast.LENGTH_SHORT).show()
+            }
+            else if(et_phoneNum.text.toString() == "") {
+                Toast.makeText(this, "세탁소 전화번호를 작성해 주세요.",Toast.LENGTH_SHORT).show()
+            }
+            else {
+                currentLocation.put("latitude",center!!.latitude)
+                currentLocation.put("longitude",center!!.longitude)
+                currentLocation.put("address", et_laundryAddress.text.toString())
+                currentLocation.put("name",et_laundryName.text.toString())
+                currentLocation.put("laundryID", userID)
+                currentLocation.put("laundryNum",et_phoneNum.text.toString())
 
-            currentLocation.put("latitude",center!!.latitude)
-            currentLocation.put("longitude",center!!.longitude)
-            currentLocation.put("address", et_laundryAddress.text.toString())
-            currentLocation.put("name",et_laundryName.text.toString())
-            currentLocation.put("laundryID", userID)
-            currentLocation.put("laundryNum",et_phoneNum.text.toString())
 
+                childUpdate.put("/laundry_list/"+userID , currentLocation)
+                mDatabase.updateChildren(childUpdate)
 
-            childUpdate.put("/laundry_list/"+userID , currentLocation)
-            mDatabase.updateChildren(childUpdate)
-
-            AlertDialog.Builder(this)
-                    .setMessage("세탁소 정보를 등록하였습니다.")
-                    .setNegativeButton("닫기", DialogInterface.OnClickListener{ dialog, whichButton ->})
-                    .show()
+                AlertDialog.Builder(this)
+                        .setMessage("세탁소 정보를 등록하였습니다.")
+                        .setNegativeButton("닫기", DialogInterface.OnClickListener{ dialog, whichButton ->})
+                        .show()
+            }
     }
         iv_location_button.setOnClickListener {
             if (enableCurrentLocation) {
