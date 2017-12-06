@@ -9,12 +9,13 @@
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="298dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:context="com.example.melon.mobilestudio.MapsActivity"
-        tools:layout_editor_absoluteX="0dp">
+        tools:context="com.example.melon.mobilestudio.MapsActivity">
 
         <ImageView
             android:id="@+id/iv_location_button"
