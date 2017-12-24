@@ -55,9 +55,12 @@ class MyService : Service() {
             var notifiText=""
             if (order!!.state == 1) {
                 notifiText = "접수되었습니다."
-            }
-            else if (order.state == 2) {
+            } else if (order.state == 2) {
                 notifiText = "세탁완료되었습니다."
+            } else if (order.state == 3) {
+                notifiText = "배송 시간이 전달되었습니다."
+            } else if (order.state == 4) {
+                notifiText = "세탁물 배송 출발하였습니다."
             }
             val Notifi = Notification.Builder(applicationContext)
                     .setContentTitle("세탁왕")
