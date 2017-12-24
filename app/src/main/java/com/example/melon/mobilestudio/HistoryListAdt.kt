@@ -28,7 +28,6 @@ import com.google.firebase.storage.FirebaseStorage
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_order.*
 import kotlinx.android.synthetic.main.activity_order2.*
-import kotlinx.android.synthetic.main.activity_user_modify_information.*
 import kotlinx.android.synthetic.main.history_list.*
 import kotlinx.android.synthetic.main.history_list.view.*
 import java.text.SimpleDateFormat

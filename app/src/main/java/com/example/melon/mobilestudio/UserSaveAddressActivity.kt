@@ -8,14 +8,14 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_order.*
 import kotlinx.android.synthetic.main.activity_user_save_address.*
 
@@ -36,7 +36,7 @@ class UserSaveAddressActivity : AppCompatActivity(), OnMapReadyCallback, GoogleM
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_save_address)
         val mapFragment = supportFragmentManager
-                .findFragmentById(R.id.map) as SupportMapFragment
+                .findFragmentById(R.id.map6) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
 
@@ -47,6 +47,16 @@ class UserSaveAddressActivity : AppCompatActivity(), OnMapReadyCallback, GoogleM
                 userID = user.uid
             } else {
             }
+        }
+
+        modifyuser.setOnClickListener {
+            val newName = nameee.text.toString()
+            val newPhoneNumber = phoneee.text.toString()
+            val newInformation = Information(newName, newPhoneNumber).toMap()
+            val childUpdate = HashMap<String, Any>()
+            childUpdate.put("/users/${userID}/info/name/", newInformation)
+            mDatabase.updateChildren(childUpdate)
+            Toast.makeText(this, "이름과 번호를 저장했습니다.", Toast.LENGTH_SHORT).show()
         }
 
         iv_saveAddress2.setOnClickListener {
@@ -95,7 +105,12 @@ class UserSaveAddressActivity : AppCompatActivity(), OnMapReadyCallback, GoogleM
     override fun onStart() {
         super.onStart()
         mAuth!!.addAuthStateListener(mAuthListener!!)
+        Handler().postDelayed({
+            val dbRef = FirebaseDatabase.getInstance().getReference("/users/${userID}/info/name")
+            dbRef.addValueEventListener(postListener)
+        },500)
     }
+
     override fun onStop() {
         super.onStop()
         if(mAuthListener != null) {
@@ -164,4 +179,17 @@ class UserSaveAddressActivity : AppCompatActivity(), OnMapReadyCallback, GoogleM
         }
 
     }
+
+    private val postListener = object : ValueEventListener {
+        override fun onCancelled(p0: DatabaseError?) {
+
+        }
+
+        override fun onDataChange(datasnapshot: DataSnapshot) {
+            val information = datasnapshot.getValue(Information::class.java)
+            nameee.setText(information!!.name)
+            phoneee.setText(information.phoneNumber)
+        }
+    }
+
 }

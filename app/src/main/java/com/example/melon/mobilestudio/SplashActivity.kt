@@ -11,7 +11,6 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         try {
-            Thread.sleep(3000)
             var splashIntent = Intent(this,LoginActivity::class.java)
             startActivity(splashIntent)
             finish()
