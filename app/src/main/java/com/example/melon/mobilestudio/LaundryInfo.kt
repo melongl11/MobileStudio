@@ -1,30 +1,32 @@
 package com.example.melon.mobilestudio
 
-import android.content.Intent
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
-import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_laundry_info.*
+/**
+ * Created by melon on 2017-12-25.
+ */
+class LaundryInfo() {
+    var address: String = ""
+    var latitude: Float = 0.0f
+    var laundryID: String = ""
+    var laundryNum :String = ""
+    var longitude: Float = 0.0f
+    var name : String = ""
 
-class LaundryInfo : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_laundry_info)
-        val i = intent
-        li_tv_laundryName.setText(i.getStringExtra("laundryName"))
-        li_tv_laundryInfo.setText(i.getStringExtra("laundryInfo"))
-        bt_select.setOnClickListener {
-            val intent = Intent(this, OrderActivity::class.java)
-            intent.putExtra("laundryName", i.getStringExtra("laundryName"))
-            intent.putExtra("laundryID", i.getStringExtra("laundryID"))
-            intent.putExtra("userAddress", i.getStringExtra("userAddress"))
-            startActivity(intent);
-            arrayListforActivity.get(0).finish()
-            finish()
-        }
-        bt_close.setOnClickListener {
-            this.finish()
-        }
+    constructor(address: String, latitude:Float, laundryID:String, laundryNum:String, longitude:Float, name:String):this() {
+        this.address = address
+        this.latitude = latitude
+        this.laundryID = laundryID
+        this.laundryNum = laundryNum
+        this.longitude = longitude
+        this.name = name
+    }
+    fun toMap(): Map<String, Any> {
+        val result = HashMap<String, Any>()
+        result.put("address", address)
+        result.put("latitude", latitude)
+        result.put("laundryID", laundryID)
+        result.put("laundryNum", laundryNum)
+        result.put("longitude", longitude)
+        result.put("name", name)
+        return result
     }
 }

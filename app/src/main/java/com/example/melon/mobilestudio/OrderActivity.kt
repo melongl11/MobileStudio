@@ -51,10 +51,10 @@ class OrderActivity : AppCompatActivity() {
         Handler().postDelayed({
             val dbRef = FirebaseDatabase.getInstance().getReference("/laundry/${i!!.getStringExtra("laundryID")}/info/time/")
             dbRef.addListenerForSingleValueEvent(postListener)
-            /*
-            val dbRefPhone = FirebaseDatabase.getInstance().getReference("/laundry_list/${i!!.getStringExtra("laundryID")}/laundryNum")
-            dbRef.addListenerForSingleValueEvent(postListener1)
-            */
+
+            val dbRefPhone = FirebaseDatabase.getInstance().getReference("/laundry_list/")
+            dbRefPhone.addListenerForSingleValueEvent(postListener1)
+
         },500)
     }
     override fun onStop() {
@@ -113,7 +113,7 @@ class OrderActivity : AppCompatActivity() {
         var spinn = spin_visit_time.selectedItem.toString()
         var hour = spinn.substring(0, 2).trim().toInt()
         var minute = spinn.substring(4, 7).trim().toInt()
-        val order = Order(date, i!!.getStringExtra("laundryInfo"), state, saveTime, i!!.getStringExtra("laundryID"),require,hour,minute)
+        val order = Order(date, i!!.getStringExtra("laundryInfo"), state, saveTime, i!!.getStringExtra("laundryID"),require,hour,minute, laundryPhone)
         val orderValue = order.toMap()
 
         val childUpdate = HashMap<String, Any>()
@@ -145,19 +145,21 @@ class OrderActivity : AppCompatActivity() {
             spin_visit_time.adapter = spinnerAdapter
         }
     }
-    /*
+
     private val postListener1 = object : ValueEventListener {
         override fun onCancelled(p0: DatabaseError?) {
         }
 
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             for(snapshot in dataSnapshot.children) {
-
-
+                val laundryInfo = snapshot.getValue(LaundryInfo::class.java)
+                if (laundryInfo!!.laundryID == i!!.getStringExtra("laundryID")) {
+                    laundryPhone = laundryInfo.laundryNum
+                }
             }
         }
     }
-    */
+
 
     fun down(){
         var filename = "image.jpg"

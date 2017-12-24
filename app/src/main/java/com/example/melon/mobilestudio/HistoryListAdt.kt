@@ -84,13 +84,11 @@ class HistoryListAdt(var datas:ArrayList<Order>, var context:Context, var userID
         holder.mReq!!.setText(order.require)
         holder.mVisit!!.text = ("${order.hour} : ${order.time} ~ ${order.hour + 1} : ${order.time}")
 
-        val dbrefphone = FirebaseDatabase.getInstance().getReference("laundry_list/${datas.get(position).laundryID}")
-        dbrefphone.addValueEventListener(postListener2)
 
         holder.mCall!!.setOnClickListener {
 
-            if(phoneNum != "") {
-                var intnet = Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNum))
+            if(order.laundryPhone != "") {
+                var intnet = Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + order.laundryPhone))
                 startActivity(context, intnet, Bundle.EMPTY)
             } else {
                 var alert = AlertDialog.Builder(context)
@@ -170,20 +168,7 @@ class HistoryListAdt(var datas:ArrayList<Order>, var context:Context, var userID
         }
     }
 
-    private val postListener2 = object : ValueEventListener {
-        override fun onCancelled(p0: DatabaseError?) {
 
-        }
-
-        override fun onDataChange(datasnapshot: DataSnapshot) {
-            for(snapshot in datasnapshot.children) {
-                val Location = datasnapshot.getValue(LaundryLocation::class.java)
-                if (Location!!.laundryNum != null) {
-                    phoneNum = Location.laundryNum
-                }
-            }
-        }
-    }
 
     private class ViewHolder {
         var spinner_aa : Spinner? = null

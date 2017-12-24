@@ -3,25 +3,28 @@ package com.example.melon.mobilestudio
 /**
  * Created by melon on 2017-09-12.
  */
-    class Order() {
-        var date:String = " "
-        var laundry:String = " "
-        var state:Int = 0
-        var key:String = " "
-        var laundryID:String = ""
-        var require:String = ""
-        var hour:Int = 0
-        var time:Int = 0
-        constructor(date:String, laundry:String, state:Int, key:String, laundryID:String, require:String, visithour: Int, visitTime: Int) : this() {
-            this.date = date
-            this.laundry = laundry
-            this.state = state
-            this.key = key
-            this.laundryID = laundryID
-            this.require = require
-            this.hour = visithour
-            this.time = visitTime
-        }
+class Order() {
+    var date:String = " "
+    var laundry:String = " "
+    var state:Int = 0
+    var key:String = " "
+    var laundryID:String = ""
+    var require:String = ""
+    var hour:Int = 0
+    var time:Int = 0
+    var laundryPhone:String = ""
+
+    constructor(date:String, laundry:String, state:Int, key:String, laundryID:String, require:String, visithour: Int, visitTime: Int, laundryPhone: String) : this() {
+        this.date = date
+        this.laundry = laundry
+        this.state = state
+        this.key = key
+        this.laundryID = laundryID
+        this.require = require
+        this.hour = visithour
+        this.time = visitTime
+        this.laundryPhone = laundryPhone
+    }
 
     fun toMap(): Map<String, Any>  {
         val result : HashMap<String, Any> = HashMap<String, Any>()
@@ -33,6 +36,7 @@ package com.example.melon.mobilestudio
         result.put("require", require)
         result.put("hour",hour)
         result.put("time",time)
+        result.put("laundryPhone", laundryPhone)
         return result
     }
 }
