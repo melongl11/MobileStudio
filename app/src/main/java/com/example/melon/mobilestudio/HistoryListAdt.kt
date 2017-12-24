@@ -62,7 +62,7 @@ class HistoryListAdt(var datas:ArrayList<Order>, var context:Context, var userID
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val convert = inflater.inflate(R.layout.history_list,null)
+        val convert = inflater.inflate(R.layout.history_list,parent, false)
         val mTextViewDate : View = convert.findViewById(R.id.tv_date)
         val mTextViewLaundry : View = convert.findViewById(R.id.tv_laundry)
         val mImageView :View = convert.findViewById(R.id.iv_state)
@@ -111,10 +111,14 @@ class HistoryListAdt(var datas:ArrayList<Order>, var context:Context, var userID
                 mImageView.setOnClickListener {
                     if (spinner != null) {
                         var spinn = spinner!!.selectedItem.toString()
+                        var returnHour = spinn.substring(0, 2).trim().toInt()
+                        var returnMinute = spinn.substring(4, 7).trim().toInt()
                         FirebaseDatabase.getInstance().getReference("users/${userID}/orders/${datas[position].key}/state").setValue(3)
-                        FirebaseDatabase.getInstance().getReference("users/${userID}/orders/${datas[position].key}/return").setValue(spinn)
+                        FirebaseDatabase.getInstance().getReference("users/${userID}/orders/${datas[position].key}/hour").setValue(returnHour)
+                        FirebaseDatabase.getInstance().getReference("users/${userID}/orders/${datas[position].key}/minute").setValue(returnMinute)
                         FirebaseDatabase.getInstance().getReference("laundry/${datas[position].laundryID}/orders/${datas[position].key}/state").setValue(3)
-                        FirebaseDatabase.getInstance().getReference("laundry/${datas[position].laundryID}/orders/${datas[position].key}/return").setValue(spinn)
+                        FirebaseDatabase.getInstance().getReference("laundry/${datas[position].laundryID}/orders/${datas[position].key}/hour").setValue(returnHour)
+                        FirebaseDatabase.getInstance().getReference("laundry/${datas[position].laundryID}/orders/${datas[position].key}/minute").setValue(returnMinute)
                     }
                 }
             }

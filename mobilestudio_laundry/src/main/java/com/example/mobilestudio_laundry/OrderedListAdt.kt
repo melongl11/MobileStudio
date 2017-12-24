@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.ordered_list.view.*
 /**
  * Created by melon on 2017-09-20.
  */
-class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseAdapter() {
+class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context, var uID: String) : BaseAdapter() {
     private var inflater : LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     var key:String = " "
     var userID = " "
@@ -41,8 +41,8 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
         mTextViewAccept.tv_accept.setOnClickListener {
             key = datas[position].key
             userID = datas[position].userID
-            val dbRef = FirebaseDatabase.getInstance().getReference("/users/$userID/orders")
-            dbRef.addValueEventListener(postListener)
+            FirebaseDatabase.getInstance().getReference("/users/$userID/orders/${key}/state").setValue(1)
+            FirebaseDatabase.getInstance().getReference("/laundry/$uID/orders/${key}/state").setValue(1)
         }
         return convert
     }
@@ -59,29 +59,4 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
         return datas.size
     }
 
-    private  val postListener = object : ValueEventListener {
-        override fun onCancelled(p0: DatabaseError?) {
-
-        }
-
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            val mDatabase = FirebaseDatabase.getInstance().reference
-            for(snapshot in dataSnapshot.children) {
-                val order = snapshot.getValue(Order::class.java)
-                if(order!!.key == key && order.state == 0) {
-                    val newOrder = Order(order.date, order.laundry, 1, key, order.laundryID)
-                    val childUpdate = HashMap<String, Any>()
-                    childUpdate.put("users/$userID/orders/$key", newOrder)
-
-                    mDatabase.updateChildren(childUpdate)
-                    val newOrdered = ordered
-                    newOrdered!!.state = 1
-                    val orderedValue = newOrdered.toMap()
-                    val acceptUpdate = HashMap<String, Any>()
-                    acceptUpdate.put("laundry/${order.laundryID}/orders/$key", orderedValue)
-                    mDatabase.updateChildren(acceptUpdate)
-                }
-            }
-        }
-    }
 }

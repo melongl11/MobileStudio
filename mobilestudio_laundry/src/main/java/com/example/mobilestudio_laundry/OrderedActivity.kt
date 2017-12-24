@@ -27,7 +27,7 @@ class OrderedActivity : AppCompatActivity() {
             val dbRef = FirebaseDatabase.getInstance().getReference("laundry/$userID/orders")
             dbRef.addValueEventListener(postListener)
 
-            adapter = OrderedListAdt(datas, this)
+            adapter = OrderedListAdt(datas, this, userID)
             lv_ordered.setAdapter(adapter)
         },1000)
     }
