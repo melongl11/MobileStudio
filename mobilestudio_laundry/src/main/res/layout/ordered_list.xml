@@ -52,15 +52,21 @@
         <TextView
             android:layout_marginTop="15dp"
             android:id="@+id/tv_visittime"
-            android:layout_width="252dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="10pt"
             android:fontFamily="@font/dxx"/>
 
-        <ImageView
-            android:layout_width="100dp"
+        <TextView
+            android:layout_width="120dp"
             android:layout_height="50dp"
-            android:id="@+id/iv_accept"/>
+            android:id="@+id/tv_accept"
+            android:text="접수하기"
+            android:gravity="center_vertical|center_horizontal"
+            android:textSize="15pt"
+            android:fontFamily="@font/dxx"
+            android:textColor="#FFFFFF"
+            android:background="#039BFF"/>
     </LinearLayout>
 </LinearLayout>

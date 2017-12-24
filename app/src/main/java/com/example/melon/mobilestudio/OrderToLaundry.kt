@@ -13,8 +13,8 @@ class OrderToLaundry() {
     var state:Int = 0
     var saveTime:String = ""
     var userID:String =""
-    var visitHour:Int = 0
-    var visitMinute:Int = 0
+    var hour:Int = 0
+    var minute:Int = 0
     var phoneNumber:String = ""
     var payment: String = ""
 
@@ -26,8 +26,8 @@ class OrderToLaundry() {
         this.state = state
         this.saveTime = saveTime
         this.userID = userID
-        this.visitHour = visitHour
-        this.visitMinute = visitMinute
+        this.hour = visitHour
+        this.minute = visitMinute
         this.phoneNumber = phoneNumber
         this.payment = payment
     }
@@ -41,8 +41,8 @@ class OrderToLaundry() {
         result.put("state", state)
         result.put("key",saveTime)
         result.put("userID", userID)
-        result.put("visitHour", visitHour)
-        result.put("visitMinute", visitMinute)
+        result.put("hour", hour)
+        result.put("minute", minute)
         result.put("phoneNumber", phoneNumber)
         result.put("payment",payment)
         return result

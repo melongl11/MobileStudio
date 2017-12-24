@@ -310,8 +310,10 @@ class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
 
     private val mLocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
-            mMap!!.moveCamera(CameraUpdateFactory.newLatLng(LatLng(location.getLatitude(), location.getLongitude())))
-            Log.d("test", "onLocationChanged, location:" + location)
+            if(enableCurrentLocation) {
+                mMap!!.moveCamera(CameraUpdateFactory.newLatLng(LatLng(location.getLatitude(), location.getLongitude())))
+                Log.d("test", "onLocationChanged, location:" + location)
+            }
         }
 
         override fun onProviderDisabled(provider: String) {

@@ -188,8 +188,8 @@ class HistoryListAdt(var datas:ArrayList<Order>, var context:Context, var userID
                 val ReV = datasnapshot.getValue(OrderToLaundry::class.java)
                 if (ReV != null) {
                     require = ReV.require
-                    visitHourR = ReV.visitHour
-                    visitMinuteR = ReV.visitMinute
+                    visitHourR = ReV.hour
+                    visitMinuteR = ReV.minute
                 }
             }
         }

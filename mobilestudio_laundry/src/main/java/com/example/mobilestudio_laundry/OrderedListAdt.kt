@@ -25,8 +25,8 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
         val mTextViewAddress: View = convert.findViewById(R.id.tv_address)
         val mTextViewVisitDay: View = convert.findViewById(R.id.tv_visitday)
         val mTextViewVisitTime: View = convert.findViewById(R.id.tv_visittime)
-        val mImageViewAccept: View = convert.findViewById(R.id.iv_accept)
         val mTextViewPhone: View = convert.findViewById(R.id.tv_costumer_phone)
+        val mTextViewAccept: View = convert.findViewById(R.id.tv_accept)
 
         if (datas.isEmpty()) {
             mTextViewAddress.tv_address.text = "주문이 없습니다."
@@ -37,9 +37,8 @@ class OrderedListAdt(var datas:ArrayList<Ordered>, var context: Context) : BaseA
         mTextViewAddress.tv_address.text = ordered!!.address
         mTextViewVisitTime.tv_visittime.text = ("${ordered!!.hour} : ${ordered!!.minute} ~ ${ordered!!.hour + 1} : ${ordered!!.minute} 방문 요망")
         mTextViewVisitDay.tv_visitday.text = ordered!!.date
-        mImageViewAccept.iv_accept.setImageResource(R.drawable.bt_accept)
 
-        mImageViewAccept.iv_accept.setOnClickListener {
+        mTextViewAccept.tv_accept.setOnClickListener {
             key = datas[position].key
             userID = datas[position].userID
             val dbRef = FirebaseDatabase.getInstance().getReference("/users/$userID/orders")

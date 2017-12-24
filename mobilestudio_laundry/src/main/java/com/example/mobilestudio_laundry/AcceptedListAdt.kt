@@ -33,7 +33,7 @@ class AcceptedListAdt (var datas:ArrayList<Accepted>, var context: Context, var 
             accepted = datas[position]
             mTextViewName.tv_name_aa.text = accepted!!.name
             mTextViewAddress.tv_address_aa.text = accepted!!.address
-            mTextViewVisittime.tv_visittime_aa.text = ("${accepted!!.hour} : ${accepted!!.minute} ~ ${accepted!!.hour} : ${accepted!!.minute}")
+            mTextViewVisittime.tv_visittime_aa.text = ("${accepted!!.hour} : ${accepted!!.minute} ~ ${accepted!!.hour + 1} : ${accepted!!.minute}")
             mTextViewDate.tv_date_aa.text = accepted!!.date
             mTextViewPhone.tv_phone_aa.text = accepted!!.phoneNumber
 
