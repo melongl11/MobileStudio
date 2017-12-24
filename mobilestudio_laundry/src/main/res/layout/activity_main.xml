@@ -71,13 +71,16 @@
         android:background="#EDEDED"
         android:orientation="vertical">
 
-        <Button
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="45dp" />
+
+        <ImageView
             android:id="@+id/bt_signout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="signout"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:layout_editor_absoluteY="8dp" />
+            app:srcCompat="@drawable/bt_logout" />
+
     </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>
