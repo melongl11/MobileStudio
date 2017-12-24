@@ -16,7 +16,7 @@ class OrderFinishActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_finish)
         val i = intent
-        of_tv_laundryName.setText(i.getStringExtra("laundryName"))
+        of_tv_laundryName.setText(i.getStringExtra("laundryInfo"))
         confirm.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)

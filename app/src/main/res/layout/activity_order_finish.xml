@@ -21,8 +21,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="209dp"
-        android:layout_height="33dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,9 +32,14 @@
 
         <TextView
             android:id="@+id/of_tv_laundryName"
-            android:layout_width="20dp"
-            android:layout_height="30dp"
-            android:layout_weight="1" />
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:background="#039BFF"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textSize="25sp" />
 
     </LinearLayout>
 

@@ -93,7 +93,6 @@ class AcceptedListAdt (var datas:ArrayList<Accepted>, var context: Context, var 
         var tv_date_aa: TextView? = null
         var tv_phone_aa: TextView? = null
         var tv_require_aa: TextView? = null
-
     }
 
 }

@@ -297,7 +297,7 @@ class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         val init = LatLng(37.59788, 126.86443)
-        mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(init, 10.toFloat()))
+        mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(init, 15.toFloat()))
         mMap!!.setOnCameraMoveListener(this)
         lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         try {

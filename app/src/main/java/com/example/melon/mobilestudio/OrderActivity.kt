@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.R.array
 import android.os.AsyncTask
+import android.util.Log
 import android.widget.ArrayAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -35,6 +36,7 @@ class OrderActivity : AppCompatActivity() {
     var storage = FirebaseStorage.getInstance()
     var laundid = ""
     var payment:String = ""
+    var laundryPhone : String = ""
     private var i:Intent? = null
     private var mAuth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
@@ -49,6 +51,10 @@ class OrderActivity : AppCompatActivity() {
         Handler().postDelayed({
             val dbRef = FirebaseDatabase.getInstance().getReference("/laundry/${i!!.getStringExtra("laundryID")}/info/time/")
             dbRef.addListenerForSingleValueEvent(postListener)
+            /*
+            val dbRefPhone = FirebaseDatabase.getInstance().getReference("/laundry_list/${i!!.getStringExtra("laundryID")}/laundryNum")
+            dbRef.addListenerForSingleValueEvent(postListener1)
+            */
         },500)
     }
     override fun onStop() {
@@ -104,7 +110,10 @@ class OrderActivity : AppCompatActivity() {
     }
     private fun newOrder(date:String, laundry:String, state:Int) {
         val saveTime = saveFormat.format(Date())
-        val order = Order(date, i!!.getStringExtra("laundryInfo"), state, saveTime, i!!.getStringExtra("laundryID"))
+        var spinn = spin_visit_time.selectedItem.toString()
+        var hour = spinn.substring(0, 2).trim().toInt()
+        var minute = spinn.substring(4, 7).trim().toInt()
+        val order = Order(date, i!!.getStringExtra("laundryInfo"), state, saveTime, i!!.getStringExtra("laundryID"),require,hour,minute)
         val orderValue = order.toMap()
 
         val childUpdate = HashMap<String, Any>()
@@ -112,11 +121,10 @@ class OrderActivity : AppCompatActivity() {
         childUpdate.put("/users/$userID/orders/$saveTime", orderValue)
         mDatabase.updateChildren(childUpdate)
 
-        val orderToLaundry = OrderToLaundry(date, i!!.getStringExtra("userName"), address, require, state, saveTime, userID, visitHour, visitMinute, i!!.getStringExtra("userPhoneNumber"),payment)
+        val orderToLaundry = OrderToLaundry(date, i!!.getStringExtra("userName"), address, require, state, saveTime, userID, hour, minute, i!!.getStringExtra("userPhoneNumber"),payment)
         val result = orderToLaundry.toMap()
         childUpdate.put("/laundry/$laundry/orders/$saveTime", result)
         mDatabase.updateChildren(childUpdate)
-
     }
 
     private val postListener = object : ValueEventListener {
@@ -135,9 +143,21 @@ class OrderActivity : AppCompatActivity() {
             val spinnerAdapter = ArrayAdapter(this@OrderActivity, android.R.layout.simple_spinner_item, spinnerList)
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spin_visit_time.adapter = spinnerAdapter
-
         }
     }
+    /*
+    private val postListener1 = object : ValueEventListener {
+        override fun onCancelled(p0: DatabaseError?) {
+        }
+
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            for(snapshot in dataSnapshot.children) {
+
+
+            }
+        }
+    }
+    */
 
     fun down(){
         var filename = "image.jpg"

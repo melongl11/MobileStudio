@@ -13,10 +13,7 @@ import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.BaseAdapter
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.firebase.ui.storage.images.FirebaseImageLoader
@@ -30,6 +27,7 @@ import kotlinx.android.synthetic.main.activity_order.*
 import kotlinx.android.synthetic.main.activity_order2.*
 import kotlinx.android.synthetic.main.history_list.*
 import kotlinx.android.synthetic.main.history_list.view.*
+import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -62,27 +60,34 @@ class HistoryListAdt(var datas:ArrayList<Order>, var context:Context, var userID
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val convert = inflater.inflate(R.layout.history_list,parent, false)
-        val mTextViewDate : View = convert.findViewById(R.id.tv_date)
-        val mTextViewLaundry : View = convert.findViewById(R.id.tv_laundry)
-        val mImageView :View = convert.findViewById(R.id.iv_state)
-        val mCall : View = convert.findViewById(R.id.tv_call)
-        val mReq :View = convert.findViewById(R.id.tv_require_list2)
-        val mVisit : View = convert.findViewById(R.id.tv_visittime2)
+
+        var holder = ViewHolder()
+        var convert = convertView
+        if(convert == null){
+            convert = inflater.inflate(R.layout.history_list,parent,false)
+            holder.spinner_aa = convert!!.findViewById(R.id.sp_deliver_time)
+            holder.tv_date = convert!!.findViewById(R.id.tv_date)
+            holder.tv_laundry = convert.findViewById(R.id.tv_laundry)
+            holder.mImageView  = convert.findViewById(R.id.iv_state)
+            holder.mCall = convert.findViewById(R.id.tv_call)
+            holder.mReq = convert.findViewById(R.id.tv_require_list2)
+            holder.mVisit = convert.findViewById(R.id.tv_visittime2)
+            convert.setTag(holder)
+        }else{
+            holder = convert.getTag() as ViewHolder
+        }
 
         val order : Order = datas.get(position)
-        val dbrefR = FirebaseDatabase.getInstance().getReference("laundry/${datas.get(position).laundryID}/orders/${datas.get(position).key}")
-        dbrefR.addValueEventListener(postListener3)
 
-        mTextViewDate.tv_date.setText(order.date)
-        mTextViewLaundry.tv_laundry.setText(order.laundry)
-        mReq.tv_require_list2.setText(require)
-        mVisit.tv_visittime2.setText("$visitHourR : $visitMinuteR")
+        holder.tv_date!!.setText(order.date)
+        holder.tv_laundry!!.setText(order.laundry)
+        holder.mReq!!.setText(order.require)
+        holder.mVisit!!.text = ("${order.hour} : ${order.time} ~ ${order.hour + 1} : ${order.time}")
 
         val dbrefphone = FirebaseDatabase.getInstance().getReference("laundry_list/${datas.get(position).laundryID}")
         dbrefphone.addValueEventListener(postListener2)
 
-        mCall.tv_call.setOnClickListener {
+        holder.mCall!!.setOnClickListener {
 
             if(phoneNum != "") {
                 var intnet = Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNum))
@@ -97,37 +102,36 @@ class HistoryListAdt(var datas:ArrayList<Order>, var context:Context, var userID
                 dial.show()
             }
         }
-        spinner = convert.findViewById(R.id.sp_deliver_time)
 
         when(order.state) {
-            0 -> mImageView.iv_state.setImageResource(R.drawable.user_history_0)
+            0 -> holder.mImageView!!.setImageResource(R.drawable.user_history_0)
             1 -> {
-                mImageView.iv_state.setImageResource(R.drawable.user_history_4)
+                holder.mImageView!!.setImageResource(R.drawable.user_history_4)
             }
             2 -> {
-                mImageView.iv_state.setImageResource(R.drawable.user_history_1)
+                holder.mImageView!!.setImageResource(R.drawable.user_history_1)
                 val dbref = FirebaseDatabase.getInstance().getReference("laundry/${datas.get(position).laundryID}/info/time/")
                 dbref.addValueEventListener(postListener)
-                mImageView.setOnClickListener {
-                    if (spinner != null) {
-                        var spinn = spinner!!.selectedItem.toString()
-                        var returnHour = spinn.substring(0, 2).trim().toInt()
-                        var returnMinute = spinn.substring(4, 7).trim().toInt()
-                        FirebaseDatabase.getInstance().getReference("users/${userID}/orders/${datas[position].key}/state").setValue(3)
-                        FirebaseDatabase.getInstance().getReference("users/${userID}/orders/${datas[position].key}/hour").setValue(returnHour)
-                        FirebaseDatabase.getInstance().getReference("users/${userID}/orders/${datas[position].key}/minute").setValue(returnMinute)
-                        FirebaseDatabase.getInstance().getReference("laundry/${datas[position].laundryID}/orders/${datas[position].key}/state").setValue(3)
-                        FirebaseDatabase.getInstance().getReference("laundry/${datas[position].laundryID}/orders/${datas[position].key}/hour").setValue(returnHour)
-                        FirebaseDatabase.getInstance().getReference("laundry/${datas[position].laundryID}/orders/${datas[position].key}/minute").setValue(returnMinute)
-                    }
-                }
+                holder.mImageView!!.setOnClickListener {
+                    if (holder.spinner_aa != null) {
+                            var spinn = holder.spinner_aa?.selectedItem.toString()
+                            var returnHour = spinn.substring(0, 2).trim().toInt()
+                            var returnMinute = spinn.substring(4, 7).trim().toInt()
+                            FirebaseDatabase.getInstance().getReference("users/${userID}/orders/${datas[position].key}/state").setValue(3)
+                            FirebaseDatabase.getInstance().getReference("users/${userID}/orders/${datas[position].key}/hour").setValue(returnHour)
+                            FirebaseDatabase.getInstance().getReference("users/${userID}/orders/${datas[position].key}/minute").setValue(returnMinute)
+                            FirebaseDatabase.getInstance().getReference("laundry/${datas[position].laundryID}/orders/${datas[position].key}/state").setValue(3)
+                            FirebaseDatabase.getInstance().getReference("laundry/${datas[position].laundryID}/orders/${datas[position].key}/hour").setValue(returnHour)
+                            FirebaseDatabase.getInstance().getReference("laundry/${datas[position].laundryID}/orders/${datas[position].key}/minute").setValue(returnMinute)
+                        }
+                 }
             }
             3 -> {
-                mImageView.iv_state.setImageResource(R.drawable.user_history_2)
+                holder.mImageView!!.setImageResource(R.drawable.user_history_2)
             }
             4 -> {
-                mImageView.iv_state.setImageResource(R.drawable.user_history_3)
-                mImageView.iv_state.setOnClickListener {
+                holder.mImageView!!.setImageResource(R.drawable.user_history_3)
+                holder.mImageView!!.setOnClickListener {
                     val builder: AlertDialog.Builder = AlertDialog.Builder(context)
                     builder.setMessage("세탁물을 수령 하셨습니까?")
                     builder.setPositiveButton("예"){dialog, whichButton ->
@@ -181,22 +185,13 @@ class HistoryListAdt(var datas:ArrayList<Order>, var context:Context, var userID
         }
     }
 
-    private val postListener3 = object : ValueEventListener {
-        override fun onCancelled(p0: DatabaseError?) {
-
-        }
-
-        override fun onDataChange(datasnapshot: DataSnapshot) {
-            for(snapshot in datasnapshot.children) {
-                val ReV = datasnapshot.getValue(OrderToLaundry::class.java)
-                if (ReV != null) {
-                    require = ReV.require
-                    visitHourR = ReV.hour
-                    visitMinuteR = ReV.minute
-                }
-            }
-        }
+    private class ViewHolder {
+        var spinner_aa : Spinner? = null
+        var tv_date : TextView? = null
+        var tv_laundry : TextView? = null
+        var mImageView :ImageView? = null
+        var mCall : View? = null
+        var mReq :TextView? = null
+        var mVisit : TextView? = null
     }
-
-
 }
