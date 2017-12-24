@@ -11,7 +11,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/name_pic"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="160dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="#FFFFFF"
@@ -24,12 +24,12 @@
         <TextView
             android:id="@+id/tv_laundryN2"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="42dp"
             android:fontFamily="@font/dxx"
             android:gravity="center"
             android:textAlignment="center"
             android:textColor="#039BFF"
-            android:textSize="35sp"
+            android:textSize="45sp"
             app:layout_constraintBottom_toTopOf="@+id/iv_laundryPic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -91,7 +91,7 @@
         <TextView
             android:id="@+id/tv_userAddressCheck"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/dxx"
             android:textSize="30sp" />
     </LinearLayout>
