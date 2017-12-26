@@ -33,7 +33,7 @@
         android:layout_marginTop="144dp"
         android:background="@null"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:textColor="#ffffff"
         android:textCursorDrawable="@drawable/cursor_color"
         app:layout_constraintEnd_toEndOf="@+id/imageView"

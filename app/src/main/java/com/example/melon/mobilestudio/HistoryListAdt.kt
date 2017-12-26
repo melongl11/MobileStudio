@@ -44,7 +44,8 @@ class HistoryListAdt(var datas:ArrayList<Order>, var context:Context, var userID
     var require : String = ""
     var visitHourR :Int = 0
     var visitMinuteR:Int = 0
-
+    var spinnerAdapter : ArrayAdapter<String>? = null
+    private var holder = ViewHolder()
 
     private var spinnerList = java.util.ArrayList<String>()
     override fun getCount(): Int {
@@ -60,8 +61,6 @@ class HistoryListAdt(var datas:ArrayList<Order>, var context:Context, var userID
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-
-        var holder = ViewHolder()
         var convert = convertView
         if(convert == null){
             convert = inflater.inflate(R.layout.history_list,parent,false)
@@ -162,9 +161,9 @@ class HistoryListAdt(var datas:ArrayList<Order>, var context:Context, var userID
                 val toTime = timeFormat.format(Date(2000,1,1,visitHour+1, visitMinute,0))
                 spinnerList.add("${fromTime} ~  ${toTime}")
             }
-            val spinnerAdapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, spinnerList)
-            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinner!!.adapter = spinnerAdapter
+            spinnerAdapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, spinnerList)
+            spinnerAdapter!!.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            holder.spinner_aa!!.adapter = spinnerAdapter
         }
     }
 
