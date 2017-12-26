@@ -373,12 +373,12 @@ class ManagementActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
             storageRef.putBytes(data)
                     .addOnSuccessListener { task ->
                         progressDialog.dismiss()
-                        Toast.makeText(applicationContext,"업로드 완료!",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext,"사진이 등록되었습니다.",Toast.LENGTH_SHORT).show()
                         down()
                     }
                     .addOnFailureListener { task ->
                         progressDialog.dismiss()
-                        Toast.makeText(applicationContext,"업로드 실패!",Toast.LENGTH_LONG).show()
+                        Toast.makeText(applicationContext,"사진 등록에 실패하였습니다.",Toast.LENGTH_LONG).show()
                     }
                     .addOnProgressListener { taskSnapshot: UploadTask.TaskSnapshot? ->
                         var progress = (100 * taskSnapshot!!.bytesTransferred / taskSnapshot.totalByteCount)
